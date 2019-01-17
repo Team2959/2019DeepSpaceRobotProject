@@ -7,14 +7,11 @@
 
 #include "commands/DriveWithControllerCommand.h"
 #include "Robot.h"
-#include "subsystems/DriveTrainSubsystem.h"
-#include "OI.h"
-#include <frc/GenericHID.h>
 
 DriveWithControllerCommand::DriveWithControllerCommand() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(&(Robot::m_driveTrainSubsystem));
+  Requires(&Robot::m_driveTrainSubsystem);
 }
 
 // Called just before this Command runs the first time
