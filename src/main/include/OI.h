@@ -10,9 +10,10 @@
 #include <frc/XboxController.h>
 #include "RobotMap.h"
 
-class OI {
+class OI
+{
  public:
-
   OI();
+  
   frc::XboxController m_driverJoystick { kDriverUSBController };
 };

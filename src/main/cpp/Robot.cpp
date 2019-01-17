@@ -10,6 +10,7 @@
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
+DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 ExampleSubsystem Robot::m_subsystem;
 OI Robot::m_oi;
 

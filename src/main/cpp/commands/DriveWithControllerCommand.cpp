@@ -7,22 +7,25 @@
 
 #include "commands/DriveWithControllerCommand.h"
 #include "Robot.h"
+#include "subsystems/DriveTrainSubsystem.h"
+#include "OI.h"
+#include <frc/GenericHID.h>
 
 DriveWithControllerCommand::DriveWithControllerCommand() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(&Robot::m_driveTrainSubsystem);
+  Requires(&(Robot::m_driveTrainSubsystem));
 }
 
 // Called just before this Command runs the first time
 void DriveWithControllerCommand::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void DriveWithControllerCommand::Execute() {
-
+void DriveWithControllerCommand::Execute()
+{
   Robot::m_driveTrainSubsystem.MyTankDrive(
-    Robot::OI::m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kLeftHand),
-    Robot::OI::m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kRightHand) );
+    Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kLeftHand),
+    Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kRightHand) );
 }
 
 // Make this return true when this Command no longer needs to run execute()
