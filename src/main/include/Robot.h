@@ -15,9 +15,11 @@
 #include "commands/ExampleCommand.h"
 #include "commands/MyAutoCommand.h"
 #include "subsystems/ExampleSubsystem.h"
+#include "subsystems/DriveTrainSubsystem.h"
 
 class Robot : public frc::TimedRobot {
  public:
+ static DriveTrainSubsystem m_driveTrainSubsystem;
   static ExampleSubsystem m_subsystem;
   static OI m_oi;
 

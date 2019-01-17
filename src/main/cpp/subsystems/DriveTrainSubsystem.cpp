@@ -5,14 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "subsystems/DriveTrainSubsystem.h"
 
-#include <frc/XboxController.h>
-#include "RobotMap.h"
+DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem") {}
 
-class OI {
- public:
+void DriveTrainSubsystem::InitDefaultCommand() {
+  // Set the default command for a subsystem here.
+  // SetDefaultCommand(new MySpecialCommand());
+}
 
-  OI();
-  frc::XboxController m_driverJoystick { kDriverUSBController };
-};
+// Put methods for controlling this subsystem
+// here. Call these from Commands.
+void DriveTrainSubsystem::MyTankDrive(double leftSpeed, double rightSpeed){
+  m_tankDrive.TankDrive(leftSpeed, rightSpeed);
+}
