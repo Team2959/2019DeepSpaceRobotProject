@@ -26,6 +26,8 @@ class Robot : public frc::TimedRobot {
 
   static OI m_oi;
 
+  Robot();
+
 
   void RobotInit() override;
   void RobotPeriodic() override;
@@ -44,4 +46,5 @@ class Robot : public frc::TimedRobot {
   ExampleCommand m_defaultAuto;
   MyAutoCommand m_myAuto;
   frc::SendableChooser<frc::Command*> m_chooser;
+  std::shared_ptr<nt::NetworkTable> m_networkTable;
 };
