@@ -10,6 +10,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/commands/Command.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <networktables/NetworkTableInstance.h>
 
 #include "OI.h"
 #include "commands/ExampleCommand.h"
@@ -25,8 +26,6 @@ class Robot : public frc::TimedRobot {
   static ExampleSubsystem m_subsystem;
 
   static OI m_oi;
-
-  Robot();
 
 
   void RobotInit() override;

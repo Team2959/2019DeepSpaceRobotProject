@@ -11,7 +11,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <cameraserver/CameraServer.h>
 
-#include "../2019RaspPIRoboRioShared/SharedNames.h"
+#include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
 
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 ExampleSubsystem Robot::m_subsystem;
@@ -22,7 +22,7 @@ void Robot::RobotInit() {
   m_chooser.AddOption("My Auto", &m_myAuto);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
-  m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(NETWORK_TABLE);
+  m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(TABLE_NAME);
 }
 
 /**
@@ -35,9 +35,10 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() 
 {
-  double  frameNumber = m_networkTable.GetNumber(FRAME_NUMBER);
+  double  frameNumber = m_networkTable->GetNumber(FRAME_NUMBER, 0.0);
 
-  std::cout << frameNumber << '\n';
+  // Do something with frameNumber
+
 }
 
 /**
