@@ -9,6 +9,9 @@
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <cameraserver/CameraServer.h>
+
+#include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
 
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 ExampleSubsystem Robot::m_subsystem;
@@ -18,6 +21,8 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
   m_chooser.AddOption("My Auto", &m_myAuto);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(TABLE_NAME);
 }
 
 /**
@@ -28,7 +33,13 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() 
+{
+  double  frameNumber = m_networkTable->GetNumber(FRAME_NUMBER, 0.0);
+
+  // Do something with frameNumber
+
+}
 
 /**
  * This function is called once each time the robot enters Disabled mode. You

@@ -10,6 +10,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/commands/Command.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <networktables/NetworkTableInstance.h>
 
 #include "OI.h"
 #include "commands/ExampleCommand.h"
@@ -44,4 +45,5 @@ class Robot : public frc::TimedRobot {
   ExampleCommand m_defaultAuto;
   MyAutoCommand m_myAuto;
   frc::SendableChooser<frc::Command*> m_chooser;
+  std::shared_ptr<nt::NetworkTable> m_networkTable;
 };
