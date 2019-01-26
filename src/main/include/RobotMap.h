@@ -23,6 +23,10 @@ constexpr int kLeft1CanSparkMaxMotor = 4;
 constexpr int kLeft2CanSparkMaxMotor = 5;
 constexpr int kLeft3CanSparkMaxMotor = 6;
 
+constexpr int kCargoArmWheelsMotorPWM = 0;
+
+constexpr int kCargoArmExtendSolenoid = 0;
+
 // If you are using multiple modules, make sure to define both the port
 // number and the module. For example you with a rangefinder:
 // constexpr int kRangeFinderPort = 1;
