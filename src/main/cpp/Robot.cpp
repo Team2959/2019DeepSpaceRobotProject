@@ -12,6 +12,7 @@
 #include <cameraserver/CameraServer.h>
 
 #include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
+#include <iostream>
 
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 ExampleSubsystem Robot::m_subsystem;
@@ -36,9 +37,12 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() 
 {
   double  frameNumber = m_networkTable->GetNumber(FRAME_NUMBER, 0.0);
+  auto  targetRect = m_networkTable->GetNumberArray(TARGET_COORDS, std::vector<double>{});
 
-  // Do something with frameNumber
-
+  // Testing of Raspberry Pi info through network tables
+  std::cout<<"framenumber = "<<frameNumber<<"\n";
+  for(auto i = 0; i < targetRect.size(); ++i)
+    std::cout << "targetRect[" << i << "] = " << targetRect[i] << "\n";
 }
 
 /**
