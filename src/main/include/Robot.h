@@ -17,11 +17,13 @@
 #include "commands/MyAutoCommand.h"
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/DriveTrainSubsystem.h"
+#include "subsystems/CargoArmSubsystem.h"
 
 class Robot : public frc::TimedRobot {
  public:
   // Create all subsystems here!
   static DriveTrainSubsystem m_driveTrainSubsystem;
+  static CargoArmSubsystem m_cargoArmSubsystem;
 
   static ExampleSubsystem m_subsystem;
 

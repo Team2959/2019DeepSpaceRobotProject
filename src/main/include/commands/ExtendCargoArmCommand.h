@@ -7,16 +7,11 @@
 
 #pragma once
 
-#include <frc/XboxController.h>
-#include "RobotMap.h"
+#include <frc/commands/Command.h>
 
-
-
-class OI
-{
-
+class ExtendCargoArmCommand : public frc::Command {
  public:
-  OI();
-  
-  frc::XboxController m_driverJoystick { kDriverUSBController };
+  ExtendCargoArmCommand();
+  void Initialize() override;
+  bool IsFinished() override;
 };

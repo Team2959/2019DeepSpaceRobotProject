@@ -15,6 +15,7 @@
 #include <iostream>
 
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
+CargoArmSubsystem Robot::m_cargoArmSubsystem;
 ExampleSubsystem Robot::m_subsystem;
 OI Robot::m_oi;
 
