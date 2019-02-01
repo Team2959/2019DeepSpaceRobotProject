@@ -11,16 +11,25 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem") {}
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
-void CargoArmSubsystem::Extend()
+void CargoArmSubsystem::ExtendForward()
 {
-  m_armExtend.Set(true);
+  m_armExtendRight.Set(true); 
+   m_armExtendLeft.Set(true);
+  WheelsOn();
+}
+
+void CargoArmSubsystem::ExtendBackward()
+{
+  m_armExtendRight.Set(true); 
+   m_armExtendLeft.Set(true);
   WheelsOn();
 }
 
 void CargoArmSubsystem::Retract()
 {
-  m_armExtend.Set(false);
-  WheelsOff();
+  m_armExtendRight.Set(false);
+  m_armExtendLeft.Set(false);
+
 }
 
 void CargoArmSubsystem::WheelsOn()

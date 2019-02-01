@@ -18,7 +18,7 @@ ExtendCargoArmCommand::ExtendCargoArmCommand()
 // Called just before this Command runs the first time
 void ExtendCargoArmCommand::Initialize()
 {
-  Robot::m_cargoArmSubsystem.Extend();
+  Robot::m_cargoArmSubsystem.ExtendForward();
 }
 
 // Make this return true when this Command no longer needs to run execute()

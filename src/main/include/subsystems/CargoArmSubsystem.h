@@ -8,7 +8,8 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
-#include "frc/Solenoid.h"
+//#include "frc/Solenoid.h"
+#include "frc/Talon.h"
 #include "frc/Spark.h"
 #include "RobotMap.h"
 
@@ -17,12 +18,14 @@ class CargoArmSubsystem : public frc::Subsystem {
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
   frc::Spark m_wheels {kCargoArmWheelsMotorPWM};
-  frc::Solenoid m_armExtend {kCargoArmExtendSolenoid};
+  frc::Talon m_armExtendRight {kRightCargoArmExtendTalonSRX};
+  frc::Talon m_armExtendLeft {kLeftCargoArmExtendTalonSRX};
 
  public:
   CargoArmSubsystem();
 
-  void Extend();
+  void ExtendForward(); 
+   void ExtendBackward();
   void Retract();
   void WheelsOn();
   void WheelsOff();
