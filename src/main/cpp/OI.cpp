@@ -8,7 +8,11 @@
 #include "OI.h"
 
 #include <frc/WPILib.h>
+#include "commands/ExtendCargoArmCommand.h"
 
-OI::OI() {
+OI::OI()
+ {
   // Process operator interface input here.
+
+  m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
 }

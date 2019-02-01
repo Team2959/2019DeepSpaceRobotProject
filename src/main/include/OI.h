@@ -8,9 +8,8 @@
 #pragma once
 
 #include <frc/XboxController.h>
+#include <frc/Buttons/JoystickButton.h>
 #include "RobotMap.h"
-
-
 
 class OI
 {
@@ -19,4 +18,5 @@ class OI
   OI();
   
   frc::XboxController m_driverJoystick { kDriverUSBController };
+  frc::JoystickButton m_cargoArmExtend { &m_driverJoystick, 1};
 };
