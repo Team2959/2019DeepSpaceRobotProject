@@ -7,15 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/TimedCommand.h>
 
-class StopCargoControlWheelsCommand : public frc::Command {
+class StopCargoControlWheelsCommand : public frc::TimedCommand {
  public:
-  StopCargoControlWheelsCommand();
+  StopCargoControlWheelsCommand(double timeout = 0.1);
   
   void Initialize() override;
   void Execute() override;
-  bool IsFinished() override;
   void End() override;
   void Interrupted() override;
 };

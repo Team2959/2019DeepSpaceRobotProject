@@ -11,6 +11,7 @@
 #include <frc/Buttons/JoystickButton.h>
 #include "RobotMap.h"
 #include "triggers/CargoInTrigger.h"
+#include "frc/Joystick.h"
 
 class OI
 {
@@ -18,7 +19,18 @@ class OI
  public:
   OI();
   
+  // USB connections
   frc::XboxController m_driverJoystick { kDriverUSBController };
+  frc::Joystick m_coPilotJoystick { kCoPilotUSBController };
+
+  // Driver buttons
   frc::JoystickButton m_cargoArmExtendFront { &m_driverJoystick, 1};
+
+  // Co Pilot Buttons
+  frc::JoystickButton m_cargoTowardsFront { &m_coPilotJoystick, 1};
+  frc::JoystickButton m_cargoTowardsRear { &m_coPilotJoystick, 2};
+  frc::JoystickButton m_cargoStop { &m_coPilotJoystick, 3};
+
+  // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;
 };

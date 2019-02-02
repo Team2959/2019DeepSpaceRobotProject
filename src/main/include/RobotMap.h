@@ -50,3 +50,4 @@ constexpr int kCargoInSwitch = 3;
 
 // Operator input USB ports
 constexpr int kDriverUSBController = 0;
+constexpr int kCoPilotUSBController = 1;
