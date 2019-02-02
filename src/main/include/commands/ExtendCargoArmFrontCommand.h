@@ -5,17 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "OI.h"
+#pragma once
 
-#include <frc/WPILib.h>
-#include "commands/ExtendCargoArmFrontCommand.h"
-#include "commands/StopCargoControlWheelsCommand.h"
+#include <frc/commands/Command.h>
 
-OI::OI()
- {
-  // Process operator interface input here.
-
-  m_cargoArmExtendFront.WhenPressed(new ExtendCargoArmFrontCommand());
-
-  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
-}
+class ExtendCargoArmFrontCommand : public frc::Command {
+ public:
+  ExtendCargoArmFrontCommand();
+  
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+};

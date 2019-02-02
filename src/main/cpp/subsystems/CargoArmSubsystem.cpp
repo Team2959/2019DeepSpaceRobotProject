@@ -7,37 +7,33 @@
 
 #include "subsystems/CargoArmSubsystem.h"
 
-CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem") {}
+constexpr int kArmUpPosition = 0;
+constexpr int kArmFrontPosition = 2500;
+constexpr int kArmRearPosition = -kArmFrontPosition;
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
-void CargoArmSubsystem::ExtendForward()
+CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 {
-  m_armExtendRight.Set(true); 
-   m_armExtendLeft.Set(true);
-  WheelsOn();
+  // configure talons for position control
+  // set PID values
+  // Possibly have one side follow the other
 }
 
-void CargoArmSubsystem::ExtendBackward()
+bool CargoArmSubsystem::ArmAtPosition() const
 {
-  m_armExtendRight.Set(true); 
-   m_armExtendLeft.Set(true);
-  WheelsOn();
+  return true;
 }
 
-void CargoArmSubsystem::Retract()
+void CargoArmSubsystem::ArmUp()
 {
-  m_armExtendRight.Set(false);
-  m_armExtendLeft.Set(false);
-
+  // move to up position
 }
 
-void CargoArmSubsystem::WheelsOn()
+void CargoArmSubsystem::ArmExtendFront()
 {
-  m_wheels.Set(1);
+  // move to the front pickup position
 }
 
-void CargoArmSubsystem::WheelsOff()
+void CargoArmSubsystem::ArmExtendRear()
 {
-  m_wheels.Set(0);
+  // move to the rear pickup position
 }

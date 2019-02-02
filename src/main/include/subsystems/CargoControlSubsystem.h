@@ -8,22 +8,25 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
-#include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
+#include <frc/Spark.h>
+#include <frc/DigitalInput.h>
 #include "RobotMap.h"
 
-class CargoArmSubsystem : public frc::Subsystem {
+class CargoControlSubsystem : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_left { kLeftCargoArmCanTalonSrxMotor };
-  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightCargoArmCanTalonSrxMotor };
+  frc::Spark m_wheels { kCargoArmWheelsPwmSparkMotor };
+  frc::DigitalInput m_cargoIn { kCargoInSwitch };
+
+  void ChangeWheelsSpeed(double speed);
 
  public:
-  CargoArmSubsystem();
-
-  bool ArmAtPosition() const;
-
-  void ArmUp();
-  void ArmExtendFront();
-  void ArmExtendRear();
+  CargoControlSubsystem();
+  
+  bool CargoIn() const;
+  
+  void CargoBallTowardsFront();
+  void CargoBallTowardsRear();
+  void StopWheels();
 };

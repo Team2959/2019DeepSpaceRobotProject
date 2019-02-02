@@ -5,17 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "OI.h"
+#include "triggers/CargoInTrigger.h"
+#include "Robot.h"
 
-#include <frc/WPILib.h>
-#include "commands/ExtendCargoArmFrontCommand.h"
-#include "commands/StopCargoControlWheelsCommand.h"
+CargoInTrigger::CargoInTrigger() {}
 
-OI::OI()
- {
-  // Process operator interface input here.
-
-  m_cargoArmExtendFront.WhenPressed(new ExtendCargoArmFrontCommand());
-
-  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
+bool CargoInTrigger::Get()
+{
+    return Robot::m_cargoControlSubsystem.CargoIn();
 }

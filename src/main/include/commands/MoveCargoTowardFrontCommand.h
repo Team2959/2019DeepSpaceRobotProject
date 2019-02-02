@@ -9,9 +9,9 @@
 
 #include <frc/commands/Command.h>
 
-class RetractCargoArmCommand : public frc::Command {
+class MoveCargoTowardFrontCommand : public frc::Command {
  public:
-  RetractCargoArmCommand();
+  MoveCargoTowardFrontCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

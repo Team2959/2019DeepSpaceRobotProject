@@ -5,17 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "OI.h"
+#pragma once
 
-#include <frc/WPILib.h>
-#include "commands/ExtendCargoArmFrontCommand.h"
-#include "commands/StopCargoControlWheelsCommand.h"
+#include <frc/buttons/Trigger.h>
 
-OI::OI()
- {
-  // Process operator interface input here.
-
-  m_cargoArmExtendFront.WhenPressed(new ExtendCargoArmFrontCommand());
-
-  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
-}
+class CargoInTrigger : public frc::Trigger {
+ public:
+  CargoInTrigger();
+  
+  bool Get() override;
+};

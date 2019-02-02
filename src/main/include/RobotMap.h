@@ -14,8 +14,7 @@
  * floating around.
  */
 
-// For example to map the left and right motors, you could define the
-// following variables to use with your drivetrain subsystem.
+// CAN motor addresses
 constexpr int kRight1CanSparkMaxMotor = 1;
 constexpr int kRight2CanSparkMaxMotor = 2;
 constexpr int kRight3CanSparkMaxMotor = 3;
@@ -23,15 +22,31 @@ constexpr int kLeft1CanSparkMaxMotor = 4;
 constexpr int kLeft2CanSparkMaxMotor = 5;
 constexpr int kLeft3CanSparkMaxMotor = 6;
 
-constexpr int kCargoArmWheelsMotorPWM = 0; 
+constexpr int kLiftCanTalonSrxMotor1 = 7;
+constexpr int kLiftCanTalonSrxMotor2 = 8;
+constexpr int kLiftCanTalonSrxMotor3 = 9;
+constexpr int kLiftCanTalonSrxMotor4 = 10;
 
-constexpr int kRightCargoArmExtendTalonSRX = 12;
-constexpr int kLeftCargoArmExtendTalonSRX = 13;
+constexpr int kLeftCargoShuttleCanTalonSrxMotor = 11;
+constexpr int kRightCargoShuttleCanTalonSrxMotor = 12;
 
+constexpr int kLeftCargoArmCanTalonSrxMotor = 13;
+constexpr int kRightCargoArmCanTalonSrxMotor = 14;
 
-// If you are using multiple modules, make sure to define both the port
-// number and the module. For example you with a rangefinder:
-// constexpr int kRangeFinderPort = 1;
-// constexpr int kRangeFinderModule = 1;
+// PWM motor addresses
+constexpr int kCargoArmWheelsPwmSparkMotor = 0;
+constexpr int kClimbWheelsPwmSparkMotor = 1;
+constexpr int kClimbEngagePwmSparkMotor = 2;
 
+// PCM solenoid addresses
+constexpr int kCargoArmExtendSolenoid = 0;
+constexpr int kHatchAttachSolenoid = 1;
+constexpr int kHatchReleaseSolenoid = 2;
+constexpr int kTallClimbEngageSolenoid = 3;
+
+// Digital IO addresses
+constexpr int kLiftBottomSwitch = 1;
+constexpr int kCargoInSwitch = 3;
+
+// Operator input USB ports
 constexpr int kDriverUSBController = 0;

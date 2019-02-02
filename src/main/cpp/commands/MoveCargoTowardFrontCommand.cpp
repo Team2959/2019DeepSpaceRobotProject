@@ -5,25 +5,30 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/RetractCargoArmCommand.h"
+#include "commands/MoveCargoTowardFrontCommand.h"
+#include "Robot.h"
 
-RetractCargoArmCommand::RetractCargoArmCommand() {
+MoveCargoTowardFrontCommand::MoveCargoTowardFrontCommand() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
+  Requires(&Robot::m_cargoControlSubsystem);
 }
 
 // Called just before this Command runs the first time
-void RetractCargoArmCommand::Initialize() {}
+void MoveCargoTowardFrontCommand::Initialize()
+{
+  Robot::m_cargoControlSubsystem.CargoBallTowardsFront();
+}
 
 // Called repeatedly when this Command is scheduled to run
-void RetractCargoArmCommand::Execute() {}
+void MoveCargoTowardFrontCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool RetractCargoArmCommand::IsFinished() { return false; }
+bool MoveCargoTowardFrontCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void RetractCargoArmCommand::End() {}
+void MoveCargoTowardFrontCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void RetractCargoArmCommand::Interrupted() {}
+void MoveCargoTowardFrontCommand::Interrupted() {}
