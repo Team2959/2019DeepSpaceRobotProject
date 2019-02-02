@@ -20,7 +20,7 @@ void CargoArmUpCommand::Initialize()
 {
   Robot::m_cargoArmSubsystem.ArmUp();
   
-  auto ptr = new StopCargoControlWheelsCommand();
+  auto ptr = new StopCargoControlWheelsCommand(0.0);
   ptr->Start();
 }
 
@@ -30,7 +30,7 @@ void CargoArmUpCommand::Execute() {}
 // Make this return true when this Command no longer needs to run execute()
 bool CargoArmUpCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.ArmAtPosition();
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition();
 }
 
 // Called once after isFinished returns true
@@ -38,4 +38,7 @@ void CargoArmUpCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void CargoArmUpCommand::Interrupted() {}
+void CargoArmUpCommand::Interrupted()
+{
+  Robot::m_cargoArmSubsystem.StopAtCurrentPosition();
+}

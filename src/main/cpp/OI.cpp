@@ -12,17 +12,21 @@
 #include "commands/StopCargoControlWheelsCommand.h"
 #include "commands/MoveCargoTowardFrontCommand.h"
 #include "commands/MoveCargoTowardRearCommand.h"
+#include "commands/CargoArmUpCommand.h"
+#include "commands/ExtendCargoArmFrontCommand.h"
+#include "commands/ExtendCargoArmRearCommand.h"
 
 OI::OI()
  {
   // Process operator interface input here.
 
-  m_cargoArmExtendFront.WhenPressed(new ExtendCargoArmFrontCommand());
-
   m_cargoStop.WhenPressed(new StopCargoControlWheelsCommand(0.0));
   m_cargoTowardsFront.WhenPressed(new MoveCargoTowardFrontCommand());
   m_cargoTowardsRear.WhenPressed(new MoveCargoTowardRearCommand());
 
+  m_cargoArmUp.WhenPressed(new CargoArmUpCommand());
+  m_cargoArmFront.WhenPressed(new ExtendCargoArmFrontCommand());
+  m_cargoArmRear.WhenPressed(new ExtendCargoArmRearCommand());
 
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
 }

@@ -18,12 +18,18 @@ class CargoArmSubsystem : public frc::Subsystem {
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_left { kLeftCargoArmCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightCargoArmCanTalonSrxMotor };
 
+  double m_targetPosition;
+
+  void ConfigureMotorController(ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController);
+  void MoveCargoArmToPosition(double position);
+
  public:
   CargoArmSubsystem();
 
-  bool ArmAtPosition() const;
+  bool IsArmAtPosition();
 
   void ArmUp();
   void ArmExtendFront();
   void ArmExtendRear();
+  void StopAtCurrentPosition();
 };

@@ -32,7 +32,7 @@ void ExtendCargoArmFrontCommand::Execute() {}
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendCargoArmFrontCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.ArmAtPosition();
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition();
 }
 
 // Called once after isFinished returns true
@@ -40,4 +40,7 @@ void ExtendCargoArmFrontCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ExtendCargoArmFrontCommand::Interrupted() {}
+void ExtendCargoArmFrontCommand::Interrupted() 
+{
+    Robot::m_cargoArmSubsystem.StopAtCurrentPosition();
+}
