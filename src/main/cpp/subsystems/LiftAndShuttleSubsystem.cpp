@@ -9,17 +9,19 @@
 
 constexpr int kShuttleMiddlePosition = 0;
 constexpr int kShuttleFrontPosition = 5000;
-constexpr int kShuttleRearPosition = -kShuttleFrontPosition;
+constexpr int kShuttleRearPosition = -3000;
 constexpr double kCloseEnoughToPosition = 100;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
+  // Shuttle motor controller configuration
   ConfigureTalonMotorController(m_leftShuttle);
   ConfigureTalonMotorController(m_rightShuttle);
 
   ShuttleMiddle();
 
-   m_liftFollower1.Follow(m_liftPrimary);
+  // Lift motor contorller configuration
+  m_liftFollower1.Follow(m_liftPrimary);
   m_liftFollower2.Follow(m_liftPrimary);
 }
 
@@ -61,19 +63,19 @@ void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
 
 void LiftAndShuttleSubsystem::ShuttleMiddle()
 {
-  // move to middle position
+  // move to middle shuttle position
   MoveShuttleToPosition(kShuttleMiddlePosition);
 }
 
 void LiftAndShuttleSubsystem::ShuttleFront()
 {
-  // move to the front position
+  // move to the front shuttle position
   MoveShuttleToPosition(kShuttleFrontPosition);
 }
 
 void LiftAndShuttleSubsystem::ShuttleRear()
 {
-  // move to the rear position
+  // move to the rear shuttle position
   MoveShuttleToPosition(kShuttleRearPosition);
 }
 

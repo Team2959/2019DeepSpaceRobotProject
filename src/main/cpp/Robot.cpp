@@ -14,14 +14,16 @@
 #include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
 #include <iostream>
 
+// create instance of subsystems
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
-ExampleSubsystem Robot::m_subsystem;
+LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsytem;
+// create instance of OI
 OI Robot::m_oi;
 
 void Robot::RobotInit() {
-  m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
+  m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
   m_chooser.AddOption("My Auto", &m_myAuto);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
