@@ -13,14 +13,26 @@
 
 class VelocityTankDrive: public frc::RobotDriveBase
 {
-  private:
- rev::CANSparkMax m_right1Primary { kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
- rev::CANSparkMax m_right2Follower { kRight2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
- rev::CANSparkMax m_left1Primary { kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
- rev::CANSparkMax m_left2Follower { kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
+    private:
+    rev::CANSparkMax m_right1Primary { kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
+    rev::CANSparkMax m_right2Follower { kRight2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
+    rev::CANSparkMax m_left1Primary { kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
+    rev::CANSparkMax m_left2Follower { kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
+    
+    double m_maxRPM = 5676*0.85;
 
- public:
-  VelocityTankDrive();
+    double m_gearRatio = 1 / 6.11;
 
-  void MyTankDrive(double leftSpeed, double rightSpeed);
+    double m_maxTorque = 40.623744*0.85;
+
+    double m_maxAcceleration = 2207.07*0.85; //RPM/s
+
+    double m_maxVelocity = m_maxRPM * m_gearRatio;
+
+
+
+    public:
+    VelocityTankDrive();
+
+    void MyTankDrive(double leftSpeed, double rightSpeed);
 };
