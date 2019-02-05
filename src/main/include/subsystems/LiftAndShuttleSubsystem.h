@@ -21,18 +21,28 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANSparkMax m_liftPrimary { kLiftPrimaryCanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_liftFollower1 { kLiftFollower1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_liftFollower2 { kLiftFollower2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
+  rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
+  rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
+  double m_targetLiftPosition;
+
+  void ConfigureSparkMaxMotorController(rev::CANSparkMax & motorController);
+  void MoveLiftToPosition(double position);
+
+  // Lift methods
+  bool IsLiftAtPosition();
+
+  void LiftBottom();
+  void LiftMiddle();
+  void LiftTop();
+  void LiftStopAtCurrentPosition();
 
   // Shuttle control
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_rightShuttle { kRightCargoShuttleCanTalonSrxMotor };
-
   double m_targetShuttlePosition;
 
   void ConfigureTalonMotorController(ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController);
   void MoveShuttleToPosition(double position);
-  
- public:
-  LiftAndShuttleSubsystem();
 
   // Shuttle methods
   bool IsShuttleAtPosition();
@@ -41,6 +51,12 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void ShuttleFront();
   void ShuttleRear();
   void ShuttleStopAtCurrentPosition();
+  
+ public:
+  LiftAndShuttleSubsystem();
 
-  // Lift methods
+  // Movement Control Interface
+  bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);
+  void MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition);
+  void StopAtCurrentPosition();
 };
