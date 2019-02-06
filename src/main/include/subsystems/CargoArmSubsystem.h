@@ -22,11 +22,13 @@ class CargoArmSubsystem : public frc::Subsystem {
 
   void ConfigureMotorController(ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController);
   void MoveCargoArmToPosition(double position);
+  double CurrentArmPosition();
 
  public:
   CargoArmSubsystem();
 
   bool IsArmAtPosition();
+  bool IsArmAboveCargoShuttle();
 
   void ArmUp();
   void ArmExtendFront();

@@ -11,6 +11,7 @@ constexpr int kArmUpPosition = 0;
 constexpr int kArmFrontPosition = 5000;
 constexpr int kArmRearPosition = -kArmFrontPosition;
 constexpr double kCloseEnoughToPosition = 100;
+constexpr int kArmIsClearOfShuttle = 4000;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 {
@@ -41,12 +42,20 @@ void CargoArmSubsystem::ConfigureMotorController(
 //	motorController.ConfigClosedloopRamp(0, 0);
 }
 
-bool CargoArmSubsystem::IsArmAtPosition()
+double CargoArmSubsystem::CurrentArmPosition()
 {
   // actually check position is at target position
-  int currentPosition = m_left.GetSelectedSensorPosition(0);
+  return m_left.GetSelectedSensorPosition(0);
+}
 
-  return fabs(currentPosition - m_targetPosition) < kCloseEnoughToPosition;
+bool CargoArmSubsystem::IsArmAtPosition()
+{
+  return fabs(CurrentArmPosition() - m_targetPosition) < kCloseEnoughToPosition;
+}
+
+bool CargoArmSubsystem::IsArmAboveCargoShuttle()
+{
+  return fabs(CurrentArmPosition()) < kArmIsClearOfShuttle;
 }
 
 void CargoArmSubsystem::MoveCargoArmToPosition(double position)
@@ -76,6 +85,5 @@ void CargoArmSubsystem::ArmExtendRear()
 
 void CargoArmSubsystem::StopAtCurrentPosition()
 {
-  int currentPosition = m_left.GetSelectedSensorPosition(0);
-  MoveCargoArmToPosition(currentPosition);
+  MoveCargoArmToPosition(CurrentArmPosition());
 }

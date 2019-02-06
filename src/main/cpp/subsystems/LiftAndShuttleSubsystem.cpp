@@ -16,7 +16,7 @@ constexpr int kLiftBottomPosition = 0;
 constexpr int kLiftMiddlePosition = 5000;
 constexpr int kLiftTopPosition = 10000;
 constexpr double kLiftCloseEnoughToPosition = 250;
-
+constexpr int kLiftMaxSafeHeight = 5000;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
@@ -68,12 +68,12 @@ void LiftAndShuttleSubsystem::ConfigureTalonMotorController(
 //	motorController.ConfigClosedloopRamp(0, 0);
 }
 
-bool LiftAndShuttleSubsystem::IsShuttleAtPosition()
+bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
 {
   // actually check position is at target position
   int currentPosition = m_leftShuttle.GetSelectedSensorPosition(0);
 
-  return fabs(currentPosition - m_targetShuttlePosition) < kCloseEnoughToPosition;
+  return fabs(currentPosition - targetPosition) < kCloseEnoughToPosition;
 }
 
 void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
@@ -110,12 +110,12 @@ void LiftAndShuttleSubsystem::ShuttleStopAtCurrentPosition()
 
 // Lift Code
 
-bool LiftAndShuttleSubsystem::IsLiftAtPosition()
+bool LiftAndShuttleSubsystem::IsLiftAtPosition(double targetPosition)
 {
   // actually check position is at target position
-  double currentPosition = m_liftEncoder.GetPosition();
+  double currentLiftPosition = m_liftEncoder.GetPosition();
 
-  return fabs(currentPosition - m_targetLiftPosition) < kLiftCloseEnoughToPosition;
+  return fabs(currentLiftPosition - targetPosition) < kLiftCloseEnoughToPosition;
 }
 
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
@@ -144,23 +144,30 @@ void LiftAndShuttleSubsystem::LiftTop()
 
 void LiftAndShuttleSubsystem::LiftStopAtCurrentPosition()
 {
-  double currentPosition = m_liftEncoder.GetPosition();
-  MoveLiftToPosition(currentPosition);
+  double currentLiftPosition = m_liftEncoder.GetPosition();
+  MoveLiftToPosition(currentLiftPosition);
 }
 
 // Movement Control Interface
 bool LiftAndShuttleSubsystem::IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition)
 {
   // compare the target positions against the current positions
-  return false;
+  return IsShuttleAtPosition(targetShuttlePosition) && IsLiftAtPosition(targetLiftPosition);
 }
 
-void LiftAndShuttleSubsystem::MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition)
+void LiftAndShuttleSubsystem::MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition, bool isShuttleArmSafe, 
+void currentLiftPosition)
 {
   // evaluate current position and decide where to send lift and shuttle safely to get closer to target posistions
+if(CurrentLiftPosition < kLiftMaxSafeHeight){
+  MoveLiftToPosition(targetLiftPosition);
+  MoveShuttleToPosition(targetShuttlePosition);
+}
 }
 
 void LiftAndShuttleSubsystem::StopAtCurrentPosition()
 {
   // stop lift and shuttle at current positions
+  LiftStopAtCurrentPosition();
+  ShuttleStopAtCurrentPosition();
 }

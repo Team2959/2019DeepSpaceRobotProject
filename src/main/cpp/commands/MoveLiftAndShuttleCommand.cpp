@@ -25,13 +25,16 @@ void MoveLiftAndShuttleCommand::Initialize() {}
 void MoveLiftAndShuttleCommand::Execute()
 {
   // tell the LiftAndShuttleSubsystem the target Shuttle and Lift Positions.
-  Robot::m_liftAndShuttleSubsytem.MoveToTargetPosition(m_targetShuttlePosition, m_targetLiftPosition);
+  Robot::m_liftAndShuttleSubsytem.MoveToTargetPosition(
+    m_targetShuttlePosition, m_targetLiftPosition,
+    Robot::m_cargoArmSubsystem.IsArmAboveCargoShuttle());
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool MoveLiftAndShuttleCommand::IsFinished()
 {
-   return Robot::m_liftAndShuttleSubsytem.IsAtTargetPosition(m_targetShuttlePosition, m_targetLiftPosition);
+   return Robot::m_liftAndShuttleSubsytem.IsAtTargetPosition(
+     m_targetShuttlePosition, m_targetLiftPosition);
 }
 
 // Called once after isFinished returns true
