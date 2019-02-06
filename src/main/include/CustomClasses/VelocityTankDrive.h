@@ -19,6 +19,9 @@ class VelocityTankDrive: public frc::RobotDriveBase
     rev::CANSparkMax m_left1Primary { kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
     rev::CANSparkMax m_left2Follower { kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
     
+    rev::CANPIDController m_pidControllerLeft;
+    rev::CANPIDController m_pidControllerRight;
+
     double m_maxRPM = 5676*0.85;
 
     double m_gearRatio = 1 / 6.11;
@@ -27,12 +30,28 @@ class VelocityTankDrive: public frc::RobotDriveBase
 
     double m_maxAcceleration = 2207.07*0.85; //RPM/s
 
-    double m_maxVelocity = m_maxRPM * m_gearRatio;
+    double m_maxVelocity = m_maxRPM;
+
+    double m_maxJerk = 50000;
+
+    double m_proportional = 0.0005;
+
+    double m_integral = 0.000001;
+
+    double m_derivative = 0;
+
+    double m_feedForward = 0;
+
+    double m_iZone = 0;
 
 
+    void SetPointGenerator(double dsp, rev::CANPIDController& pidController, rev::CANEncoder& encoder);
+
+    rev::CANEncoder m_encoderLeft;
+    rev::CANEncoder m_encoderRight;
 
     public:
     VelocityTankDrive();
-
-    void MyTankDrive(double leftSpeed, double rightSpeed);
+    void TankDrive(double left, double right);
+    
 };
