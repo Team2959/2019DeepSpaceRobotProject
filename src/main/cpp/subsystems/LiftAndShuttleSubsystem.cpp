@@ -6,18 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/LiftAndShuttleSubsystem.h"
+#include "subsystems/LiftAndShuttlePositions.h"
 
-constexpr int kShuttleMiddlePosition = 0;
-constexpr int kShuttleFrontPosition = 5000;
-constexpr int kShuttleRearPosition = -3000;
-constexpr double kCloseEnoughToPosition = 100;
+constexpr int kCloseEnoughToPosition = 100;
 constexpr int kShuttleSafeFrontPosition = 1000;
 constexpr int kShuttleSafeRearPosition = -kShuttleSafeFrontPosition;
 
-constexpr int kLiftBottomPosition = 0;
-constexpr int kLiftMiddlePosition = 5000;
-constexpr int kLiftTopPosition = 10000;
-constexpr double kLiftCloseEnoughToPosition = 250;
+constexpr int kLiftCloseEnoughToPosition = 250;
 constexpr int kLiftMaxSafeHeight = 5000;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
@@ -175,6 +170,8 @@ void LiftAndShuttleSubsystem::MoveToTargetPosition(
   }
 
   // move the lift
+
+  // determine if the shuttle needs to cross through the middle
 }
 
 void LiftAndShuttleSubsystem::StopAtCurrentPosition()
