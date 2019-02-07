@@ -29,3 +29,7 @@ constexpr int kLeft3CanSparkMaxMotor = 6;
 // constexpr int kRangeFinderModule = 1;
 
 constexpr int kDriverUSBController = 0;
+
+constexpr int kAttachSolenoid   = 1;
+constexpr int kReleaseSolenoid  = 2;
+constexpr int kSafetySolenoid   = 3;
