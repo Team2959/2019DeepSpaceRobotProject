@@ -8,7 +8,7 @@
 #include "subsystems/LiftAndShuttleSubsystem.h"
 #include "subsystems/LiftAndShuttlePositions.h"
 
-constexpr int kCloseEnoughToPosition = 100;
+constexpr int kShuttleCloseEnoughToPosition = 100;
 constexpr int kShuttleSafeFrontPosition = 1000;
 constexpr int kShuttleSafeRearPosition = -kShuttleSafeFrontPosition;
 
@@ -68,7 +68,7 @@ void LiftAndShuttleSubsystem::ConfigureTalonMotorController(
 bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
 {
   // actually check position is near target position
-  return fabs(CurrentShuttlePosition() - targetPosition) < kCloseEnoughToPosition;
+  return fabs(CurrentShuttlePosition() - targetPosition) < kShuttleCloseEnoughToPosition;
 }
 
 double LiftAndShuttleSubsystem::CurrentShuttlePosition()

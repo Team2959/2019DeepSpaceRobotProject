@@ -16,7 +16,7 @@ private:
   double m_targetLiftPosition;
 
  public:
-  MoveLiftAndShuttleCommand(double targetShuttlePosition, double targetLiftPosition);
+  MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition);
 
   void Initialize() override;
   void Execute() override;

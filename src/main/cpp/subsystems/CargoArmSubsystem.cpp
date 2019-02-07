@@ -10,7 +10,7 @@
 constexpr int kArmUpPosition = 0;
 constexpr int kArmFrontPosition = 5000;
 constexpr int kArmRearPosition = -kArmFrontPosition;
-constexpr double kCloseEnoughToPosition = 100;
+constexpr int kCloseEnoughToPosition = 100;
 constexpr int kArmIsClearOfShuttle = 4000;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")

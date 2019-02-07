@@ -34,6 +34,8 @@ class OI
   frc::JoystickButton m_cargoArmFront {&m_coPilotJoystick, 5};
   frc::JoystickButton m_cargoArmRear {&m_coPilotJoystick, 6};
 
+  frc::JoystickButton m_liftAndShuttleToTopFront { &m_coPilotJoystick, 7 };
+
   // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;
 };

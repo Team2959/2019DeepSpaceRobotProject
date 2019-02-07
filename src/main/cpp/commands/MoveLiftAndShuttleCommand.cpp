@@ -8,14 +8,14 @@
 #include "commands/MoveLiftAndShuttleCommand.h"
 #include "Robot.h"
 
-MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetShuttlePosition, double targetLiftPosition)
+MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition)
 {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_liftAndShuttleSubsytem);
 
-  m_targetShuttlePosition = targetShuttlePosition;
   m_targetLiftPosition = targetLiftPosition;
+  m_targetShuttlePosition = targetShuttlePosition;
 }
 
 // Called just before this Command runs the first time
