@@ -10,10 +10,7 @@
 
 DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem") {
   m_right2Follower.Follow(m_right1Primary);
-  m_right3Follower.Follow(m_right1Primary);
   m_left2Follower.Follow(m_left1Primary);
-  m_left3Follower.Follow(m_left1Primary);
-
 }
 
 void DriveTrainSubsystem::InitDefaultCommand() {
