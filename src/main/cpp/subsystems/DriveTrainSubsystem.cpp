@@ -9,6 +9,8 @@
 #include "commands/DriveWithControllerCommand.h"
 
 DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem") {
+  m_left1Primary.SetInverted(true);
+  m_right1Primary.SetInverted(true);
   m_right2Follower.Follow(m_right1Primary);
   m_left2Follower.Follow(m_left1Primary);
 }
