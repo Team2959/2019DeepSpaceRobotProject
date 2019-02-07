@@ -23,36 +23,27 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANSparkMax m_liftFollower2 { kLiftFollower2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
   rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
-  double m_targetLiftPosition;
 
   void ConfigureSparkMaxMotorController(rev::CANSparkMax & motorController);
   void MoveLiftToPosition(double position);
 
   // Lift methods
   bool IsLiftAtPosition(double targetPosition);
-
-  void LiftBottom();
-  void LiftMiddle();
-  void LiftTop();
+  double CurrentLiftPosition();
   void LiftStopAtCurrentPosition();
+  bool IsLiftSafeForShuttleMoveThroughMiddle();
 
   // Shuttle control
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_rightShuttle { kRightCargoShuttleCanTalonSrxMotor };
-  double m_targetShuttlePosition;
 
   void ConfigureTalonMotorController(ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController);
   void MoveShuttleToPosition(double position);
 
   // Shuttle methods
   bool IsShuttleAtPosition(double targetPosition);
-
-  void ShuttleMiddle();
-  void ShuttleFront();
-  void ShuttleRear();
-  void ShuttleStopAtCurrentPosition();
   double CurrentShuttlePosition();
-  double CurrentLiftPosition();
+  void ShuttleStopAtCurrentPosition();
 
  public:
   LiftAndShuttleSubsystem();
