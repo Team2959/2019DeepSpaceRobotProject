@@ -14,27 +14,38 @@
 class VelocityTankDrive: public frc::RobotDriveBase
 {
 private:
+    // Establish useful constants, such as physical limitations of the robot
+    const double kMotorMaxSpeed     = 5676.0;  // RPM
+    const double kDriveSafetyFactor = 0.90;    // Multiplier for establishing reliable limits
+    const double kRobotMaxAccel     = 2207.07; // RPM / s
+    const double kDriveMaxCurrent   = 80.0;    // Amps
+
     // Motor controllers used in the robot drive
-    rev::CANSparkMax m_right1Primary { kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-    rev::CANSparkMax m_right2Follower { kRight2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-    rev::CANSparkMax m_left1Primary { kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-    rev::CANSparkMax m_left2Follower { kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
+    rev::CANSparkMax m_rightPrimary  {kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+    rev::CANSparkMax m_rightFollower {kRight2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+    rev::CANSparkMax m_leftPrimary   {kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+    rev::CANSparkMax m_leftFollower  {kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
     
     // PID Controllers
-    rev::CANPIDController m_pidControllerLeft;
-    rev::CANPIDController m_pidControllerRight;
+    rev::CANPIDController m_rightPID;
+    rev::CANPIDController m_leftPID;
 
     // Encoders
-    rev::CANEncoder m_encoderLeft;
-    rev::CANEncoder m_encoderRight;
+    rev::CANEncoder m_rightEncoder;
+    rev::CANEncoder m_leftEncoder;
 
-    // Characterizations of our robot drive train in controlled units (RPM & seconds)
-    double m_maxRPM          = 5676.0 * 0.85;    // RPM
-    double m_gearRatio       = 1.0 / 6.11;       // Unused
-    double m_maxTorque       = 40.623744 * 0.85  // N*m
-    double m_maxAcceleration = 2207.07 * 0.85;   // RPM/s
-    double m_maxVelocity     = m_maxRPM;         // RPM
-    double m_maxJerk         = 50000.0;          // RPM/s^2
+    /*
+       double m_maxRPM          = 5676.0 * 0.85;    // RPM
+       double m_gearRatio       = 1.0 / 6.11;       // Unused
+       double m_maxTorque       = 40.623744 * 0.85  // N*m
+       double m_maxAcceleration = 2207.07 * 0.85;   // RPM/s
+       double m_maxVelocity     = m_maxRPM;         // RPM
+       double m_maxJerk         = 50000.0;          // RPM/s^2 
+    */
+
+   // Characterizations of our robot drive train in controlled units (RPM & seconds)
+    double m_maxSpeed = kMotorMaxSpeed * kDriveSafetyFactor; // RPM
+    double m_maxAccel = kRobotMaxAccel * kDriveSafetyFactor; // RPM / s
 
     // Control Loop (PIDF) gains
     double m_proportional = 0.0005;
@@ -46,7 +57,9 @@ private:
     // SetPointGenerator is the singular interface for each motor controller.  
     /* It shall accepts a desired set point and determines a responsible next set point 
        for the motor control loop, accounting for current speed and all applicable limits. */
-    void SetPointGenerator (double dsp, rev::CANPIDController& pidController, rev::CANEncoder& encoder);
+    //void SetPointGenerator  (double dsp, rev::CANPIDController& pidController, rev::CANEncoder& encoder);
+    void SetupSparkMax      (rev::CANSparkMax& motor);
+    void SetupPIDController (rev::CANPIDController& pid);
 
 public:
     // Constructor

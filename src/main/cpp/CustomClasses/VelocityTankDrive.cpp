@@ -10,36 +10,46 @@
 
 VelocityTankDrive::VelocityTankDrive()
 {
+    // Establish current and acceleration limits
+    SetupSparkMax(m_rightPrimary);
+    SetupSparkMax(m_rightFollower);
+    SetupSparkMax(m_leftPrimary);
+    SetupSparkMax(m_leftFollower);
+
     // Set up the follower motor controllers
-    m_right2Follower.Follow(m_right1Primary);
-    m_left2Follower.Follow(m_left1Primary);
+    m_rightFollower.Follow(m_rightPrimary);
+    m_leftFollower.Follow(m_leftPrimary);
     
     // Assign a PID controller for each motor
-    m_pidControllerLeft = m_left1Primary.GetPIDController();
-    m_pidControllerRight = m_right1Primary.GetPIDController();
+    m_rightPID = m_rightPrimary.GetPIDController();
+    m_leftPID  = m_leftPrimary.GetPIDController();
 
     // Get the encoder values from each primary controller
-    m_encoderLeft = m_left1Primary.GetEncoder();
-    m_encoderRight = m_right1Primary.GetEncoder();
+    m_rightEncoder = m_rightPrimary.GetEncoder();
+    m_leftEncoder  = m_leftPrimary.GetEncoder();
 
-    // Set the PIDF gains for the left side primary motor controller
-    m_pidControllerLeft.SetP(m_proportional);
-    m_pidControllerLeft.SetI(m_integral);
-    m_pidControllerLeft.SetD(m_derivative);
-    m_pidControllerLeft.SetIZone(m_iZone);
-    m_pidControllerLeft.SetFF(m_feedForward);
-    m_pidControllerLeft.SetOutputRange(-1, 1);
-
-    // Set the PIDF gains for the right side primary motor controller
-    m_pidControllerRight.SetP(m_proportional);
-    m_pidControllerRight.SetI(m_integral);
-    m_pidControllerRight.SetD(m_derivative);
-    m_pidControllerRight.SetIZone(m_iZone);
-    m_pidControllerRight.SetFF(m_feedForward);
-    m_pidControllerRight.SetOutputRange(-1, 1);
+    // Set the PIDF gains for the primary motor controllers
+    SetupPIDController(m_rightPID);
+    SetupPIDController(m_leftPID);
 }
 
-void VelocityTankDrive::SetPointGenerator (double dsp, rev::CANPIDController& pidController, rev::CANEncoder& encoder)
+void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor)
+{
+    motor.SetSmartCurrentLimit(kDriveMaxCurrent);
+    motor.SetRampRate(kMotorMaxSpeed / m_maxAccel);
+}
+
+void VelocityTankDrive::SetupPIDController(rev::CANPIDController& pid)
+{
+    pid.SetP(m_proportional);
+    pid.SetI(m_integral);
+    pid.SetD(m_derivative);
+    pid.SetIZone(m_iZone);
+    pid.SetFF(m_feedForward);
+    pid.SetOutputRange(-1, 1);
+}
+
+/*void VelocityTankDrive::SetPointGenerator (double dsp, rev::CANPIDController& pidController, rev::CANEncoder& encoder)
 {
     double tSlice  = 0.02;                  // Assumed rate at which this function is called in seconds
     double current = encoder.GetVelocity(); // Current velocity
@@ -59,11 +69,11 @@ void VelocityTankDrive::SetPointGenerator (double dsp, rev::CANPIDController& pi
 
     // The minimum of our limits is our set-point to drive at
     pidController.SetReference(min, rev::ControlType::kVelocity);
-}
+}*/
 
 void VelocityTankDrive::TankDrive(double left, double right)
 {
-    // Set the lieft and right side sppeds through the SetPointGenerator function
-    SetPointGenerator(left, m_pidControllerLeft, m_encoderLeft);
-    SetPointGenerator(right, m_pidControllerRight, m_encoderRight);
+    // Set the left and right side speeds
+    m_rightPID.SetReference(right, rev::ControlType::kVelocity);
+    m_leftPID.SetReference(right, rev::ControlType::kVelocity);
 }
