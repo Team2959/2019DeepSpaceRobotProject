@@ -8,7 +8,17 @@
 #include "OI.h"
 
 #include <frc/WPILib.h>
+#include "commands/PrepForHatchCommand.h"  
+#include "commands/SecureHatchCommand.h" 
+#include "commands/AttachHatchCommand.h"  
+#include "commands/ReleaseHatchCommand.h"  
+#include "commands/RetractMechanismCommand.h"   
 
 OI::OI() {
   // Process operator interface input here.
+  m_prepForHatch.WhenPressed(new PrepForHatchCommand());
+  m_secureHatch.WhenPressed(new SecureHatchCommand());
+  m_attachHatch.WhenPressed(new AttachHatchCommand());
+  m_releaseHatch.WhenPressed(new ReleaseHatchCommand());
+  m_retractMechanismHatch.WhenPressed(new RetractMechanismCommand());
 }
