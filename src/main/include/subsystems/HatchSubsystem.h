@@ -21,7 +21,6 @@ class HatchSubsystem : public frc::Subsystem {
 
  public:
   HatchSubsystem();
-  void InitDefaultCommand() override;
 
   void PrepForHatch();
   void SecureHatch();
