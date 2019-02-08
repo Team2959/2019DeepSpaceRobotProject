@@ -19,10 +19,8 @@ class DriveTrainSubsystem : public frc::Subsystem
   // for methods that implement subsystem capabilities
   rev::CANSparkMax m_right1Primary { kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_right2Follower { kRight2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANSparkMax m_right3Follower { kRight3CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_left1Primary { kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_left2Follower { kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANSparkMax m_left3Follower { kLeft3CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
 
   frc::DifferentialDrive m_tankDrive { m_left1Primary, m_right1Primary };
 
