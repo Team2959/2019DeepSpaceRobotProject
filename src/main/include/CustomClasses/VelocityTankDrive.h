@@ -27,12 +27,12 @@ private:
     rev::CANSparkMax m_leftFollower  {kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
     
     // PID Controllers
-    rev::CANPIDController m_rightPID;
-    rev::CANPIDController m_leftPID;
+    rev::CANPIDController m_rightPID = m_rightPrimary.GetPIDController();
+    rev::CANPIDController m_leftPID  = m_leftPrimary.GetPIDController();
 
     // Encoders
-    rev::CANEncoder m_rightEncoder;
-    rev::CANEncoder m_leftEncoder;
+    rev::CANEncoder m_rightEncoder = m_rightPrimary.GetEncoder();
+    rev::CANEncoder m_leftEncoder  = m_leftPrimary.GetEncoder();
 
     /*
        double m_maxRPM          = 5676.0 * 0.85;    // RPM

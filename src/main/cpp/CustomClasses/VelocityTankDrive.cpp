@@ -19,14 +19,6 @@ VelocityTankDrive::VelocityTankDrive()
     // Set up the follower motor controllers
     m_rightFollower.Follow(m_rightPrimary);
     m_leftFollower.Follow(m_leftPrimary);
-    
-    // Assign a PID controller for each motor
-    m_rightPID = m_rightPrimary.GetPIDController();
-    m_leftPID  = m_leftPrimary.GetPIDController();
-
-    // Get the encoder values from each primary controller
-    m_rightEncoder = m_rightPrimary.GetEncoder();
-    m_leftEncoder  = m_leftPrimary.GetEncoder();
 
     // Set the PIDF gains for the primary motor controllers
     SetupPIDController(m_rightPID);
@@ -75,5 +67,5 @@ void VelocityTankDrive::TankDrive(double left, double right)
 {
     // Set the left and right side speeds
     m_rightPID.SetReference(right, rev::ControlType::kVelocity);
-    m_leftPID.SetReference(right, rev::ControlType::kVelocity);
+    m_leftPID.SetReference(left, rev::ControlType::kVelocity);
 }
