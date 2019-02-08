@@ -41,12 +41,13 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void MoveShuttleToPosition(double position);
 
   // Shuttle methods
-  bool IsShuttleAtPosition(double targetPosition);
   double CurrentShuttlePosition();
   void ShuttleStopAtCurrentPosition();
 
  public:
   LiftAndShuttleSubsystem();
+
+  bool IsShuttleAtPosition(double targetPosition);
 
   // Movement Control Interface
   bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);

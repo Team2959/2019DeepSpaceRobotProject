@@ -8,6 +8,7 @@
 #include "commands/CargoArmUpCommand.h"
 #include "Robot.h"
 #include "commands/StopCargoControlWheelsCommand.h"
+#include "subsystems/CargoArmPositions.h"
 
 CargoArmUpCommand::CargoArmUpCommand() {
   // Use Requires() here to declare subsystem dependencies
@@ -18,7 +19,7 @@ CargoArmUpCommand::CargoArmUpCommand() {
 // Called just before this Command runs the first time
 void CargoArmUpCommand::Initialize()
 {
-  Robot::m_cargoArmSubsystem.ArmUp();
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmUpPosition, true);
   
   auto ptr = new StopCargoControlWheelsCommand(0.0);
   ptr->Start();
@@ -30,7 +31,7 @@ void CargoArmUpCommand::Execute() {}
 // Make this return true when this Command no longer needs to run execute()
 bool CargoArmUpCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition();
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmUpPosition);
 }
 
 // Called once after isFinished returns true

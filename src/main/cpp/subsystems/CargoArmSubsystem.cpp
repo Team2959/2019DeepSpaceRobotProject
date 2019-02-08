@@ -6,10 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/CargoArmSubsystem.h"
+#include "subsystems/CargoArmPositions.h"
 
-constexpr int kArmUpPosition = 0;
-constexpr int kArmFrontPosition = 5000;
-constexpr int kArmRearPosition = -kArmFrontPosition;
 constexpr int kCloseEnoughToPosition = 100;
 constexpr int kArmIsClearOfShuttle = 4000;
 
@@ -18,7 +16,7 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
   ConfigureMotorController(m_left);
   ConfigureMotorController(m_right);
 
-  ArmUp();
+  MoveCargoArmToPosition(kArmUpPosition, true);
 }
 
 void CargoArmSubsystem::ConfigureMotorController(
@@ -48,9 +46,9 @@ double CargoArmSubsystem::CurrentArmPosition()
   return m_left.GetSelectedSensorPosition(0);
 }
 
-bool CargoArmSubsystem::IsArmAtPosition()
+bool CargoArmSubsystem::IsArmAtPosition(double targetPosition)
 {
-  return fabs(CurrentArmPosition() - m_targetPosition) < kCloseEnoughToPosition;
+  return fabs(CurrentArmPosition() - targetPosition) < kCloseEnoughToPosition;
 }
 
 bool CargoArmSubsystem::IsArmAboveCargoShuttle()
@@ -58,32 +56,27 @@ bool CargoArmSubsystem::IsArmAboveCargoShuttle()
   return fabs(CurrentArmPosition()) < kArmIsClearOfShuttle;
 }
 
-void CargoArmSubsystem::MoveCargoArmToPosition(double position)
+void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShuttleClearForFullExtension)
 {
-  m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
-  m_right.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
-  m_targetPosition = position;
-}
+  auto position = targetPosition;
+  if (fabs(targetPosition) > kArmIsClearOfShuttle && !kArmIsClearOfShuttle)
+  {
+    position = kArmIsClearOfShuttle;
+    if (targetPosition < 0)
+    {
+      position *= -1;
+    }
+  }
 
-void CargoArmSubsystem::ArmUp()
-{
-  // move to up position
-  MoveCargoArmToPosition(kArmUpPosition);
-}
-
-void CargoArmSubsystem::ArmExtendFront()
-{
-  // move to the front pickup position
-  MoveCargoArmToPosition(kArmFrontPosition);
-}
-
-void CargoArmSubsystem::ArmExtendRear()
-{
-  // move to the rear pickup position
-  MoveCargoArmToPosition(kArmRearPosition);
+  if (fabs(position - m_lastTargetPosition) > kCloseEnoughToPosition)
+  {
+    m_lastTargetPosition = position;
+    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
+    m_right.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
+  }
 }
 
 void CargoArmSubsystem::StopAtCurrentPosition()
 {
-  MoveCargoArmToPosition(CurrentArmPosition());
+  MoveCargoArmToPosition(CurrentArmPosition(), true);
 }

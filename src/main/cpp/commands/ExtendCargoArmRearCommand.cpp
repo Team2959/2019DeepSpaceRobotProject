@@ -8,6 +8,8 @@
 #include "commands/ExtendCargoArmRearCommand.h"
 #include "Robot.h"
 #include "commands/MoveCargoTowardFrontCommand.h"
+#include "subsystems/CargoArmPositions.h"
+#include "subsystems/LiftAndShuttlePositions.h"
 
 ExtendCargoArmRearCommand::ExtendCargoArmRearCommand() {
   // Use Requires() here to declare subsystem dependencies
@@ -18,7 +20,9 @@ ExtendCargoArmRearCommand::ExtendCargoArmRearCommand() {
 // Called just before this Command runs the first time
 void ExtendCargoArmRearCommand::Initialize()
 {
-  Robot::m_cargoArmSubsystem.ArmExtendRear();
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmRearPosition,
+      Robot::m_liftAndShuttleSubsytem.IsShuttleAtPosition(kShuttleRearPosition));
+
   if (Robot::m_cargoControlSubsystem.CargoIn() == false)
   {
     auto ptr = new MoveCargoTowardFrontCommand();
@@ -27,12 +31,17 @@ void ExtendCargoArmRearCommand::Initialize()
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ExtendCargoArmRearCommand::Execute() {}
+void ExtendCargoArmRearCommand::Execute()
+{
+  // keep feeding the target position, in case we could only go part way
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmRearPosition,
+      Robot::m_liftAndShuttleSubsytem.IsShuttleAtPosition(kShuttleRearPosition));
+}
 
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendCargoArmRearCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition();
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmRearPosition);
 }
 
 // Called once after isFinished returns true
