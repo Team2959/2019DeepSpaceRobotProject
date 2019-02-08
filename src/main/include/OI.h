@@ -8,10 +8,10 @@
 #pragma once
 
 #include <frc/XboxController.h>
+#include <frc/Joystick.h>
 #include <frc/Buttons/JoystickButton.h>
 #include "RobotMap.h"
 #include "triggers/CargoInTrigger.h"
-#include "frc/Joystick.h"
 
 class OI
 {
@@ -33,6 +33,12 @@ class OI
   frc::JoystickButton m_cargoArmUp {&m_coPilotJoystick, 4};
   frc::JoystickButton m_cargoArmFront {&m_coPilotJoystick, 5};
   frc::JoystickButton m_cargoArmRear {&m_coPilotJoystick, 6};
+  
+  frc::JoystickButton m_prepForHatch {&m_coPilotJoystick, 7};
+  frc::JoystickButton m_secureHatch {&m_coPilotJoystick, 8};
+  frc::JoystickButton m_attachHatch {&m_coPilotJoystick, 9};
+  frc::JoystickButton m_releaseHatch {&m_coPilotJoystick, 10};
+  frc::JoystickButton m_retractMechanismHatch {&m_coPilotJoystick, 11};
 
   // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;

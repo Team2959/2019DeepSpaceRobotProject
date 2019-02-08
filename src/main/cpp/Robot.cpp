@@ -14,7 +14,9 @@
 #include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
 #include <iostream>
 
+// Actually create each subsystem
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
+HatchSubsystem Robot::m_hatchSubsystem;
 CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
 ExampleSubsystem Robot::m_subsystem;
