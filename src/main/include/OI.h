@@ -20,7 +20,7 @@ class OI
   frc::XboxController m_driverJoystick { kDriverUSBController };
   frc::Joystick m_coPilotJoystick { 2 };
 
-  frc::JoystickButton m_prepForHatch {&m_coPilotJoystick, 0};
+  frc::JoystickButton m_prepForHatch {&m_coPilotJoystick, 5};
   frc::JoystickButton m_secureHatch {&m_coPilotJoystick, 1};
   frc::JoystickButton m_attachHatch {&m_coPilotJoystick, 2};
   frc::JoystickButton m_releaseHatch {&m_coPilotJoystick, 3};
