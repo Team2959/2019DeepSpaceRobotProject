@@ -7,6 +7,8 @@
 
 #include "subsystems/LiftAndShuttleSubsystem.h"
 #include "subsystems/LiftAndShuttlePositions.h"
+#include <frc/smartdashboard/SmartDashboard.h>
+#include "utilities/MotorControllerHelpers.h"
 
 constexpr int kShuttleCloseEnoughToPosition = 100;
 constexpr int kShuttleSafeFrontPosition = 1000;
@@ -18,8 +20,16 @@ constexpr int kLiftMaxSafeHeight = 5000;
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
   // Shuttle motor controller configuration
-  ConfigureTalonMotorController(m_leftShuttle);
-  ConfigureTalonMotorController(m_rightShuttle);
+  m_leftShuttle.GetSlotConfigs(m_pidConfigShuttle);
+  m_pidConfigShuttle.kP = 0.1;
+  m_pidConfigShuttle.kI = 0;
+  m_pidConfigShuttle.kD = 0;
+  m_pidConfigShuttle.kF = 0;
+  // m_pidConfigShuttle.integralZone = x;
+  // m_pidConfigShuttle.closedLoopPeakOutput = 1.0;
+  // m_pidConfigShuttle.allowableClosedloopError = 128;
+  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, false);
+  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
 
   MoveShuttleToPosition(kShuttleMiddlePosition);
 
@@ -27,42 +37,13 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   m_liftFollower1.Follow(m_liftPrimary);
   m_liftFollower2.Follow(m_liftPrimary);
 
-  ConfigureSparkMaxMotorController(m_liftPrimary);
-  ConfigureSparkMaxMotorController(m_liftFollower1);
-  ConfigureSparkMaxMotorController(m_liftFollower2);
-}
-
-void LiftAndShuttleSubsystem::ConfigureSparkMaxMotorController(rev::CANSparkMax & motorController)
-{
-  rev::CANPIDController myPidController = motorController.GetPIDController();
-
-  myPidController.SetP(1.0);
-  myPidController.SetI(1.0);  
-  myPidController.SetD(0);
-  myPidController.SetIZone(0);
-  myPidController.SetFF(0);
-  myPidController.SetOutputRange(kLiftBottomPosition, kLiftTopPosition);
-}
-
-void LiftAndShuttleSubsystem::ConfigureTalonMotorController(
-  ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController)
-{
-  motorController.ConfigSelectedFeedbackSensor(
-    ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Absolute, 0, 0);
-	motorController.Config_kF(0, 0, 0);
-
-	motorController.Config_kP(0, 1.0, 0);
-	motorController.Config_kI(0, 0, 0);
-//	motorController.Config_IntegralZone(0, 300, 0);
-	motorController.SetSensorPhase(false);
-	motorController.SetSelectedSensorPosition(0,0,0);
-
-//	motorController.ConfigPeakOutputForward(1.00, 0);
-//	motorController.ConfigPeakOutputReverse(-1.00, 0);
-//	motorController.ConfigPeakCurrentLimit(5, 0);
-
-//	motorController.ConfigAllowableClosedloopError(0, 128, 0);
-//	motorController.ConfigClosedloopRamp(0, 0);
+  m_liftPidController = m_liftPrimary.GetPIDController();
+  m_liftPidController.SetP(1.0);
+  m_liftPidController.SetI(1.0);  
+  m_liftPidController.SetD(0);
+  m_liftPidController.SetIZone(0);
+  m_liftPidController.SetFF(0);
+  m_liftPidController.SetOutputRange(kLiftBottomPosition, kLiftTopPosition);
 }
 
 bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
@@ -80,6 +61,10 @@ void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
 {
   m_leftShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
   m_rightShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
+
+  frc::SmartDashboard::PutNumber("Shtl: Target", position);
+  frc::SmartDashboard::PutNumber("Shtl: Position", CurrentShuttlePosition());
+  frc::SmartDashboard::PutNumber("Shtl: Velocity", m_leftShuttle.GetSelectedSensorVelocity());
 }
 
 void LiftAndShuttleSubsystem::ShuttleStopAtCurrentPosition()
@@ -108,6 +93,10 @@ double LiftAndShuttleSubsystem::CurrentLiftPosition()
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
 {
   m_liftPidController.SetReference(position, rev::ControlType::kPosition);
+
+  frc::SmartDashboard::PutNumber("Lift: Target", position);
+  frc::SmartDashboard::PutNumber("Lift: Position", CurrentShuttlePosition());
+  frc::SmartDashboard::PutNumber("Lift: Velocity", m_liftEncoder.GetVelocity());
 }
 
 void LiftAndShuttleSubsystem::LiftStopAtCurrentPosition()
@@ -209,4 +198,25 @@ void LiftAndShuttleSubsystem::StopAtCurrentPosition()
   // stop lift and shuttle at current positions
   LiftStopAtCurrentPosition();
   ShuttleStopAtCurrentPosition();
+}
+
+void LiftAndShuttleSubsystem::DashboardDataInit()
+{
+  frc::SmartDashboard::PutData(this);
+  MotorControllerHelpers::DashboardInitTalonSrx("Shtl", m_pidConfigShuttle);
+  MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftPidController);
+}
+
+void LiftAndShuttleSubsystem::DashboardData()
+{
+  MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_leftShuttle, m_pidConfigShuttle);
+  MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_rightShuttle, m_pidConfigShuttle);
+
+  auto targetPosition = frc::SmartDashboard::GetNumber("Shtl: Go To Position", 0);
+  MoveShuttleToPosition(targetPosition);
+
+  MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController);
+
+  targetPosition = frc::SmartDashboard::GetNumber("Lift: Go To Position", 0);
+  MoveLiftToPosition(targetPosition);
 }

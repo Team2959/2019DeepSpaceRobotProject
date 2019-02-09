@@ -17,10 +17,10 @@ class CargoArmSubsystem : public frc::Subsystem {
   // for methods that implement subsystem capabilities
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_left { kLeftCargoArmCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightCargoArmCanTalonSrxMotor };
+  ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfig;
 
   double m_lastTargetPosition;
 
-  void ConfigureMotorController(ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController);
   double CurrentArmPosition();
 
  public:
@@ -32,4 +32,7 @@ class CargoArmSubsystem : public frc::Subsystem {
   void MoveCargoArmToPosition(double targetPosition, bool isShuttleClearForFullExtension);
 
   void StopAtCurrentPosition();
+
+  void DashboardDataInit();
+  void DashboardData();
 };

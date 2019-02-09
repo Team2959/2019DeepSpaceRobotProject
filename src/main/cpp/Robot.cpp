@@ -28,6 +28,10 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
+
+  m_cargoArmSubsystem.DashboardDataInit();
+  m_liftAndShuttleSubsytem.DashboardDataInit();
+  frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
 }
 
 /**
@@ -47,6 +51,12 @@ void Robot::RobotPeriodic()
   std::cout<<"framenumber = "<<frameNumber<<"\n";
   for(auto i = 0; i < targetRect.size(); ++i)
     std::cout << "targetRect[" << i << "] = " << targetRect[i] << "\n";
+
+  if (m_periodic++ % 10 == 0)
+  {
+    m_cargoArmSubsystem.DashboardData();
+    m_liftAndShuttleSubsytem.DashboardData();
+  }
 }
 
 /**
