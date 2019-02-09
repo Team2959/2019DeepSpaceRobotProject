@@ -46,4 +46,6 @@ class Robot : public frc::TimedRobot {
   MyAutoCommand m_myAuto;
   frc::SendableChooser<frc::Command*> m_chooser;
   std::shared_ptr<nt::NetworkTable> m_networkTable;
+
+  int counter = 0;
 };

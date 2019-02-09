@@ -9,21 +9,17 @@
 
 
 VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary):
-m_rightPrimary(rightPrimary), m_leftPrimary(leftPrimary)
-m_
+    m_rightPrimary(rightPrimary), m_leftPrimary(leftPrimary)
 {
-    
-
     // Set the PIDF gains for the primary motor controllers
     SetupPIDController(m_rightPID);
     SetupPIDController(m_leftPID);
 
     //NavX Communication
-    ahrs = new AHRS(SerialPort::Port::kUSB);
+    //ahrs = new AHRS(SerialPort::Port::kUSB);
 }
 
 void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent)
-
 {
     motor.SetSmartCurrentLimit(driveMaxCurrent);
     motor.SetRampRate(motorMaxSpeed / (robotMaxAccel * driveSafetyFactor));
@@ -67,14 +63,41 @@ void VelocityTankDrive::TankDrive(double left, double right)
     m_rightPID.SetReference(right, rev::ControlType::kVelocity);
     m_leftPID.SetReference(left, rev::ControlType::kVelocity);
 }
-void VelocityTankDrive::SetupPIDGains (double p, double i, double d, double ff, double iz){
-m_proportional = p;
-m_integral     = i;
-m_derivative   = d;
-m_feedForward  = ff;
-m_iZone        = iz;
+void VelocityTankDrive::SetupPIDGains (double p, double i, double d, double ff, double iz)
+{
+    m_proportional = p;
+    m_integral     = i;
+    m_derivative   = d;
+    m_feedForward  = ff;
+    m_iZone        = iz;
 
- SetupPIDController(m_rightPID);
- SetupPIDController(m_leftPID);
+    SetupPIDController(m_rightPID);
+    SetupPIDController(m_leftPID);
+}
 
+void VelocityTankDrive::StopMotor () 
+{
+    TankDrive(0,0);
+}
+
+void VelocityTankDrive::GetDescription (wpi::raw_ostream& desc) const
+{
+
+}
+
+void VelocityTankDrive::InitSendable (SendableBuilder& builder) 
+{
+
+}
+
+void VelocityTankDrive::DashboardDataInit   () 
+{
+    MotorControllerHelpers::DashboardInitSparkMax("Drive/Right", m_rightPID);
+    MotorControllerHelpers::DashboardInitSparkMax("Drive/Left", m_leftPID);
+}
+
+void VelocityTankDrive::DashboardDataUpdate () 
+{
+    MotorControllerHelpers::DashboardDataSparkMax("Drive/Right", m_rightPID);
+    MotorControllerHelpers::DashboardDataSparkMax("Drive/Left", m_leftPID);
 }

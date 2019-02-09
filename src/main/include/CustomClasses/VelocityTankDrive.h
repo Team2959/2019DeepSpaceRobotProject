@@ -12,18 +12,17 @@
 #include "RobotMap.h"
 #include "AHRS.h"
 
+#include "utilities/MotorControllerHelpers.h"
+
 class VelocityTankDrive: public frc::RobotDriveBase
-{
-
- //NAVX Communications
-    AHRS* ahrs;
-    
-
+{   
 private:
+    //NAVX Communications
+    AHRS* ahrs;
+
     // Motor controllers used in the robot drive
     rev::CANSparkMax& m_rightPrimary;
     rev::CANSparkMax& m_leftPrimary;
-
     
     // PID Controllers
     rev::CANPIDController m_rightPID = m_rightPrimary.GetPIDController();
@@ -46,20 +45,23 @@ private:
     //void SetPointGenerator  (double dsp, rev::CANPIDController& pidController, rev::CANEncoder& encoder);
     
     void SetupPIDController (rev::CANPIDController& pid);
-   
-
-   
-
 
 public:
     // Constructor
-    VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary,double maxSpeed,double safety, double maxAccel, double maxCurrent );
+    explicit VelocityTankDrive (rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary);
+
+    static void SetupSparkMax  (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent);
 
     // TankDrive is an interface similar to that of the FRC differential drive class. 
     /* It shall accept a speed for each side of the robot drive in real world values (RPM),
        as opposed to percentages. */
-    
-    void TankDrive (double left, double right);
-    static void SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent);
+    void TankDrive     (double left, double right);
     void SetupPIDGains (double p, double i, double d, double ff, double iz);
+
+    void StopMotor      () override;
+    void GetDescription (wpi::raw_ostream& desc) const override;
+    void InitSendable   (SendableBuilder& builder) override;
+
+    void DashboardDataInit   ();
+    void DashboardDataUpdate ();
 };

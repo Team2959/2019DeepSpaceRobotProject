@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/FollowPath.h"
-#include 
 
 FollowPath::FollowPath() {
   // Use Requires() here to declare subsystem dependencies

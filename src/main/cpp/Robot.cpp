@@ -24,6 +24,8 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(TABLE_NAME);
+
+  m_driveTrainSubsystem.DashboardDataInit();
 }
 
 /**
@@ -40,9 +42,14 @@ void Robot::RobotPeriodic()
   auto  targetRect = m_networkTable->GetNumberArray(TARGET_COORDS, std::vector<double>{});
 
   // Testing of Raspberry Pi info through network tables
-  std::cout<<"framenumber = "<<frameNumber<<"\n";
+  /*std::cout<<"framenumber = "<<frameNumber<<"\n";
   for(auto i = 0; i < targetRect.size(); ++i)
-    std::cout << "targetRect[" << i << "] = " << targetRect[i] << "\n";
+    std::cout << "targetRect[" << i << "] = " << targetRect[i] << "\n";*/
+  if (counter > 0) {
+    m_driveTrainSubsystem.DashboardDataUpdate();
+    counter = 0;
+  }
+  
 }
 
 /**
