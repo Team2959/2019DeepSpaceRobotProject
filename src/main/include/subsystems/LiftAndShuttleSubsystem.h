@@ -36,8 +36,8 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   // Shuttle control
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_rightShuttle { kRightCargoShuttleCanTalonSrxMotor };
+  ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfigShuttle;
 
-  void ConfigureTalonMotorController(ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController);
   void MoveShuttleToPosition(double position);
 
   // Shuttle methods
@@ -53,4 +53,7 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);
   void MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition, bool isShuttleArmSafe);
   void StopAtCurrentPosition();
+
+  void DashboardDataInit();
+  void DashboardData();
 };
