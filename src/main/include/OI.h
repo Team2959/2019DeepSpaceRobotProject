@@ -37,8 +37,6 @@ class OI
   frc::JoystickButton m_prepForHatch {&m_coPilotJoystick, 7};
   frc::JoystickButton m_secureHatch {&m_coPilotJoystick, 8};
   frc::JoystickButton m_attachHatch {&m_coPilotJoystick, 9};
-  frc::JoystickButton m_releaseHatch {&m_coPilotJoystick, 10};
-  frc::JoystickButton m_retractMechanismHatch {&m_coPilotJoystick, 11};
 
   // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;
