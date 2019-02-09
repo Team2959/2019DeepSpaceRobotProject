@@ -15,9 +15,9 @@ class HatchSubsystem : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-  frc::Solenoid m_attach  {kAttachSolenoid};
-  frc::Solenoid m_release {kReleaseSolenoid};
-  frc::Solenoid m_safety  {kSafetySolenoid};
+  frc::Solenoid m_attach  {kHatchAttachSolenoid};
+  frc::Solenoid m_release {kHatchReleaseSolenoid};
+  frc::Solenoid m_safety  {kHatchSafetySolenoid};
 
  public:
   HatchSubsystem();
