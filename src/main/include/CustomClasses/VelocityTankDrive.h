@@ -10,9 +10,15 @@
 #include <frc/drive/RobotDriveBase.h>
 #include <rev/CANSparkMax.h>
 #include "RobotMap.h"
+#include "AHRS.h"
 
 class VelocityTankDrive: public frc::RobotDriveBase
 {
+
+ //NAVX Communications
+    AHRS* ahrs(NULL);
+    
+
 private:
     // Establish useful constants, such as physical limitations of the robot
     const double kMotorMaxSpeed     = 5676.0;  // RPM
@@ -61,6 +67,9 @@ private:
     void SetupSparkMax      (rev::CANSparkMax& motor);
     void SetupPIDController (rev::CANPIDController& pid);
 
+   
+
+
 public:
     // Constructor
     VelocityTankDrive();
@@ -69,4 +78,14 @@ public:
     /* It shall accept a speed for each side of the robot drive in real world values (RPM),
        as opposed to percentages. */
     void TankDrive (double left, double right);
+
+
+
+
+
+   //Configuring NavX values
+  
+        ahrs(NULL)
+        
+   
 };

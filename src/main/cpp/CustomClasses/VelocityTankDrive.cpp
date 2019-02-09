@@ -23,6 +23,10 @@ VelocityTankDrive::VelocityTankDrive()
     // Set the PIDF gains for the primary motor controllers
     SetupPIDController(m_rightPID);
     SetupPIDController(m_leftPID);
+
+    //NavX Communication
+
+     ahrs = new AHRS(SerialPort::Port::kUSB);
 }
 
 void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor)
