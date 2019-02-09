@@ -73,7 +73,7 @@ bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
 
 double LiftAndShuttleSubsystem::CurrentShuttlePosition()
 {
-  return m_leftShuttle.GetSelectedSensorPosition(0);;
+  return m_leftShuttle.GetSelectedSensorPosition(0);
 }
 
 void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
@@ -129,6 +129,7 @@ void LiftAndShuttleSubsystem::MoveToTargetPosition(
 {
   // evaluate current position and decide where to send lift and shuttle safely to get closer to target posistions
   auto currentShuttlePosition = CurrentShuttlePosition();
+  auto currentLiftPosition = CurrentLiftPosition();
 
   // Moving shuttle to next position
   // Only move the shuttle if the cargo arm is safe and not at current position
@@ -172,6 +173,35 @@ void LiftAndShuttleSubsystem::MoveToTargetPosition(
   // move the lift
 
   // determine if the shuttle needs to cross through the middle
+  // if not, then go to target
+  if((targetShuttlePosition >= kShuttleSafeFrontPosition && currentShuttlePosition >= kShuttleSafeFrontPosition)||
+    (targetShuttlePosition <= kShuttleSafeRearPosition && currentShuttlePosition <= kShuttleSafeRearPosition)){
+      // keep move to target position
+  }
+  // if yes, follow each plan
+  else{
+    // up => up
+    if(currentLiftPosition >= kLiftMaxSafeHeight && targetLiftPosition >= kLiftMaxSafeHeight){
+      targetLiftPosition = kLiftMaxSafeHeight;
+    }
+    // down => up
+    else if(currentLiftPosition < kLiftMaxSafeHeight && targetLiftPosition >= kLiftMaxSafeHeight){
+      targetLiftPosition = kLiftMaxSafeHeight;
+    }
+    // up => down or down => down
+    else {
+      // up => down
+      //   if(currentLiftPosition >= kLiftMaxSafeHeight && targetLiftPosition < kLiftMaxSafeHeight)
+      // down => down
+      //   if(currentLiftPosition < kLiftMaxSafeHeight && targetLiftPosition < kLiftMaxSafeHeight){
+          // move to target position
+    }
+  }
+
+  if (!IsLiftAtPosition(targetLiftPosition))
+  {
+    MoveLiftToPosition(targetLiftPosition);
+  }
 }
 
 void LiftAndShuttleSubsystem::StopAtCurrentPosition()
