@@ -8,7 +8,7 @@
 #include "subsystems/CargoArmSubsystem.h"
 #include "subsystems/CargoArmPositions.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-#include "Utilities/MotorControllerHelpers.h"
+#include "utilities/MotorControllerHelpers.h"
 
 constexpr int kCloseEnoughToPosition = 100;
 constexpr int kArmIsClearOfShuttle = 4000;

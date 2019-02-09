@@ -24,24 +24,21 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
   rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
 
-  void ConfigureSparkMaxMotorController(rev::CANSparkMax & motorController);
-  void MoveLiftToPosition(double position);
-
   // Lift methods
   bool IsLiftAtPosition(double targetPosition);
-  double CurrentLiftPosition();
-  void LiftStopAtCurrentPosition();
   bool IsLiftSafeForShuttleMoveThroughMiddle();
+  double CurrentLiftPosition();
+  void MoveLiftToPosition(double position);
+  void LiftStopAtCurrentPosition();
 
   // Shuttle control
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_rightShuttle { kRightCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfigShuttle;
 
-  void MoveShuttleToPosition(double position);
-
   // Shuttle methods
   double CurrentShuttlePosition();
+  void MoveShuttleToPosition(double position);
   void ShuttleStopAtCurrentPosition();
 
  public:
@@ -51,9 +48,10 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
 
   // Movement Control Interface
   bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);
-  void MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition, bool isShuttleArmSafe);
   void StopAtCurrentPosition();
+  void MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition, bool isShuttleArmSafe);
 
+  // Smart Dashboard debug/info
   void DashboardDataInit();
   void DashboardData();
 };

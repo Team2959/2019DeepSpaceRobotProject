@@ -8,7 +8,7 @@
 #include "subsystems/LiftAndShuttleSubsystem.h"
 #include "subsystems/LiftAndShuttlePositions.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-#include "Utilities/MotorControllerHelpers.h"
+#include "utilities/MotorControllerHelpers.h"
 
 constexpr int kShuttleCloseEnoughToPosition = 100;
 constexpr int kShuttleSafeFrontPosition = 1000;
@@ -37,21 +37,13 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   m_liftFollower1.Follow(m_liftPrimary);
   m_liftFollower2.Follow(m_liftPrimary);
 
-  ConfigureSparkMaxMotorController(m_liftPrimary);
-  ConfigureSparkMaxMotorController(m_liftFollower1);
-  ConfigureSparkMaxMotorController(m_liftFollower2);
-}
-
-void LiftAndShuttleSubsystem::ConfigureSparkMaxMotorController(rev::CANSparkMax & motorController)
-{
-  rev::CANPIDController myPidController = motorController.GetPIDController();
-
-  myPidController.SetP(1.0);
-  myPidController.SetI(1.0);  
-  myPidController.SetD(0);
-  myPidController.SetIZone(0);
-  myPidController.SetFF(0);
-  myPidController.SetOutputRange(kLiftBottomPosition, kLiftTopPosition);
+  m_liftPidController = m_liftPrimary.GetPIDController();
+  m_liftPidController.SetP(1.0);
+  m_liftPidController.SetI(1.0);  
+  m_liftPidController.SetD(0);
+  m_liftPidController.SetIZone(0);
+  m_liftPidController.SetFF(0);
+  m_liftPidController.SetOutputRange(kLiftBottomPosition, kLiftTopPosition);
 }
 
 bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
@@ -101,6 +93,10 @@ double LiftAndShuttleSubsystem::CurrentLiftPosition()
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
 {
   m_liftPidController.SetReference(position, rev::ControlType::kPosition);
+
+  frc::SmartDashboard::PutNumber("Lift: Target", position);
+  frc::SmartDashboard::PutNumber("Lift: Position", CurrentShuttlePosition());
+  frc::SmartDashboard::PutNumber("Lift: Velocity", m_liftEncoder.GetVelocity());
 }
 
 void LiftAndShuttleSubsystem::LiftStopAtCurrentPosition()
@@ -178,6 +174,7 @@ void LiftAndShuttleSubsystem::DashboardDataInit()
 {
   frc::SmartDashboard::PutData(this);
   MotorControllerHelpers::DashboardInitTalonSrx("Shtl", m_pidConfigShuttle);
+  MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftPidController);
 }
 
 void LiftAndShuttleSubsystem::DashboardData()
@@ -187,4 +184,9 @@ void LiftAndShuttleSubsystem::DashboardData()
 
   auto targetPosition = frc::SmartDashboard::GetNumber("Shtl: Go To Position", 0);
   MoveShuttleToPosition(targetPosition);
+
+  MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController);
+
+  targetPosition = frc::SmartDashboard::GetNumber("Lift: Go To Position", 0);
+  MoveLiftToPosition(targetPosition);
 }

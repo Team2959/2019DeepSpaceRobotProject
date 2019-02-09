@@ -1,4 +1,4 @@
-#include "Utilities/MotorControllerHelpers.h"
+#include "utilities/MotorControllerHelpers.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void MotorControllerHelpers::ConfigureTalonSrxMotorController(
@@ -40,6 +40,7 @@ void MotorControllerHelpers::DashboardInitTalonSrx(
   // frc::SmartDashboard::PutNumber(name + ": Max Int Acc", pidConfig.maxIntegralAccumulator);
   frc::SmartDashboard::PutNumber(name + ": Cl Loop Peak Output", pidConfig.closedLoopPeakOutput);
   // frc::SmartDashboard::PutNumber(name + ": Cl Loop Period", pidConfig.closedLoopPeriod);
+
   frc::SmartDashboard::PutNumber(name + ": Go To Position", 0);
   frc::SmartDashboard::PutNumber(name + ": Target", 0);
   frc::SmartDashboard::PutNumber(name + ": Position", 0);
@@ -97,5 +98,64 @@ void MotorControllerHelpers::DashboardDataTalonSrx(
     pidConfig.closedLoopPeakOutput = peakOutput;
     motorController.ConfigPeakOutputForward(peakOutput, 0);
     motorController.ConfigPeakOutputReverse(-peakOutput, 0);
+  }
+}
+
+void MotorControllerHelpers::DashboardInitSparkMax(
+    std::string name,
+    rev::CANPIDController & pidConfig)
+{
+  // display PID coefficients on SmartDashboard
+  frc::SmartDashboard::PutNumber(name + ": P Gain", pidConfig.GetP());
+  frc::SmartDashboard::PutNumber(name + ": I Gain", pidConfig.GetI());
+  frc::SmartDashboard::PutNumber(name + ": D Gain", pidConfig.GetD());
+  frc::SmartDashboard::PutNumber(name + ": I Zone", pidConfig.GetIZone());
+  frc::SmartDashboard::PutNumber(name + ": Feed Forward", pidConfig.GetFF());
+  frc::SmartDashboard::PutNumber(name + ": Ouput Min", pidConfig.GetOutputMin());
+  frc::SmartDashboard::PutNumber(name + ": Ouput Max", pidConfig.GetOutputMax());
+
+  frc::SmartDashboard::PutNumber(name + ": Go To Position", 0);
+  frc::SmartDashboard::PutNumber(name + ": Target", 0);
+  frc::SmartDashboard::PutNumber(name + ": Position", 0);
+  frc::SmartDashboard::PutNumber(name + ": Velocity", 0);
+}
+
+void MotorControllerHelpers::DashboardDataSparkMax(
+    std::string name,
+    rev::CANPIDController & pidConfig)
+{
+  // display PID coefficients on SmartDashboard
+  auto kP = frc::SmartDashboard::GetNumber(name + ": P Gain", pidConfig.GetP());
+  auto kI = frc::SmartDashboard::GetNumber(name + ": I Gain", pidConfig.GetI());
+  auto kD = frc::SmartDashboard::GetNumber(name + ": D Gain", pidConfig.GetD());
+  auto kIz = frc::SmartDashboard::GetNumber(name + ": I Zone", pidConfig.GetIZone());
+  auto kF = frc::SmartDashboard::GetNumber(name + ": Feed Forward", pidConfig.GetFF());
+  auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", pidConfig.GetOutputMin());
+  auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", pidConfig.GetOutputMax());
+
+  if (fabs(kP - pidConfig.GetP()) > 0.0001)
+  {
+    pidConfig.SetP(kP);
+  }
+  if (fabs(kI - pidConfig.GetI()) > 0.0001)
+  {
+    pidConfig.SetI(kI);
+  }
+  if (fabs(kD - pidConfig.GetD()) > 0.0001)
+  {
+    pidConfig.SetD(kD);
+  }
+  if (fabs(kF - pidConfig.GetFF()) > 0.0001)
+  {
+    pidConfig.SetFF(kF);
+  }
+  if (fabs(kIz - pidConfig.GetIZone()) > 0.0001)
+  {
+    pidConfig.SetIZone(kIz);
+  }
+  if (fabs(outputMin - pidConfig.GetOutputMin()) > 0.0001 ||
+        fabs(outputMax - pidConfig.GetOutputMin()) > 0.0001)
+  {
+    pidConfig.SetOutputRange(outputMin, outputMax);
   }
 }

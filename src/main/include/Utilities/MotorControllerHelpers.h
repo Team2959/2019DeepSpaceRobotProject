@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
+#include <rev/CANPIDController.h>
 
 // Functions to consolidate configuration of motor controllers
 //  and interact with smart dashboard to setup/troubleshoot
@@ -22,4 +23,12 @@ public:
         std::string name,
         ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController,
         ctre::phoenix::motorcontrol::can::SlotConfiguration & pidConfig);
+
+    static void DashboardInitSparkMax(
+        std::string name,
+        rev::CANPIDController & pidConfig);
+
+    static void DashboardDataSparkMax(
+        std::string name,
+        rev::CANPIDController & pidConfig);
 };
