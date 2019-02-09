@@ -9,10 +9,14 @@
 #include "commands/DriveWithControllerCommand.h"
 
 DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem") {
-  m_right2Follower.Follow(m_right1Primary);
-  m_right3Follower.Follow(m_right1Primary);
-  m_left2Follower.Follow(m_left1Primary);
-  m_left3Follower.Follow(m_left1Primary);
+ // Set up the follower motor controllers
+    VelocityTankDrive::SetupSparkMax(m_rightPrimary, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
+    VelocityTankDrive::SetupSparkMax(m_rightFollower, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
+    VelocityTankDrive::SetupSparkMax(m_leftPrimary, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
+    VelocityTankDrive::SetupSparkMax(m_leftFollower, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
+   
+    m_rightFollower.Follow(m_rightPrimary);
+    m_leftFollower.Follow(m_leftPrimary);
 
 }
 
@@ -25,6 +29,6 @@ void DriveTrainSubsystem::InitDefaultCommand() {
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
-void DriveTrainSubsystem::MyTankDrive(double leftSpeed, double rightSpeed){
+void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed){
   m_tankDrive.TankDrive(leftSpeed, rightSpeed);
 }

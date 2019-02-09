@@ -8,31 +8,25 @@
 #include "CustomClasses/VelocityTankDrive.h"
 
 
-VelocityTankDrive::VelocityTankDrive()
+VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary):
+m_rightPrimary(rightPrimary), m_leftPrimary(leftPrimary)
+m_
 {
-    // Establish current and acceleration limits
-    SetupSparkMax(m_rightPrimary);
-    SetupSparkMax(m_rightFollower);
-    SetupSparkMax(m_leftPrimary);
-    SetupSparkMax(m_leftFollower);
-
-    // Set up the follower motor controllers
-    m_rightFollower.Follow(m_rightPrimary);
-    m_leftFollower.Follow(m_leftPrimary);
+    
 
     // Set the PIDF gains for the primary motor controllers
     SetupPIDController(m_rightPID);
     SetupPIDController(m_leftPID);
 
     //NavX Communication
-
-     ahrs = new AHRS(SerialPort::Port::kUSB);
+    ahrs = new AHRS(SerialPort::Port::kUSB);
 }
 
-void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor)
+void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent)
+
 {
-    motor.SetSmartCurrentLimit(kDriveMaxCurrent);
-    motor.SetRampRate(kMotorMaxSpeed / m_maxAccel);
+    motor.SetSmartCurrentLimit(driveMaxCurrent);
+    motor.SetRampRate(motorMaxSpeed / (robotMaxAccel * driveSafetyFactor));
 }
 
 void VelocityTankDrive::SetupPIDController(rev::CANPIDController& pid)
@@ -72,4 +66,15 @@ void VelocityTankDrive::TankDrive(double left, double right)
     // Set the left and right side speeds
     m_rightPID.SetReference(right, rev::ControlType::kVelocity);
     m_leftPID.SetReference(left, rev::ControlType::kVelocity);
+}
+void VelocityTankDrive::SetupPIDGains (double p, double i, double d, double ff, double iz){
+m_proportional = p;
+m_integral     = i;
+m_derivative   = d;
+m_feedForward  = ff;
+m_iZone        = iz;
+
+ SetupPIDController(m_rightPID);
+ SetupPIDController(m_leftPID);
+
 }

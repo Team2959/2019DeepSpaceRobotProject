@@ -16,21 +16,14 @@ class VelocityTankDrive: public frc::RobotDriveBase
 {
 
  //NAVX Communications
-    AHRS* ahrs(NULL);
+    AHRS* ahrs;
     
 
 private:
-    // Establish useful constants, such as physical limitations of the robot
-    const double kMotorMaxSpeed     = 5676.0;  // RPM
-    const double kDriveSafetyFactor = 0.90;    // Multiplier for establishing reliable limits
-    const double kRobotMaxAccel     = 2207.07; // RPM / s
-    const double kDriveMaxCurrent   = 80.0;    // Amps
-
     // Motor controllers used in the robot drive
-    rev::CANSparkMax m_rightPrimary  {kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
-    rev::CANSparkMax m_rightFollower {kRight2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
-    rev::CANSparkMax m_leftPrimary   {kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
-    rev::CANSparkMax m_leftFollower  {kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+    rev::CANSparkMax& m_rightPrimary;
+    rev::CANSparkMax& m_leftPrimary;
+
     
     // PID Controllers
     rev::CANPIDController m_rightPID = m_rightPrimary.GetPIDController();
@@ -39,19 +32,6 @@ private:
     // Encoders
     rev::CANEncoder m_rightEncoder = m_rightPrimary.GetEncoder();
     rev::CANEncoder m_leftEncoder  = m_leftPrimary.GetEncoder();
-
-    /*
-       double m_maxRPM          = 5676.0 * 0.85;    // RPM
-       double m_gearRatio       = 1.0 / 6.11;       // Unused
-       double m_maxTorque       = 40.623744 * 0.85  // N*m
-       double m_maxAcceleration = 2207.07 * 0.85;   // RPM/s
-       double m_maxVelocity     = m_maxRPM;         // RPM
-       double m_maxJerk         = 50000.0;          // RPM/s^2 
-    */
-
-   // Characterizations of our robot drive train in controlled units (RPM & seconds)
-    double m_maxSpeed = kMotorMaxSpeed * kDriveSafetyFactor; // RPM
-    double m_maxAccel = kRobotMaxAccel * kDriveSafetyFactor; // RPM / s
 
     // Control Loop (PIDF) gains
     double m_proportional = 0.0005;
@@ -64,28 +44,22 @@ private:
     /* It shall accepts a desired set point and determines a responsible next set point 
        for the motor control loop, accounting for current speed and all applicable limits. */
     //void SetPointGenerator  (double dsp, rev::CANPIDController& pidController, rev::CANEncoder& encoder);
-    void SetupSparkMax      (rev::CANSparkMax& motor);
+    
     void SetupPIDController (rev::CANPIDController& pid);
+   
 
    
 
 
 public:
     // Constructor
-    VelocityTankDrive();
+    VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary,double maxSpeed,double safety, double maxAccel, double maxCurrent );
 
     // TankDrive is an interface similar to that of the FRC differential drive class. 
     /* It shall accept a speed for each side of the robot drive in real world values (RPM),
        as opposed to percentages. */
+    
     void TankDrive (double left, double right);
-
-
-
-
-
-   //Configuring NavX values
-  
-        ahrs(NULL)
-        
-   
+    static void SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent);
+    void SetupPIDGains (double p, double i, double d, double ff, double iz);
 };

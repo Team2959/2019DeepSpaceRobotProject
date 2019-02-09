@@ -9,22 +9,25 @@
 
 #include <frc/commands/Subsystem.h>
 #include <rev/CANSparkMax.h>
-#include <frc/Drive/DifferentialDrive.h>
 #include "RobotMap.h"
+#include "VelocityTankDrive.h"
 
 class DriveTrainSubsystem : public frc::Subsystem
 {
  private:
+    const double kMotorMaxSpeed     = 5676.0;  // RPM
+    const double kDriveSafetyFactor = 0.90;    // Multiplier for establishing reliable limits
+    const double kRobotMaxAccel     = 2207.07; // RPM / s
+    const double kDriveMaxCurrent   = 80.0;    // Amps
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-  rev::CANSparkMax m_right1Primary { kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANSparkMax m_right2Follower { kRight2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANSparkMax m_right3Follower { kRight3CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANSparkMax m_left1Primary { kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANSparkMax m_left2Follower { kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANSparkMax m_left3Follower { kLeft3CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
+    rev::CANSparkMax m_rightPrimary  {kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+    rev::CANSparkMax m_rightFollower {kRight2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+    rev::CANSparkMax m_leftPrimary   {kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+    rev::CANSparkMax m_leftFollower  {kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
 
-  frc::DifferentialDrive m_tankDrive { m_left1Primary, m_right1Primary };
+
+  VelocityTankDrive m_tankDrive { m_left1Primary, m_right1Primary };
 
  public:
   DriveTrainSubsystem();
