@@ -7,6 +7,7 @@
 
 #include "CustomClasses/VelocityTankDrive.h"
 
+#include <frc/smartdashboard/SmartDashboard.h>
 
 VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary):
     m_rightPrimary(rightPrimary), m_leftPrimary(leftPrimary)
@@ -15,6 +16,12 @@ VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSpar
     SetupPIDController(m_rightPID);
     SetupPIDController(m_leftPID);
 
+    /*auto kP  = frc::SmartDashboard::PutNumber("Drive/PID: P Gain", m_proportional);
+    auto kI  = frc::SmartDashboard::PutNumber("Drive/PID: I Gain", m_integral);
+    auto kD  = frc::SmartDashboard::PutNumber("Drive/PID: D Gain", m_derivative);
+    auto kIz = frc::SmartDashboard::PutNumber("Drive/PID: I Zone", m_iZone);
+    auto kF  = frc::SmartDashboard::PutNumber("Drive/PID: Feed Forward", m_feedForward);*/
+
     //NavX Communication
     //ahrs = new AHRS(SerialPort::Port::kUSB);
 }
@@ -22,7 +29,8 @@ VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSpar
 void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent)
 {
     motor.SetSmartCurrentLimit(driveMaxCurrent);
-    motor.SetRampRate(motorMaxSpeed / (robotMaxAccel * driveSafetyFactor));
+    //motor.SetRampRate(motorMaxSpeed / (robotMaxAccel * driveSafetyFactor));
+    motor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 }
 
 void VelocityTankDrive::SetupPIDController(rev::CANPIDController& pid)
@@ -60,8 +68,19 @@ void VelocityTankDrive::SetupPIDController(rev::CANPIDController& pid)
 void VelocityTankDrive::TankDrive(double left, double right)
 {
     // Set the left and right side speeds
+    frc::SmartDashboard::PutNumber("Drive/L Setpoint", left);
+    frc::SmartDashboard::PutNumber("Drive/R Setpoint", right);
+
     m_rightPID.SetReference(right, rev::ControlType::kVelocity);
     m_leftPID.SetReference(left, rev::ControlType::kVelocity);
+
+    frc::SmartDashboard::PutNumber("Drive/L Velocity", m_leftEncoder.GetVelocity());
+    frc::SmartDashboard::PutNumber("Drive/R Velocity", m_rightEncoder.GetVelocity());
+    /*auto kP  = frc::SmartDashboard::GetNumber("Drive/PID: P Gain", m_proportional);
+    auto kI  = frc::SmartDashboard::GetNumber("Drive/PID: I Gain", m_integral);
+    auto kD  = frc::SmartDashboard::GetNumber("Drive/PID: D Gain", m_derivative);
+    auto kIz = frc::SmartDashboard::GetNumber("Drive/PID: I Zone", m_iZone);
+    auto kF  = frc::SmartDashboard::GetNumber("Drive/PID: Feed Forward", m_feedForward);*/
 }
 void VelocityTankDrive::SetupPIDGains (double p, double i, double d, double ff, double iz)
 {
@@ -77,7 +96,7 @@ void VelocityTankDrive::SetupPIDGains (double p, double i, double d, double ff, 
 
 void VelocityTankDrive::StopMotor () 
 {
-    TankDrive(0,0);
+    // TankDrive(0,0);
 }
 
 void VelocityTankDrive::GetDescription (wpi::raw_ostream& desc) const

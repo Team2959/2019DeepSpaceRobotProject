@@ -15,12 +15,10 @@
 #include <iostream>
 
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
-ExampleSubsystem Robot::m_subsystem;
 OI Robot::m_oi;
 
 void Robot::RobotInit() {
-  m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
-  m_chooser.AddOption("My Auto", &m_myAuto);
+  m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(TABLE_NAME);
@@ -45,11 +43,11 @@ void Robot::RobotPeriodic()
   /*std::cout<<"framenumber = "<<frameNumber<<"\n";
   for(auto i = 0; i < targetRect.size(); ++i)
     std::cout << "targetRect[" << i << "] = " << targetRect[i] << "\n";*/
-  if (counter > 0) {
+  if (counter > 2) {
     m_driveTrainSubsystem.DashboardDataUpdate();
     counter = 0;
   }
-  
+  counter++;
 }
 
 /**

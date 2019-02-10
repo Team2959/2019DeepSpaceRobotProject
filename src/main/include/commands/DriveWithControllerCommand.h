@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc/commands/Command.h>
+#include "utilities/JoystickConditioning.h"
 
 class DriveWithControllerCommand : public frc::Command {
  public:
@@ -17,4 +18,8 @@ class DriveWithControllerCommand : public frc::Command {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
+
+  private: 
+
+   JoystickConditioning jsc{-0.1,0.1,-0.1,0.1,1,1};
 };

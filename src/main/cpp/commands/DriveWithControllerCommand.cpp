@@ -21,9 +21,11 @@ void DriveWithControllerCommand::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void DriveWithControllerCommand::Execute()
 {
+    double multiplier = 1.0;
+    
     Robot::m_driveTrainSubsystem.TankDrive(
-        Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kLeftHand),
-        Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kRightHand)
+        jsc.Conditioned(multiplier * Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kLeftHand)),
+        jsc.Conditioned(multiplier * Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kRightHand))
     );
 }
 
