@@ -22,10 +22,9 @@ constexpr int kLeft1CanSparkMaxMotor = 4;
 constexpr int kLeft2CanSparkMaxMotor = 5;
 constexpr int kLeft3CanSparkMaxMotor = 6;
 
-constexpr int kLiftCanTalonSrxMotor1 = 7;
-constexpr int kLiftCanTalonSrxMotor2 = 8;
-constexpr int kLiftCanTalonSrxMotor3 = 9;
-constexpr int kLiftCanTalonSrxMotor4 = 10;
+constexpr int kLiftPrimaryCanSparkMaxMotor = 7;
+constexpr int kLiftFollower1CanSparkMaxMotor = 8;
+constexpr int kLiftFollower2CanSparkMaxMotor = 9;
 
 constexpr int kLeftCargoShuttleCanTalonSrxMotor = 11;
 constexpr int kRightCargoShuttleCanTalonSrxMotor = 12;

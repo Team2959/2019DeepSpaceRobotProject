@@ -5,41 +5,44 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/CargoArmUpCommand.h"
+#include "commands/MoveLiftAndShuttleCommand.h"
 #include "Robot.h"
-#include "commands/StopCargoControlWheelsCommand.h"
-#include "subsystems/CargoArmPositions.h"
 
-CargoArmUpCommand::CargoArmUpCommand() {
+MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition)
+{
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(&Robot::m_cargoArmSubsystem);
+  Requires(&Robot::m_liftAndShuttleSubsytem);
+
+  m_targetLiftPosition = targetLiftPosition;
+  m_targetShuttlePosition = targetShuttlePosition;
 }
 
 // Called just before this Command runs the first time
-void CargoArmUpCommand::Initialize()
-{
-  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmUpPosition, true);
-  
-  auto ptr = new StopCargoControlWheelsCommand(0.0);
-  ptr->Start();
-}
+void MoveLiftAndShuttleCommand::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void CargoArmUpCommand::Execute() {}
+void MoveLiftAndShuttleCommand::Execute()
+{
+  // tell the LiftAndShuttleSubsystem the target Shuttle and Lift Positions.
+  Robot::m_liftAndShuttleSubsytem.MoveToTargetPosition(
+    m_targetShuttlePosition, m_targetLiftPosition,
+    Robot::m_cargoArmSubsystem.IsArmAboveCargoShuttle());
+}
 
 // Make this return true when this Command no longer needs to run execute()
-bool CargoArmUpCommand::IsFinished()
+bool MoveLiftAndShuttleCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmUpPosition);
+   return Robot::m_liftAndShuttleSubsytem.IsAtTargetPosition(
+     m_targetShuttlePosition, m_targetLiftPosition);
 }
 
 // Called once after isFinished returns true
-void CargoArmUpCommand::End() {}
+void MoveLiftAndShuttleCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void CargoArmUpCommand::Interrupted()
+void MoveLiftAndShuttleCommand::Interrupted()
 {
-  Robot::m_cargoArmSubsystem.StopAtCurrentPosition();
+  Robot::m_liftAndShuttleSubsytem.StopAtCurrentPosition();
 }

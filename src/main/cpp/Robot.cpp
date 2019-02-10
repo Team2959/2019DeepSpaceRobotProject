@@ -14,20 +14,25 @@
 #include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
 #include <iostream>
 
-// Actually create each subsystem
+// create instance of subsystems
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 HatchSubsystem Robot::m_hatchSubsystem;
 CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
-ExampleSubsystem Robot::m_subsystem;
+LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsytem;
+// create instance of OI
 OI Robot::m_oi;
 
 void Robot::RobotInit() {
-  m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
+  m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
   m_chooser.AddOption("My Auto", &m_myAuto);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
+
+  m_cargoArmSubsystem.DashboardDataInit();
+  m_liftAndShuttleSubsytem.DashboardDataInit();
+  frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
 }
 
 /**
@@ -47,6 +52,12 @@ void Robot::RobotPeriodic()
   std::cout<<"front framenumber = "<<frameNumber<<"\n";
   for(auto i = 0; i < targetRect.size(); ++i)
     std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";
+
+  if (m_periodic++ % 10 == 0)
+  {
+    m_cargoArmSubsystem.DashboardData();
+    m_liftAndShuttleSubsytem.DashboardData();
+  }
 }
 
 /**

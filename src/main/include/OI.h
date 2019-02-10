@@ -38,6 +38,8 @@ class OI
   frc::JoystickButton m_secureHatch {&m_coPilotJoystick, 8};
   frc::JoystickButton m_attachHatch {&m_coPilotJoystick, 9};
 
+  frc::JoystickButton m_liftAndShuttleToTopFront { &m_coPilotJoystick, 7 };
+
   // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;
 };

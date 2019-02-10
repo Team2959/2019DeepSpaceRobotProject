@@ -11,7 +11,7 @@
 
 MyAutoCommand::MyAutoCommand() {
   // Use Requires() here to declare subsystem dependencies
-  Requires(&Robot::m_subsystem);
+  //Requires(&Robot::m_subsystem);
 }
 
 // Called just before this Command runs the first time

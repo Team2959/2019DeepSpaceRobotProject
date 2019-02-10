@@ -8,6 +8,7 @@
 #include "OI.h"
 
 #include <frc/WPILib.h>
+#include "subsystems/LiftAndShuttlePositions.h"
 #include "commands/ExtendCargoArmFrontCommand.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 #include "commands/MoveCargoTowardFrontCommand.h"
@@ -15,6 +16,7 @@
 #include "commands/CargoArmUpCommand.h"
 #include "commands/ExtendCargoArmFrontCommand.h"
 #include "commands/ExtendCargoArmRearCommand.h"
+#include "commands/MoveLiftAndShuttleCommand.h"
 #include "commands/PrepForHatchCommand.h"  
 #include "commands/AttachHatchCommand.h"  
 #include "commands/PlaceHatchCommandGroup.h"
@@ -30,6 +32,8 @@ OI::OI()
   m_cargoArmUp.WhenPressed(new CargoArmUpCommand());
   m_cargoArmFront.WhenPressed(new ExtendCargoArmFrontCommand());
   m_cargoArmRear.WhenPressed(new ExtendCargoArmRearCommand());
+
+  m_liftAndShuttleToTopFront.WhenPressed(new MoveLiftAndShuttleCommand(kLiftTopPosition, kShuttleFrontPosition));
 
   m_prepForHatch.WhenPressed(new PrepForHatchCommand());
   m_secureHatch.WhenPressed(new GrabHatchCommandGroup());

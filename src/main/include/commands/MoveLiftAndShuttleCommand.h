@@ -9,9 +9,15 @@
 
 #include <frc/commands/Command.h>
 
-class ExampleCommand : public frc::Command {
+class MoveLiftAndShuttleCommand : public frc::Command
+{
+private:
+  double m_targetShuttlePosition;
+  double m_targetLiftPosition;
+
  public:
-  ExampleCommand();
+  MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition);
+
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
