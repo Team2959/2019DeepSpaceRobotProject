@@ -26,8 +26,6 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_left, m_pidConfig, false);
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_right, m_pidConfig, false);
-
-  MoveCargoArmToPosition(kArmUpPosition, true);
 }
 
 double CargoArmSubsystem::CurrentArmPosition()

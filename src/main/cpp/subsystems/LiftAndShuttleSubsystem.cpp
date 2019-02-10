@@ -31,8 +31,6 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, false);
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
 
-  MoveShuttleToPosition(kShuttleMiddlePosition);
-
   // Lift motor contorller configuration
   m_liftFollower1.Follow(m_liftPrimary);
   m_liftFollower2.Follow(m_liftPrimary);
@@ -164,21 +162,26 @@ void LiftAndShuttleSubsystem::MoveToTargetPosition(
   // determine if the shuttle needs to cross through the middle
   // if not, then go to target
   if((targetShuttlePosition >= kShuttleSafeFrontPosition && currentShuttlePosition >= kShuttleSafeFrontPosition)||
-    (targetShuttlePosition <= kShuttleSafeRearPosition && currentShuttlePosition <= kShuttleSafeRearPosition)){
+     (targetShuttlePosition <= kShuttleSafeRearPosition && currentShuttlePosition <= kShuttleSafeRearPosition))
+  {
       // keep move to target position
   }
   // if yes, follow each plan
-  else{
+  else
+  {
     // up => up
-    if(currentLiftPosition >= kLiftMaxSafeHeight && targetLiftPosition >= kLiftMaxSafeHeight){
+    if(currentLiftPosition >= kLiftMaxSafeHeight && targetLiftPosition >= kLiftMaxSafeHeight)
+    {
       targetLiftPosition = kLiftMaxSafeHeight;
     }
     // down => up
-    else if(currentLiftPosition < kLiftMaxSafeHeight && targetLiftPosition >= kLiftMaxSafeHeight){
+    else if(currentLiftPosition < kLiftMaxSafeHeight && targetLiftPosition >= kLiftMaxSafeHeight)
+    {
       targetLiftPosition = kLiftMaxSafeHeight;
     }
     // up => down or down => down
-    else {
+    else
+    {
       // up => down
       //   if(currentLiftPosition >= kLiftMaxSafeHeight && targetLiftPosition < kLiftMaxSafeHeight)
       // down => down
