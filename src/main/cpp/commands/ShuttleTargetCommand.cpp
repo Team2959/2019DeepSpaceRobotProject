@@ -5,32 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DriveWithControllerCommand.h"
+#include "commands/ShuttleTargetCommand.h"
 #include "Robot.h"
 
-DriveWithControllerCommand::DriveWithControllerCommand() {
+ShuttleTargetCommand::ShuttleTargetCommand(bool front) {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(&Robot::m_driveTrainSubsystem);
+
+  // set the target shuttle direction based on input variable
 }
 
 // Called just before this Command runs the first time
-void DriveWithControllerCommand::Initialize() {}
+void ShuttleTargetCommand::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void DriveWithControllerCommand::Execute()
-{
-  Robot::m_driveTrainSubsystem.MyTankDrive(
-    Robot::m_oi.m_leftDriverJoystick.GetY(),
-    Robot::m_oi.m_rightDriverJoystick.GetY() );
-}
+void ShuttleTargetCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool DriveWithControllerCommand::IsFinished() { return false; }
+bool ShuttleTargetCommand::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void DriveWithControllerCommand::End() {}
+void ShuttleTargetCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveWithControllerCommand::Interrupted() {}
+void ShuttleTargetCommand::Interrupted() {}

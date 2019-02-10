@@ -7,20 +7,9 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include "commands/MoveLiftAndShuttleCommand.h"
 
-class MoveLiftAndShuttleCommand : public frc::Command
-{
-private:
-  double m_targetShuttlePosition;
-  double m_targetLiftPosition;
-
-public:
-  MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition);
-
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+class MoveLiftCommand : public MoveLiftAndShuttleCommand {
+ public:
+  MoveLiftCommand(double targetLiftPosition);
 };

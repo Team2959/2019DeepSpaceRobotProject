@@ -5,32 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DriveWithControllerCommand.h"
-#include "Robot.h"
+#include "commands/ExtendCargoArmCommand.h"
 
-DriveWithControllerCommand::DriveWithControllerCommand() {
+ExtendCargoArmCommand::ExtendCargoArmCommand() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(&Robot::m_driveTrainSubsystem);
 }
 
 // Called just before this Command runs the first time
-void DriveWithControllerCommand::Initialize() {}
+void ExtendCargoArmCommand::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void DriveWithControllerCommand::Execute()
-{
-  Robot::m_driveTrainSubsystem.MyTankDrive(
-    Robot::m_oi.m_leftDriverJoystick.GetY(),
-    Robot::m_oi.m_rightDriverJoystick.GetY() );
-}
+void ExtendCargoArmCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool DriveWithControllerCommand::IsFinished() { return false; }
+bool ExtendCargoArmCommand::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void DriveWithControllerCommand::End() {}
+void ExtendCargoArmCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveWithControllerCommand::Interrupted() {}
+void ExtendCargoArmCommand::Interrupted() {}

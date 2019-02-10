@@ -5,22 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "commands/MoveLiftCommand.h"
+#include "subsystems/LiftAndShuttlePositions.h"
+#include "Robot.h"
 
-#include <frc/commands/Command.h>
-
-class MoveLiftAndShuttleCommand : public frc::Command
+MoveLiftCommand::MoveLiftCommand(double targetLiftPosition) : MoveLiftAndShuttleCommand(targetLiftPosition, 0)
 {
-private:
-  double m_targetShuttlePosition;
-  double m_targetLiftPosition;
+  // Find target direction of shuttle
 
-public:
-  MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition);
-
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-};
+  // based on direction, set the target shuttle position in MoveLiftAndShuttleCommand
+}
