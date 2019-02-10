@@ -41,7 +41,8 @@ constexpr int kClimbEngagePwmSparkMotor = 2;
 constexpr int kCargoArmExtendSolenoid = 0;
 constexpr int kHatchAttachSolenoid = 1;
 constexpr int kHatchReleaseSolenoid = 2;
-constexpr int kTallClimbEngageSolenoid = 3;
+constexpr int kHatchSafetySolenoid = 3;
+constexpr int kTallClimbEngageSolenoid = 4;
 
 // Digital IO addresses
 constexpr int kLiftBottomSwitch = 1;

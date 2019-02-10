@@ -16,6 +16,7 @@
 
 // create instance of subsystems
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
+HatchSubsystem Robot::m_hatchSubsystem;
 CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
 LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsytem;
@@ -48,9 +49,9 @@ void Robot::RobotPeriodic()
   auto  targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   // Testing of Raspberry Pi info through network tables
-  std::cout<<"framenumber = "<<frameNumber<<"\n";
+  std::cout<<"front framenumber = "<<frameNumber<<"\n";
   for(auto i = 0; i < targetRect.size(); ++i)
-    std::cout << "targetRect[" << i << "] = " << targetRect[i] << "\n";
+    std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";
 
   if (m_periodic++ % 10 == 0)
   {

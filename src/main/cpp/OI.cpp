@@ -17,11 +17,14 @@
 #include "commands/ExtendCargoArmFrontCommand.h"
 #include "commands/ExtendCargoArmRearCommand.h"
 #include "commands/MoveLiftAndShuttleCommand.h"
+#include "commands/PrepForHatchCommand.h"  
+#include "commands/AttachHatchCommand.h"  
+#include "commands/PlaceHatchCommandGroup.h"
+#include "commands/GrabHatchCommandGroup.h"
 
 OI::OI()
  {
   // Process operator interface input here.
-
   m_cargoStop.WhenPressed(new StopCargoControlWheelsCommand(0.0));
   m_cargoTowardsFront.WhenPressed(new MoveCargoTowardFrontCommand());
   m_cargoTowardsRear.WhenPressed(new MoveCargoTowardRearCommand());
@@ -31,6 +34,10 @@ OI::OI()
   m_cargoArmRear.WhenPressed(new ExtendCargoArmRearCommand());
 
   m_liftAndShuttleToTopFront.WhenPressed(new MoveLiftAndShuttleCommand(kLiftTopPosition, kShuttleFrontPosition));
+
+  m_prepForHatch.WhenPressed(new PrepForHatchCommand());
+  m_secureHatch.WhenPressed(new GrabHatchCommandGroup());
+  m_attachHatch.WhenPressed(new PlaceHatchCommandGroup());
 
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
 }

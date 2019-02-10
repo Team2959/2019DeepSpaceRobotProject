@@ -15,14 +15,16 @@
 #include "OI.h"
 #include "commands/MyAutoCommand.h"
 #include "subsystems/DriveTrainSubsystem.h"
+#include "subsystems/HatchSubsystem.h"
 #include "subsystems/CargoControlSubsystem.h"
 #include "subsystems/CargoArmSubsystem.h"
 #include "subsystems/LiftAndShuttleSubsystem.h"
 
 class Robot : public frc::TimedRobot {
  public:
-  // Create all subsystems here!
+  // Define all the subsystems to create here!
   static DriveTrainSubsystem m_driveTrainSubsystem;
+  static HatchSubsystem m_hatchSubsystem;
   static CargoControlSubsystem m_cargoControlSubsystem;
   static CargoArmSubsystem m_cargoArmSubsystem;
   static LiftAndShuttleSubsystem m_liftAndShuttleSubsytem;
