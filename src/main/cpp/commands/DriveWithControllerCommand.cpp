@@ -13,6 +13,9 @@ DriveWithControllerCommand::DriveWithControllerCommand()
     // Use Requires() here to declare subsystem dependencies
     // eg. Requires(Robot::chassis.get());
     Requires(&Robot::m_driveTrainSubsystem);
+    jsc.SetDeadband(0.1);
+    jsc.SetExponent(3.0);
+    jsc.SetRange(0, Robot::m_driveTrainSubsystem.GetMaxSpeed());
 }
 
 // Called just before this Command runs the first time
@@ -21,11 +24,9 @@ void DriveWithControllerCommand::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void DriveWithControllerCommand::Execute()
 {
-    double multiplier = 1.0;
-    
     Robot::m_driveTrainSubsystem.TankDrive(
-        jsc.Conditioned(multiplier * Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kLeftHand)),
-        jsc.Conditioned(multiplier * Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kRightHand))
+        jsc.Condition(1.0 * Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kLeftHand)),
+        jsc.Condition(1.0 * Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kRightHand))
     );
 }
 

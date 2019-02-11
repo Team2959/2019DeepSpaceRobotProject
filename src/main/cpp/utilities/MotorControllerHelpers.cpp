@@ -103,7 +103,8 @@ void MotorControllerHelpers::DashboardDataTalonSrx(
 
 void MotorControllerHelpers::DashboardInitSparkMax(
     std::string name,
-    rev::CANPIDController & pidConfig)
+    rev::CANPIDController & pidConfig,
+    rev::CANEncoder & encoder)
 {
   // display PID coefficients on SmartDashboard
   frc::SmartDashboard::PutNumber(name + ": P Gain", pidConfig.GetP());
@@ -116,14 +117,17 @@ void MotorControllerHelpers::DashboardInitSparkMax(
 
   frc::SmartDashboard::PutNumber(name + ": Go To Position", 0);
   frc::SmartDashboard::PutNumber(name + ": Target", 0);
-  frc::SmartDashboard::PutNumber(name + ": Position", 0);
-  frc::SmartDashboard::PutNumber(name + ": Velocity", 0);
+  frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
+  frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());
 }
 
 void MotorControllerHelpers::DashboardDataSparkMax(
     std::string name,
     rev::CANPIDController & pidConfig)
 {
+  frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
+  frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());
+
   // display PID coefficients on SmartDashboard
   auto kP = frc::SmartDashboard::GetNumber(name + ": P Gain", pidConfig.GetP());
   auto kI = frc::SmartDashboard::GetNumber(name + ": I Gain", pidConfig.GetI());

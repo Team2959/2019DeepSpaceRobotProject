@@ -26,9 +26,11 @@ public:
 
     static void DashboardInitSparkMax(
         std::string name,
-        rev::CANPIDController & pidConfig);
+        rev::CANPIDController & pidConfig,
+        rev::CANEncoder & encoder);
 
     static void DashboardDataSparkMax(
         std::string name,
-        rev::CANPIDController & pidConfig);
+        rev::CANPIDController & pidConfig,
+        rev::CANEncoder & encoder);
 };

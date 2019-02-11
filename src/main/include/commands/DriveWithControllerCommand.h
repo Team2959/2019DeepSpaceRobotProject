@@ -8,7 +8,7 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include "utilities/JoystickConditioning.h"
+#include "utilities/conditioning.h"
 
 class DriveWithControllerCommand : public frc::Command {
  public:
@@ -21,5 +21,5 @@ class DriveWithControllerCommand : public frc::Command {
 
   private: 
 
-   JoystickConditioning jsc{-0.1,0.1,-0.1,0.1,1,1};
+   cwtech::UniformConditioning jsc;
 };

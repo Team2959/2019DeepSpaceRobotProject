@@ -37,4 +37,7 @@ public:
 
     void DashboardDataInit ();
     void DashboardDataUpdate ();
+
+    double GetMaxSpeed ();
+    double GetMaxAccel ();
 };

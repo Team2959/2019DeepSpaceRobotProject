@@ -38,12 +38,8 @@ private:
     double m_derivative   = 0.0;
     double m_feedForward  = 0.0;
     double m_iZone        = 0.0;
-
-    // SetPointGenerator is the singular interface for each motor controller.  
-    /* It shall accepts a desired set point and determines a responsible next set point 
-       for the motor control loop, accounting for current speed and all applicable limits. */
-    //void SetPointGenerator  (double dsp, rev::CANPIDController& pidController, rev::CANEncoder& encoder);
     
+    // Send Gains to PID Controller
     void SetupPIDController (rev::CANPIDController& pid);
 
 public:
@@ -62,6 +58,7 @@ public:
     void GetDescription (wpi::raw_ostream& desc) const override;
     void InitSendable   (SendableBuilder& builder) override;
 
+    // Testing functions only, should not be used in production
     void DashboardDataInit   ();
     void DashboardDataUpdate ();
 };

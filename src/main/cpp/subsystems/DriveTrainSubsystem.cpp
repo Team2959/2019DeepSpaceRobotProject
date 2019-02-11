@@ -31,10 +31,7 @@ void DriveTrainSubsystem::InitDefaultCommand()
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed){
-    m_tankDrive.TankDrive(
-        leftSpeed * kMotorMaxSpeed * kDriveSafetyFactor,
-        rightSpeed * kMotorMaxSpeed * kDriveSafetyFactor
-    );
+    m_tankDrive.TankDrive(leftSpeed, rightSpeed);
 }
 
 void DriveTrainSubsystem::DashboardDataInit ()
@@ -44,4 +41,14 @@ void DriveTrainSubsystem::DashboardDataInit ()
 void DriveTrainSubsystem::DashboardDataUpdate ()
 {
     m_tankDrive.DashboardDataUpdate();
+}
+
+double DriveTrainSubsystem::GetMaxSpeed()
+{
+    return kDriveSafetyFactor * kMotorMaxSpeed;
+}
+
+double DriveTrainSubsystem::GetMaxAccel()
+{
+    return kDriveSafetyFactor * kRobotMaxAccel;
 }
