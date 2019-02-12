@@ -21,6 +21,8 @@
 
 OI::OI()
 {
+  m_shuttleTargetFront = true;
+  
   // Driver Buttons
   m_deliver.WhenPressed(new DeliverCommandGroup());
 

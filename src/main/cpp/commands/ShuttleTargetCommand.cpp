@@ -9,10 +9,8 @@
 #include "Robot.h"
 
 ShuttleTargetCommand::ShuttleTargetCommand(bool front) {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
-
   // set the target shuttle direction based on input variable
+  Robot::m_oi.m_shuttleTargetFront = front;
 }
 
 // Called just before this Command runs the first time
@@ -22,7 +20,7 @@ void ShuttleTargetCommand::Initialize() {}
 void ShuttleTargetCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool ShuttleTargetCommand::IsFinished() { return false; }
+bool ShuttleTargetCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void ShuttleTargetCommand::End() {}

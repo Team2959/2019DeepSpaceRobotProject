@@ -14,15 +14,7 @@
 
 class OI
 {
-
- public:
-  OI();
-  
-  // USB connections
-  frc::Joystick m_leftDriverJoystick { kLeftDriverUSBController };
-  frc::Joystick m_rightDriverJoystick { kRighttDriverUSBController };
-  frc::Joystick m_coPilotJoystick { kCoPilotUSBController };
-
+private:
   // Driver buttons
   frc::JoystickButton m_deliver { &m_rightDriverJoystick, 1};
 
@@ -47,4 +39,14 @@ class OI
 
   // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;
+
+ public:
+  OI();
+
+  // USB connections
+  frc::Joystick m_leftDriverJoystick { kLeftDriverUSBController };
+  frc::Joystick m_rightDriverJoystick { kRighttDriverUSBController };
+  frc::Joystick m_coPilotJoystick { kCoPilotUSBController };
+
+  bool m_shuttleTargetFront;
 };

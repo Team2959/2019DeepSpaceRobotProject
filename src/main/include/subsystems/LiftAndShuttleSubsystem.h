@@ -37,7 +37,6 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfigShuttle;
 
   // Shuttle methods
-  double CurrentShuttlePosition();
   void MoveShuttleToPosition(double position);
   void ShuttleStopAtCurrentPosition();
 
@@ -45,6 +44,7 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   LiftAndShuttleSubsystem();
 
   bool IsShuttleAtPosition(double targetPosition);
+  double CurrentShuttlePosition();
 
   // Movement Control Interface
   bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);

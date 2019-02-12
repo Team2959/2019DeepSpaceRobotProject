@@ -11,7 +11,14 @@
 
 MoveLiftCommand::MoveLiftCommand(double targetLiftPosition) : MoveLiftAndShuttleCommand(targetLiftPosition, 0)
 {
-  // Find target direction of shuttle
-
-  // based on direction, set the target shuttle position in MoveLiftAndShuttleCommand
+  // if shuttle target is front -> set shuttle target postion to kShuttleFrontPosition
+  if (Robot::m_oi.m_shuttleTargetFront == true)
+  {
+    m_targetShuttlePosition = kShuttleFrontPosition;
+  }
+  // else shuttle is rear -> set shuttle target postion to kShuttleRearPosition
+  else
+  {
+    m_targetShuttlePosition = kShuttleRearPosition;
+  }
 }
