@@ -9,7 +9,6 @@
 #include "subsystems/CargoArmPositions.h"
 #include "subsystems/LiftAndShuttlePositions.h"
 #include "Robot.h"
-#include "commands/MoveCargoTowardFrontCommand.h"
 #include "commands/MoveCargoTowardRearCommand.h"
 
 ExtendCargoArmCommand::ExtendCargoArmCommand() {
@@ -27,47 +26,23 @@ void ExtendCargoArmCommand::Initialize()
 void ExtendCargoArmCommand::Execute() 
 {
   // keep feeding the target position, in case we could only go part way
-  if (Robot::m_liftAndShuttleSubsytem.CurrentShuttlePosition() >= 0)
+  bool atFront = Robot::m_liftAndShuttleSubsytem.IsShuttleAtPosition(kShuttleFrontPosition);
+
+  // try to extend arm
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition, atFront);
+
+  // start wheels, once at front
+  if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false)
   {
-    bool atFront = Robot::m_liftAndShuttleSubsytem.IsShuttleAtPosition(kShuttleFrontPosition);
-
-    // try to extend arm
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition, atFront);
-
-    // start wheels, once at front
-    if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false)
-    {
-      auto ptr = new MoveCargoTowardRearCommand();
-      ptr->Start();
-    }
-  }
-  else
-  {
-    bool atRear = Robot::m_liftAndShuttleSubsytem.IsShuttleAtPosition(kShuttleRearPosition);
-
-    // try to extend arm
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmRearPosition, atRear);
-
-    // start wheels, once at rear
-    if (atRear && Robot::m_cargoControlSubsystem.CargoIn() == false)
-    {
-      auto ptr = new MoveCargoTowardFrontCommand();
-      ptr->Start();
-    }
+    auto ptr = new MoveCargoTowardRearCommand();
+    ptr->Start();
   }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendCargoArmCommand::IsFinished()
 {
-  if (Robot::m_liftAndShuttleSubsytem.CurrentShuttlePosition() >= 0)
-  {
-    return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmFrontPosition);
-  }
-  else
-  {
-    return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmRearPosition);
-  }
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmFrontPosition);
 }
 
 // Called once after isFinished returns true
