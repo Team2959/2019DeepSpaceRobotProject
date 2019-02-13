@@ -10,3 +10,4 @@ constexpr int kLiftBottomPosition = 1000;
 constexpr int kLiftCargoShuttlePosition = 3000;
 constexpr int kLiftMiddlePosition = 5000;
 constexpr int kLiftTopPosition = 10000;
+constexpr int kLiftRemoveHatchFromWallPosition = kLiftBottomPosition + 500;

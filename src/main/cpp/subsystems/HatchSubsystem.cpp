@@ -17,12 +17,6 @@ void HatchSubsystem::PrepForHatch(){
   m_safety.Set(true);
 }
 
-void HatchSubsystem::SecureHatch(){
-  // m_attach.Set(false);
-  m_release.Set(false);
-  m_safety.Set(false);
-}
-
 void HatchSubsystem::AttachHatch(){
   m_attach.Set(true);
   m_release.Set(false);

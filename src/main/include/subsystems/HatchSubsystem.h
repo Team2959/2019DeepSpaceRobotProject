@@ -23,7 +23,6 @@ class HatchSubsystem : public frc::Subsystem {
   HatchSubsystem();
 
   void PrepForHatch();
-  void SecureHatch();
   void AttachHatch();
   void ReleaseHatch();
   void RetractMechanism();
