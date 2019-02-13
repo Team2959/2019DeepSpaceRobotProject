@@ -35,9 +35,8 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   m_liftFollower1.Follow(m_liftPrimary);
   m_liftFollower2.Follow(m_liftPrimary);
 
-  m_liftPidController = m_liftPrimary.GetPIDController();
   m_liftPidController.SetP(1.0);
-  m_liftPidController.SetI(1.0);  
+  m_liftPidController.SetI(0.01);  
   m_liftPidController.SetD(0);
   m_liftPidController.SetIZone(0);
   m_liftPidController.SetFF(0);

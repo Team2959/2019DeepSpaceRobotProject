@@ -21,8 +21,8 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANSparkMax m_liftPrimary { kLiftPrimaryCanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_liftFollower1 { kLiftFollower1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_liftFollower2 { kLiftFollower2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
-  rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
+  rev::CANPIDController m_liftPidController { m_liftPrimary };
+  rev::CANEncoder m_liftEncoder { m_liftPrimary };
 
   // Lift methods
   bool IsLiftAtPosition(double targetPosition);
