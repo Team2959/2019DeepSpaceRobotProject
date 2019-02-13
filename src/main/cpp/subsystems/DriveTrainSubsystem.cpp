@@ -52,3 +52,8 @@ double DriveTrainSubsystem::GetMaxAccel()
 {
     return kDriveSafetyFactor * kRobotMaxAccel;
 }
+
+void DriveTrainSubsystem::DisabledWatchDog ()
+{
+    m_tankDrive.DisabledWatchDog();
+}

@@ -2,6 +2,7 @@
 
 #include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 #include <rev/CANPIDController.h>
+#include <rev/CANEncoder.h>
 
 // Functions to consolidate configuration of motor controllers
 //  and interact with smart dashboard to setup/troubleshoot

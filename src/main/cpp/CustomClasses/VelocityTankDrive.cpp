@@ -12,6 +12,12 @@
 VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary):
     m_rightPrimary(rightPrimary), m_leftPrimary(leftPrimary)
 {
+    m_rightPID = m_rightPrimary.GetPIDController();
+    m_leftPID  = m_leftPrimary.GetPIDController();
+
+    m_rightEncoder = m_rightPrimary.GetEncoder();
+    m_leftEncoder  = m_leftPrimary.GetEncoder();
+
     // Set the PIDF gains for the primary motor controllers
     SetupPIDController(m_rightPID);
     SetupPIDController(m_leftPID);
@@ -46,7 +52,7 @@ void VelocityTankDrive::TankDrive(double left, double right)
     m_rightPID.SetReference(right, rev::ControlType::kVelocity);
     m_leftPID.SetReference(left, rev::ControlType::kVelocity);
 
-    m_safetyHelper.Feed();
+    FeedWatchdog();
 }
 void VelocityTankDrive::SetupPIDGains (double p, double i, double d, double ff, double iz)
 {
@@ -64,7 +70,7 @@ void VelocityTankDrive::StopMotor ()
 {
     m_rightPrimary.StopMotor();
     m_leftPrimary.StopMotor();
-    m_safetyHelper.Feed()
+    FeedWatchdog();
 }
 
 void VelocityTankDrive::GetDescription (wpi::raw_ostream& desc) const
@@ -87,4 +93,9 @@ void VelocityTankDrive::DashboardDataUpdate ()
 {
     MotorControllerHelpers::DashboardDataSparkMax("Drive/Right", m_rightPID, m_rightEncoder);
     MotorControllerHelpers::DashboardDataSparkMax("Drive/Left", m_leftPID, m_leftEncoder);
+}
+
+void VelocityTankDrive::DisabledWatchDog ()
+{
+    FeedWatchdog();
 }

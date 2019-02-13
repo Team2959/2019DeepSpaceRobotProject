@@ -58,6 +58,8 @@ public:
     void GetDescription (wpi::raw_ostream& desc) const override;
     void InitSendable   (SendableBuilder& builder) override;
 
+    void DisabledWatchDog ();
+
     // Testing functions only, should not be used in production
     void DashboardDataInit   ();
     void DashboardDataUpdate ();

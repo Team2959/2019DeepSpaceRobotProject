@@ -123,7 +123,8 @@ void MotorControllerHelpers::DashboardInitSparkMax(
 
 void MotorControllerHelpers::DashboardDataSparkMax(
     std::string name,
-    rev::CANPIDController & pidConfig)
+    rev::CANPIDController & pidConfig,
+    rev::CANEncoder & encoder)
 {
   frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
   frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());

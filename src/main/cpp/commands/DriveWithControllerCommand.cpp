@@ -7,6 +7,8 @@
 
 #include "commands/DriveWithControllerCommand.h"
 #include "Robot.h"
+#include <chrono>
+#include <iostream>
 
 DriveWithControllerCommand::DriveWithControllerCommand()
 {
@@ -24,10 +26,14 @@ void DriveWithControllerCommand::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void DriveWithControllerCommand::Execute()
 {
+    auto start = std::chrono::high_resolution_clock::now();
     Robot::m_driveTrainSubsystem.TankDrive(
         jsc.Condition(1.0 * Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kLeftHand)),
         jsc.Condition(1.0 * Robot::m_oi.m_driverJoystick.GetY(frc::GenericHID::JoystickHand::kRightHand))
     );
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(start - end);
+    std::cout << "Drive Elapsed Time: " << time_span.count() << std::endl;
 }
 
 // Make this return true when this Command no longer needs to run execute()

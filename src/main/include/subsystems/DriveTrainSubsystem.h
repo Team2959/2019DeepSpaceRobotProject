@@ -40,4 +40,6 @@ public:
 
     double GetMaxSpeed ();
     double GetMaxAccel ();
+
+    void DisabledWatchDog ();
 };

@@ -57,7 +57,11 @@ void Robot::RobotPeriodic()
  */
 void Robot::DisabledInit() {}
 
-void Robot::DisabledPeriodic() { frc::Scheduler::GetInstance()->Run(); }
+void Robot::DisabledPeriodic()
+{
+    m_driveTrainSubsystem.DisabledWatchDog();
+    frc::Scheduler::GetInstance()->Run();
+}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
