@@ -27,7 +27,7 @@ class Robot : public frc::TimedRobot {
   static HatchSubsystem m_hatchSubsystem;
   static CargoControlSubsystem m_cargoControlSubsystem;
   static CargoArmSubsystem m_cargoArmSubsystem;
-  static LiftAndShuttleSubsystem m_liftAndShuttleSubsytem;
+  static LiftAndShuttleSubsystem m_liftAndShuttleSubsystem;
 
   static OI m_oi;
 

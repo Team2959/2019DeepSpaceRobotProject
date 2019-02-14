@@ -27,9 +27,9 @@ void ExtendCargoArmCommand::Initialize()
 void ExtendCargoArmCommand::Execute() 
 {
   // keep feeding the target position, in case we could only go part way
-  if (Robot::m_liftAndShuttleSubsytem.CurrentShuttlePosition() >= 0)
+  if (Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition() >= 0)
   {
-    bool atFront = Robot::m_liftAndShuttleSubsytem.IsShuttleAtPosition(kShuttleFrontPosition);
+    bool atFront = Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition);
 
     // try to extend arm
     Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition, atFront);
@@ -43,7 +43,7 @@ void ExtendCargoArmCommand::Execute()
   }
   else
   {
-    bool atRear = Robot::m_liftAndShuttleSubsytem.IsShuttleAtPosition(kShuttleRearPosition);
+    bool atRear = Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleRearPosition);
 
     // try to extend arm
     Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmRearPosition, atRear);
@@ -60,7 +60,7 @@ void ExtendCargoArmCommand::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendCargoArmCommand::IsFinished()
 {
-  if (Robot::m_liftAndShuttleSubsytem.CurrentShuttlePosition() >= 0)
+  if (Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition() >= 0)
   {
     return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmFrontPosition);
   }

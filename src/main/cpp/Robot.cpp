@@ -19,7 +19,7 @@ DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 HatchSubsystem Robot::m_hatchSubsystem;
 CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
-LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsytem;
+LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsystem;
 // create instance of OI
 OI Robot::m_oi;
 
@@ -31,7 +31,7 @@ void Robot::RobotInit() {
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
 
   m_cargoArmSubsystem.DashboardDataInit();
-  m_liftAndShuttleSubsytem.DashboardDataInit();
+  m_liftAndShuttleSubsystem.DashboardDataInit();
   frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
 }
 
@@ -56,7 +56,7 @@ void Robot::RobotPeriodic()
   if (m_periodic++ % 10 == 0)
   {
     m_cargoArmSubsystem.DashboardData();
-    m_liftAndShuttleSubsytem.DashboardData();
+    m_liftAndShuttleSubsystem.DashboardData();
   }
 }
 
