@@ -25,12 +25,12 @@ private:
     rev::CANSparkMax& m_leftPrimary;
     
     // PID Controllers
-    rev::CANPIDController m_rightPID = m_rightPrimary.GetPIDController();
-    rev::CANPIDController m_leftPID  = m_leftPrimary.GetPIDController();
+    rev::CANPIDController m_rightPID;
+    rev::CANPIDController m_leftPID;
 
     // Encoders
-    rev::CANEncoder m_rightEncoder = m_rightPrimary.GetEncoder();
-    rev::CANEncoder m_leftEncoder  = m_leftPrimary.GetEncoder();
+    rev::CANEncoder m_rightEncoder;
+    rev::CANEncoder m_leftEncoder;
 
     // Control Loop (PIDF) gains
     double m_proportional = 0.0005;

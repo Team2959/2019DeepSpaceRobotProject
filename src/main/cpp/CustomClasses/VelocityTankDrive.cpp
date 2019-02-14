@@ -9,15 +9,13 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include <iostream>
+
 VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary):
-    m_rightPrimary(rightPrimary), m_leftPrimary(leftPrimary)
+    m_rightPrimary(rightPrimary), m_leftPrimary(leftPrimary),
+    m_rightPID(m_rightPrimary),  m_leftPID(m_leftPrimary),
+    m_rightEncoder(m_rightPrimary),  m_leftEncoder(m_leftPrimary)
 {
-    m_rightPID = m_rightPrimary.GetPIDController();
-    m_leftPID  = m_leftPrimary.GetPIDController();
-
-    m_rightEncoder = m_rightPrimary.GetEncoder();
-    m_leftEncoder  = m_leftPrimary.GetEncoder();
-
     // Set the PIDF gains for the primary motor controllers
     SetupPIDController(m_rightPID);
     SetupPIDController(m_leftPID);
@@ -28,6 +26,8 @@ VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSpar
 
 void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent)
 {
+    // motor.RestoreFactoryDefaults();
+    motor.ClearFaults();
     motor.SetSmartCurrentLimit(driveMaxCurrent);
     motor.SetRampRate(motorMaxSpeed / (robotMaxAccel * driveSafetyFactor));
     motor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
@@ -49,8 +49,19 @@ void VelocityTankDrive::TankDrive(double left, double right)
     frc::SmartDashboard::PutNumber("Drive/L Setpoint", left);
     frc::SmartDashboard::PutNumber("Drive/R Setpoint", right);
 
-    m_rightPID.SetReference(right, rev::ControlType::kVelocity);
-    m_leftPID.SetReference(left, rev::ControlType::kVelocity);
+    rev::CANError er = m_rightPID.SetReference(right, rev::ControlType::kVelocity);
+    rev::CANError el = m_leftPID.SetReference(left, rev::ControlType::kVelocity);
+
+    if (er != rev::CANError::kOK || el != rev::CANError::kOK) {
+        std::cout << "Drive Error: Right: " << (int)er << " Left: " << (int)el << std::endl;
+    }
+
+    unsigned int rfaults = m_rightPrimary.GetFaults() | m_rightPrimary.GetStickyFaults();
+    unsigned int lfaults = m_leftPrimary.GetFaults() | m_leftPrimary.GetStickyFaults();
+
+    if (rfaults | lfaults) {
+        std::cout << "Drive Faults: R: " << rfaults << " L: " << lfaults << std::endl;
+    }
 
     FeedWatchdog();
 }
