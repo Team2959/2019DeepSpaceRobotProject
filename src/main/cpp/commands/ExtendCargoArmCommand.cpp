@@ -30,14 +30,15 @@ void ExtendCargoArmCommand::Execute()
   {
     bool atFront = Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition);
 
-  // try to extend arm
-  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition, atFront);
+    // try to extend arm
+    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition, atFront);
 
-  // start wheels, once at front
-  if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false)
-  {
-    auto ptr = new MoveCargoTowardRearCommand();
-    ptr->Start();
+    // start wheels, once at front
+    if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false)
+    {
+      auto ptr = new MoveCargoTowardRearCommand();
+      ptr->Start();
+    }
   }
 }
 

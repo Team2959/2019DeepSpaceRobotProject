@@ -17,6 +17,6 @@ GrabHatchCommandGroup::GrabHatchCommandGroup() {
   //     keep shuttle at current position,
   //     lift up + x from current position to get hatch out of brushes on wall));
   AddSequential(new MoveLiftAndShuttleCommand(kLiftRemoveHatchFromWallPosition,
-    Robot::m_liftAndShuttleSubsytem.CurrentShuttlePosition()));
+    Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition()));
   AddSequential(new RetractMechanismCommand());
 }
