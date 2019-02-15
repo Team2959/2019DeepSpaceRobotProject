@@ -6,6 +6,16 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/DeliverCommandGroup.h"
+#include "triggers/CargoInTrigger.h"
+#include "commands/ExtendCargoArmCommand.h"
+#include "commands/MoveCargoTowardFrontCommand.h"
+#include "commands/MoveCargoTowardRearCommand.h"
+#include "commands/StopCargoControlWheelsCommand.h"
+#include "commands/AttachHatchCommand.h"
+#include "commands/ReleaseHatchCommand.h"
+#include "commands/RetractMechanismCommand.h"
+#include <frc/commands/TimedCommand.h>
+#include "Robot.h"
 
 DeliverCommandGroup::DeliverCommandGroup() {
   // Add Commands here:
@@ -24,4 +34,28 @@ DeliverCommandGroup::DeliverCommandGroup() {
   // e.g. if Command1 requires chassis, and Command2 requires arm,
   // a CommandGroup containing them would require both the chassis and the
   // arm.
+
+  // cargo or hatch panal
+  if(Robot::m_cargoControlSubsystem.CargoIn() == true){
+  //For cargo
+    if(Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition()>=0){
+    //deliver front
+      AddSequential(new ExtendCargoArmCommand());
+      AddSequential(new MoveCargoTowardFrontCommand());
+    }
+    else{
+    //deliver back
+      AddSequential(new ExtendCargoArmCommand());
+      AddSequential(new MoveCargoTowardRearCommand());
+    }
+    AddSequential(new StopCargoControlWheelsCommand());
+  }
+  else{
+  //For hatch
+    AddSequential(new AttachHatchCommand());
+    AddSequential(new frc::TimedCommand(0.25));
+    AddSequential(new ReleaseHatchCommand());
+    AddSequential(new frc::TimedCommand(0.25));
+    AddSequential(new RetractMechanismCommand());
+  }
 }

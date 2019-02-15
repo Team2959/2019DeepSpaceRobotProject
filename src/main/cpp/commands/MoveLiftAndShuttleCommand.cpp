@@ -12,7 +12,7 @@ MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition, 
 {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(&Robot::m_liftAndShuttleSubsytem);
+  Requires(&Robot::m_liftAndShuttleSubsystem);
 
   m_targetLiftPosition = targetLiftPosition;
   m_targetShuttlePosition = targetShuttlePosition;
@@ -25,7 +25,7 @@ void MoveLiftAndShuttleCommand::Initialize() {}
 void MoveLiftAndShuttleCommand::Execute()
 {
   // tell the LiftAndShuttleSubsystem the target Shuttle and Lift Positions.
-  Robot::m_liftAndShuttleSubsytem.MoveToTargetPosition(
+  Robot::m_liftAndShuttleSubsystem.MoveToTargetPosition(
     m_targetShuttlePosition, m_targetLiftPosition,
     Robot::m_cargoArmSubsystem.IsArmAboveCargoShuttle());
 }
@@ -33,7 +33,7 @@ void MoveLiftAndShuttleCommand::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool MoveLiftAndShuttleCommand::IsFinished()
 {
-   return Robot::m_liftAndShuttleSubsytem.IsAtTargetPosition(
+   return Robot::m_liftAndShuttleSubsystem.IsAtTargetPosition(
      m_targetShuttlePosition, m_targetLiftPosition);
 }
 
@@ -44,5 +44,5 @@ void MoveLiftAndShuttleCommand::End() {}
 // subsystems is scheduled to run
 void MoveLiftAndShuttleCommand::Interrupted()
 {
-  Robot::m_liftAndShuttleSubsytem.StopAtCurrentPosition();
+  Robot::m_liftAndShuttleSubsystem.StopAtCurrentPosition();
 }
