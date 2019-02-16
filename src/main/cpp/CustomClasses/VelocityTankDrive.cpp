@@ -8,6 +8,7 @@
 #include "CustomClasses/VelocityTankDrive.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
+#include "utilities/MotorControllerHelpers.h"
 
 VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary):
     m_rightPrimary(rightPrimary), m_leftPrimary(leftPrimary),
@@ -20,15 +21,8 @@ VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSpar
 
 void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent)
 {
-    motor.RestoreFactoryDefaults();
-    motor.ClearFaults();
-    motor.SetSmartCurrentLimit(driveMaxCurrent);
+    MotorControllerHelpers::SetupSparkMax(motor, driveMaxCurrent);
     // motor.SetClosedLoopRampRate(motorMaxSpeed / (robotMaxAccel));
-    motor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitFwdEn, false);
-    motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitRevEn, false);
-    motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitFwdEn, false);
-    motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitRevEn, false);
 }
 
 void VelocityTankDrive::TankDrive(double left, double right)

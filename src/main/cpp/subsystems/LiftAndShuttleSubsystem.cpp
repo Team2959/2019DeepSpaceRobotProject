@@ -216,7 +216,7 @@ void LiftAndShuttleSubsystem::DashboardDataInit()
 {
   frc::SmartDashboard::PutData(this);
   MotorControllerHelpers::DashboardInitTalonSrx("Shtl", m_pidConfigShuttle);
-  MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftPidController);
+  MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftPidController, m_liftEncoder);
 }
 
 void LiftAndShuttleSubsystem::DashboardData()
@@ -227,7 +227,7 @@ void LiftAndShuttleSubsystem::DashboardData()
   auto targetPosition = frc::SmartDashboard::GetNumber("Shtl: Go To Position", 0);
   MoveShuttleToPosition(targetPosition);
 
-  MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController);
+  MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController, m_liftEncoder);
 
   targetPosition = frc::SmartDashboard::GetNumber("Lift: Go To Position", 0);
   MoveLiftToPosition(targetPosition);
