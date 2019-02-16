@@ -11,13 +11,13 @@
 
 CargoShuttleStopAtBackCommand::CargoShuttleStopAtBackCommand() {
   // Use Requires() here to declare subsystem dependencies
-  Requires(&Robot::m_liftAndShuttleSubsytem);
+  Requires(&Robot::m_liftAndShuttleSubsystem);
 }
 
 // Called just before this Command runs the first time
 void CargoShuttleStopAtBackCommand::Initialize() 
 {
-  Robot::m_liftAndShuttleSubsytem.CargoShuttleBackStop();
+  Robot::m_liftAndShuttleSubsystem.CargoShuttleBackStop();
 }
 
 // Called repeatedly when this Command is scheduled to run

@@ -12,5 +12,5 @@ ShuttleFrontLimitTrigger::ShuttleFrontLimitTrigger() {}
 
 bool ShuttleFrontLimitTrigger::Get()
 {
-    return Robot::m_liftAndShuttleSubsytem.IsAtShuttleFrontLimit();
+    return Robot::m_liftAndShuttleSubsystem.IsAtShuttleFrontLimit();
 }

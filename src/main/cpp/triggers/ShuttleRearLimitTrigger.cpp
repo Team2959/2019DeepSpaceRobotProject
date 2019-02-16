@@ -12,5 +12,5 @@ ShuttleRearLimitTrigger::ShuttleRearLimitTrigger() {}
 
 bool ShuttleRearLimitTrigger::Get()
  { 
-    return Robot::m_liftAndShuttleSubsytem.IsAtShuttleRearLimit();
+    return Robot::m_liftAndShuttleSubsystem.IsAtShuttleRearLimit();
  }
