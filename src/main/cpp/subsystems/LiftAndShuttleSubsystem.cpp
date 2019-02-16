@@ -70,6 +70,14 @@ void LiftAndShuttleSubsystem::ShuttleStopAtCurrentPosition()
   MoveShuttleToPosition(CurrentShuttlePosition());
 }
 
+void LiftAndShuttleSubsystem::LiftBottomReset()
+{
+  m_liftEncoder.SetPosition(0);
+  m_liftPidController.SetReference(0,rev::ControlType::kPosition);
+  m_liftPrimary.StopMotor();
+}
+
+
 // Lift Code
 
 bool LiftAndShuttleSubsystem::IsLiftAtPosition(double targetPosition)

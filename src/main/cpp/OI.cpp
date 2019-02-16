@@ -21,6 +21,7 @@
 #include "commands/AttachHatchCommand.h"  
 #include "commands/PlaceHatchCommandGroup.h"
 #include "commands/GrabHatchCommandGroup.h"
+#include "commands/LiftLimitSwitchBottomCommand.h"
 
 OI::OI()
  {
@@ -40,4 +41,6 @@ OI::OI()
   m_attachHatch.WhenPressed(new PlaceHatchCommandGroup());
 
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
+
+  m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
 }

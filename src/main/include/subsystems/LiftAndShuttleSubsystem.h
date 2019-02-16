@@ -30,6 +30,7 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   double CurrentLiftPosition();
   void MoveLiftToPosition(double position);
   void LiftStopAtCurrentPosition();
+  void LiftBottomReset();
 
   // Shuttle control
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };

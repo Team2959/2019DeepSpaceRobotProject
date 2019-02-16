@@ -12,6 +12,7 @@
 #include <frc/Buttons/JoystickButton.h>
 #include "RobotMap.h"
 #include "triggers/CargoInTrigger.h"
+#include "triggers/LiftBottomSwitch.h"
 
 class OI
 {
@@ -42,4 +43,6 @@ class OI
 
   // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;
+  LiftBottomSwitch m_liftLimitSwitch;
+
 };
