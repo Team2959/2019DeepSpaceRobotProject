@@ -17,10 +17,10 @@
 // CAN motor addresses
 constexpr int kRight1CanSparkMaxMotor = 1;
 constexpr int kRight2CanSparkMaxMotor = 2;
-constexpr int kRight3CanSparkMaxMotor = 3;
+//constexpr int kRight3CanSparkMaxMotor = 3;
 constexpr int kLeft1CanSparkMaxMotor = 4;
 constexpr int kLeft2CanSparkMaxMotor = 5;
-constexpr int kLeft3CanSparkMaxMotor = 6;
+//constexpr int kLeft3CanSparkMaxMotor = 6;
 
 constexpr int kLiftPrimaryCanSparkMaxMotor = 7;
 constexpr int kLiftFollower1CanSparkMaxMotor = 8;
@@ -51,5 +51,6 @@ constexpr int kCargoArmBackSwitchTrigger = 3;
 constexpr int kCargoInSwitch = 4;
 
 // Operator input USB ports
-constexpr int kDriverUSBController = 0;
-constexpr int kCoPilotUSBController = 1;
+constexpr int kLeftDriverUSBController = 0;
+constexpr int kRighttDriverUSBController = 1;
+constexpr int kCoPilotUSBController = 2;

@@ -9,17 +9,9 @@
 
 #include <frc/commands/Command.h>
 
-class MoveLiftAndShuttleCommand : public frc::Command
-{
-private:
-  double m_targetLiftPosition;
-
-protected:
-  double m_targetShuttlePosition;
-
-public:
-  MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition);
-
+class ExtendCargoArmCommand : public frc::Command {
+ public:
+  ExtendCargoArmCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

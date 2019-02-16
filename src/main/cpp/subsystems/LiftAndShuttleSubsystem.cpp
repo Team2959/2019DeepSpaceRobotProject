@@ -21,6 +21,22 @@ constexpr int kLiftMaxSafeHeight = 5000;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
+  // configure limit switches
+  m_leftShuttle.ConfigForwardLimitSwitchSource(
+    ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector,
+    ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
+  
+  m_leftShuttle.ConfigReverseLimitSwitchSource(
+  ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector,
+  ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
+
+    m_rightShuttle.ConfigForwardLimitSwitchSource(
+    ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector,
+    ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
+  
+  m_rightShuttle.ConfigReverseLimitSwitchSource(
+  ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector,
+  ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
   // Shuttle motor controller configuration
   m_leftShuttle.GetSlotConfigs(m_pidConfigShuttle);
   m_pidConfigShuttle.kP = 0.1;
@@ -44,7 +60,6 @@ void LiftAndShuttleSubsystem::OnRobotInit()
   m_liftFollower1.Follow(m_liftPrimary);
   m_liftFollower2.Follow(m_liftPrimary);
 
-  m_liftPidController = m_liftPrimary.GetPIDController();
   m_liftPidController.SetP(1.0);
   m_liftPidController.SetI(0.01);  
   m_liftPidController.SetD(0);

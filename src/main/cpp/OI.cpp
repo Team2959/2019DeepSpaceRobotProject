@@ -9,40 +9,47 @@
 
 #include <frc/WPILib.h>
 #include "subsystems/LiftAndShuttlePositions.h"
-#include "commands/ExtendCargoArmFrontCommand.h"
-#include "commands/StopCargoControlWheelsCommand.h"
-#include "commands/MoveCargoTowardFrontCommand.h"
-#include "commands/MoveCargoTowardRearCommand.h"
+#include "commands/DeliverCommandGroup.h"
+#include "commands/ShuttleTargetCommand.h"
+#include "commands/MoveLiftCommand.h"
+#include "commands/ExtendCargoArmCommand.h"
 #include "commands/CargoArmUpCommand.h"
-#include "commands/ExtendCargoArmFrontCommand.h"
-#include "commands/ExtendCargoArmRearCommand.h"
-#include "commands/MoveLiftAndShuttleCommand.h"
-#include "commands/PrepForHatchCommand.h"  
-#include "commands/AttachHatchCommand.h"  
-#include "commands/PlaceHatchCommandGroup.h"
+#include "commands/EjectCargoCommandGroup.h"
 #include "commands/GrabHatchCommandGroup.h"
 #include "commands/LiftLimitSwitchBottomCommand.h"
 #include "commands/CargoShuttleStopAtBackCommand.h"
 #include "commands/CargoShuttleStopAtFrontCommand.h"
 
+#include "commands/ClimbCommandGroup.h"
+#include "commands/StopCargoControlWheelsCommand.h"
 
 OI::OI()
- {
-  // Process operator interface input here.
-  m_cargoStop.WhenPressed(new StopCargoControlWheelsCommand(0.0));
-  m_cargoTowardsFront.WhenPressed(new MoveCargoTowardFrontCommand());
-  m_cargoTowardsRear.WhenPressed(new MoveCargoTowardRearCommand());
+{
+  m_shuttleTargetFront = true;
+  
+  // Driver Buttons
+  m_deliver.WhenPressed(new DeliverCommandGroup());
 
+  // Co-Pilot Buttons
+  m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
+  m_shuttleRear.WhenPressed(new ShuttleTargetCommand(false));
+
+  m_liftFloor.WhenPressed(new MoveLiftCommand(kLiftFloorPosition));
+  m_liftBottom.WhenPressed(new MoveLiftCommand(kLiftBottomPosition));
+  m_liftCargoShuttle.WhenPressed(new MoveLiftCommand(kLiftCargoShipPosition));
+  m_liftMiddleRocket.WhenPressed(new MoveLiftCommand(kLiftMiddlePosition));
+  m_liftTopRocket.WhenPressed(new MoveLiftCommand(kLiftTopPosition));
+
+  m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
   m_cargoArmUp.WhenPressed(new CargoArmUpCommand());
-  m_cargoArmFront.WhenPressed(new ExtendCargoArmFrontCommand());
-  m_cargoArmRear.WhenPressed(new ExtendCargoArmRearCommand());
 
-  m_liftAndShuttleToTopFront.WhenPressed(new MoveLiftAndShuttleCommand(kLiftTopPosition, kShuttleFrontPosition));
+  m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
 
-  m_prepForHatch.WhenPressed(new PrepForHatchCommand());
-  m_secureHatch.WhenPressed(new GrabHatchCommandGroup());
-  m_attachHatch.WhenPressed(new PlaceHatchCommandGroup());
+  m_hatchFromLoadingStation.WhenPressed(new GrabHatchCommandGroup());
 
+  m_climb.WhenPressed(new ClimbCommandGroup());
+
+  // Sensor Triggers
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
 
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
