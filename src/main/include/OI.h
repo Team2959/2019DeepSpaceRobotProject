@@ -19,21 +19,21 @@ private:
   frc::JoystickButton m_deliver { &m_rightDriverJoystick, 1};
 
   // Co Pilot Buttons
-  frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 1};
-  frc::JoystickButton m_shuttleRear { &m_coPilotJoystick, 2};
+  frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 4};
+  frc::JoystickButton m_shuttleRear { &m_coPilotJoystick, 5};
 
-  frc::JoystickButton m_liftFloor { &m_coPilotJoystick, 3};
-  frc::JoystickButton m_liftBottom { &m_coPilotJoystick, 4};
-  frc::JoystickButton m_liftCargoShuttle { &m_coPilotJoystick, 5};
-  frc::JoystickButton m_liftMiddleRocket { &m_coPilotJoystick, 6};
-  frc::JoystickButton m_liftTopRocket { &m_coPilotJoystick, 7};
+  frc::JoystickButton m_liftFloor { &m_coPilotJoystick, 10};
+  frc::JoystickButton m_liftBottom { &m_coPilotJoystick, 8};
+  frc::JoystickButton m_liftCargoShuttle { &m_coPilotJoystick, 9};
+  frc::JoystickButton m_liftMiddleRocket { &m_coPilotJoystick, 7};
+  frc::JoystickButton m_liftTopRocket { &m_coPilotJoystick, 6};
 
-  frc::JoystickButton m_cargoArmExtend { &m_coPilotJoystick, 8};
-  frc::JoystickButton m_cargoArmUp {&m_coPilotJoystick, 9};
+  frc::JoystickButton m_cargoArmExtend { &m_coPilotJoystick, 2};
+  frc::JoystickButton m_cargoArmUp {&m_coPilotJoystick, 1};
 
-  frc::JoystickButton m_ejectCargo {&m_coPilotJoystick, 10};
+  frc::JoystickButton m_ejectCargo {&m_coPilotJoystick, 11};
 
-  frc::JoystickButton m_hatchFromLoadingStation {&m_coPilotJoystick, 11};
+  frc::JoystickButton m_hatchFromLoadingStation {&m_coPilotJoystick, 3};
 
   frc::JoystickButton m_climb {&m_coPilotJoystick, 12};
 
