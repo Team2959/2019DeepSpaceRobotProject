@@ -9,8 +9,8 @@
 
 #include <frc/buttons/Trigger.h>
 
-class FrontCargoArmTrigger : public frc::Trigger {
+class ShuttleRearLimitTrigger : public frc::Trigger {
  public:
-  FrontCargoArmTrigger();
+  ShuttleRearLimitTrigger();
   bool Get() override;
 };

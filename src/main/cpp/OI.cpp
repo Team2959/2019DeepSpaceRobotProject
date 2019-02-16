@@ -22,6 +22,9 @@
 #include "commands/PlaceHatchCommandGroup.h"
 #include "commands/GrabHatchCommandGroup.h"
 #include "commands/LiftLimitSwitchBottomCommand.h"
+#include "commands/CargoShuttleStopAtBackCommand.h"
+#include "commands/CargoShuttleStopAtFrontCommand.h"
+
 
 OI::OI()
  {
@@ -43,4 +46,7 @@ OI::OI()
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
 
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
+
+  m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
+  m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
 }

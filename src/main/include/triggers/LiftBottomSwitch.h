@@ -8,14 +8,8 @@
 #pragma once
 
 #include <frc/buttons/Trigger.h>
-#include <frc/DigitalInput.h>
-
-#include "RobotMap.h"
 
 class LiftBottomSwitch : public frc::Trigger {
-private:
-    frc::DigitalInput m_limitSwitch{kLiftBottomSwitch};
-
 public:
     LiftBottomSwitch();
     bool Get() override;

@@ -9,6 +9,8 @@
 #include "subsystems/LiftAndShuttlePositions.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/MotorControllerHelpers.h"
+#include <frc/DigitalInput.h>
+
 
 constexpr int kShuttleCloseEnoughToPosition = 100;
 constexpr int kShuttleSafeFrontPosition = 1000;
@@ -53,6 +55,21 @@ void LiftAndShuttleSubsystem::OnRobotInit()
   DashboardDataInit();
 }
 
+bool LiftAndShuttleSubsystem::IsAtShuttleFrontLimit() const
+{
+  return m_shuttleFrontSwitch.Get();
+}
+
+bool LiftAndShuttleSubsystem::IsAtShuttleRearLimit() const
+{
+  return m_shuttleBackSwitch.Get();
+}
+
+bool LiftAndShuttleSubsystem::IsLiftAtBottom() const
+{
+  return m_liftBottomLimitSwitch.Get();
+}
+
 bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
 {
   // actually check position is near target position
@@ -86,6 +103,22 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
   m_liftPrimary.StopMotor();
 }
 
+void LiftAndShuttleSubsystem::CargoShuttleFrontStop()
+{
+  m_rightShuttle.StopMotor();
+  m_leftShuttle.StopMotor();
+  m_leftShuttle.SetSelectedSensorPosition(kShuttleFrontPosition);
+  m_rightShuttle.SetSelectedSensorPosition(kShuttleFrontPosition);
+  
+}
+
+void LiftAndShuttleSubsystem::CargoShuttleBackStop()
+{
+  m_rightShuttle.StopMotor();
+  m_leftShuttle.StopMotor();
+  m_leftShuttle.SetSelectedSensorPosition(kShuttleRearPosition);
+  m_rightShuttle.SetSelectedSensorPosition(kShuttleRearPosition);
+}
 
 // Lift Code
 

@@ -5,30 +5,30 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/LiftLimitSwitchBottomCommand.h"
-#include "Robot.h"
+#include "commands/CargoShuttleStopAtBackCommand.h"
 #include "subsystems/LiftAndShuttleSubsystem.h"
+#include "Robot.h"
 
-LiftLimitSwitchBottomCommand::LiftLimitSwitchBottomCommand() {
+CargoShuttleStopAtBackCommand::CargoShuttleStopAtBackCommand() {
   // Use Requires() here to declare subsystem dependencies
   Requires(&Robot::m_liftAndShuttleSubsytem);
 }
 
 // Called just before this Command runs the first time
-void LiftLimitSwitchBottomCommand::Initialize() 
+void CargoShuttleStopAtBackCommand::Initialize() 
 {
-Robot::m_liftAndShuttleSubsytem.LiftBottomReset();
+  Robot::m_liftAndShuttleSubsytem.CargoShuttleBackStop();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void LiftLimitSwitchBottomCommand::Execute() {}
+void CargoShuttleStopAtBackCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool LiftLimitSwitchBottomCommand::IsFinished() { return true; }
+bool CargoShuttleStopAtBackCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void LiftLimitSwitchBottomCommand::End() {}
+void CargoShuttleStopAtBackCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void LiftLimitSwitchBottomCommand::Interrupted() {}
+void CargoShuttleStopAtBackCommand::Interrupted() {}

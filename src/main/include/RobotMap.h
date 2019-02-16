@@ -46,7 +46,9 @@ constexpr int kTallClimbEngageSolenoid = 4;
 
 // Digital IO addresses
 constexpr int kLiftBottomSwitch = 1;
-constexpr int kCargoInSwitch = 3;
+constexpr int kCargoArmFrontSwitchTrigger = 2;
+constexpr int kCargoArmBackSwitchTrigger = 3;
+constexpr int kCargoInSwitch = 4;
 
 // Operator input USB ports
 constexpr int kDriverUSBController = 0;

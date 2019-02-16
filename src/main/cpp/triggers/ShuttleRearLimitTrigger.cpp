@@ -5,12 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "triggers/LiftBottomSwitch.h"
+#include "triggers/ShuttleRearLimitTrigger.h"
 #include "Robot.h"
 
-LiftBottomSwitch::LiftBottomSwitch() {}
+ShuttleRearLimitTrigger::ShuttleRearLimitTrigger() {}
 
-bool LiftBottomSwitch::Get()
-{
-    return Robot::m_liftAndShuttleSubsytem.IsLiftAtBottom();
-}
+bool ShuttleRearLimitTrigger::Get()
+ { 
+    return Robot::m_liftAndShuttleSubsytem.IsAtShuttleRearLimit();
+ }

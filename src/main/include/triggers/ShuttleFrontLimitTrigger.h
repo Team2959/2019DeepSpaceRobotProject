@@ -5,8 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "triggers/FrontCargoArmTrigger.h"
+#pragma once
 
-FrontCargoArmTrigger::FrontCargoArmTrigger() {}
+#include <frc/buttons/Trigger.h>
 
-bool FrontCargoArmTrigger::Get() { return false; }
+class ShuttleFrontLimitTrigger : public frc::Trigger {
+ public:
+  ShuttleFrontLimitTrigger();
+  bool Get() override;
+};

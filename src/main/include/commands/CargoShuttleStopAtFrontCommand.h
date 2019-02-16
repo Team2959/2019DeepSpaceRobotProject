@@ -5,12 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "triggers/LiftBottomSwitch.h"
-#include "Robot.h"
+#pragma once
 
-LiftBottomSwitch::LiftBottomSwitch() {}
+#include <frc/commands/Command.h>
 
-bool LiftBottomSwitch::Get()
-{
-    return Robot::m_liftAndShuttleSubsytem.IsLiftAtBottom();
-}
+class CargoShuttleStopAtFrontCommand : public frc::Command {
+ public:
+  CargoShuttleStopAtFrontCommand();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+};

@@ -13,6 +13,8 @@
 #include "RobotMap.h"
 #include "triggers/CargoInTrigger.h"
 #include "triggers/LiftBottomSwitch.h"
+#include "triggers/ShuttleFrontLimitTrigger.h"
+#include "triggers/ShuttleRearLimitTrigger.h"
 
 class OI
 {
@@ -44,5 +46,8 @@ class OI
   // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;
   LiftBottomSwitch m_liftLimitSwitch;
+  ShuttleFrontLimitTrigger m_shuttleFrontSwitch;
+  ShuttleRearLimitTrigger m_shuttleBackSwitch;
+
 
 };
