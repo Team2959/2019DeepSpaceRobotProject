@@ -17,8 +17,8 @@ VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSpar
     m_rightEncoder(m_rightPrimary),  m_leftEncoder(m_leftPrimary)
 {
     // Set the PIDF gains for the primary motor controllers
-    SetupPIDController(m_rightPID);
-    SetupPIDController(m_leftPID);
+    SetupRightPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
+    SetupLeftPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
 
     //NavX Communication
     //ahrs = new AHRS(SerialPort::Port::kUSB);
@@ -37,43 +37,42 @@ void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor, double motorMaxS
     motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitRevEn, false);
 }
 
-void VelocityTankDrive::SetupPIDController(rev::CANPIDController& pid)
-{
-    pid.SetP(m_proportional);
-    pid.SetI(m_integral);
-    pid.SetD(m_derivative);
-    pid.SetIZone(m_iZone);
-    pid.SetFF(m_feedForward);
-    pid.SetOutputRange(-1, 1);
-}
-
 void VelocityTankDrive::TankDrive(double left, double right)
 {
     // Set the left and right side speeds
-    frc::SmartDashboard::PutNumber("Drive/L Setpoint", left);
-    frc::SmartDashboard::PutNumber("Drive/R Setpoint", right);
-
     rev::CANError er = m_rightPID.SetReference(right, rev::ControlType::kVelocity);
     rev::CANError el = m_leftPID.SetReference(left, rev::ControlType::kVelocity);
-    
+
+    m_rightSetpoint = right;
+    m_leftSetpoint  = left;
+
     FeedWatchdog();
 }
-void VelocityTankDrive::SetupPIDGains (double p, double i, double d, double ff, double iz)
+void VelocityTankDrive::SetupRightPIDGains (double p, double i, double d, double ff, double iz)
 {
-    m_proportional = p;
-    m_integral     = i;
-    m_derivative   = d;
-    m_feedForward  = ff;
-    m_iZone        = iz;
+    m_rightPID.SetP(p);
+    m_rightPID.SetI(i);
+    m_rightPID.SetD(d);
+    m_rightPID.SetIZone(iz);
+    m_rightPID.SetFF(ff);
+    m_rightPID.SetOutputRange(-1, 1);
+}
 
-    SetupPIDController(m_rightPID);
-    SetupPIDController(m_leftPID);
+void VelocityTankDrive::SetupLeftPIDGains (double p, double i, double d, double ff, double iz)
+{
+    m_leftPID.SetP(p);
+    m_leftPID.SetI(i);
+    m_leftPID.SetD(d);
+    m_leftPID.SetIZone(iz);
+    m_leftPID.SetFF(ff);
+    m_leftPID.SetOutputRange(-1, 1);
 }
 
 void VelocityTankDrive::StopMotor () 
 {
     m_rightPrimary.StopMotor();
     m_leftPrimary.StopMotor();
+
     FeedWatchdog();
 }
 
@@ -97,6 +96,9 @@ void VelocityTankDrive::DashboardDataUpdate ()
 {
     MotorControllerHelpers::DashboardDataSparkMax("Drive/Right", m_rightPID, m_rightEncoder);
     MotorControllerHelpers::DashboardDataSparkMax("Drive/Left", m_leftPID, m_leftEncoder);
+
+    frc::SmartDashboard::PutNumber("Drive/Right: Setpoint", m_rightSetpoint);
+    frc::SmartDashboard::PutNumber("Drive/Left: Setpoint", m_leftSetpoint);
 }
 
 void VelocityTankDrive::DisabledWatchDog ()

@@ -36,7 +36,11 @@ void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed){
 
 void DriveTrainSubsystem::Init()
 {
-    m_tankDrive.SetupPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
+    m_tankDrive.SetupRightPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
+    m_tankDrive.SetupLeftPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
+
+    // DEBUG
+    DashboardDataInit();
 }
 
 void DriveTrainSubsystem::DashboardDataInit ()

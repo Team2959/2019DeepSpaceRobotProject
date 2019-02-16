@@ -32,15 +32,8 @@ private:
     rev::CANEncoder m_rightEncoder;
     rev::CANEncoder m_leftEncoder;
 
-    // Control Loop (PIDF) gains
-    double m_proportional = 0.0005;
-    double m_integral     = 0.000001;
-    double m_derivative   = 0.0;
-    double m_feedForward  = 0.0;
-    double m_iZone        = 0.0;
-    
-    // Send Gains to PID Controller
-    void SetupPIDController (rev::CANPIDController& pid);
+    double m_rightSetpoint = 0.0;
+    double m_leftSetpoint  = 0.0;
 
 public:
     // Constructor
@@ -52,7 +45,8 @@ public:
     /* It shall accept a speed for each side of the robot drive in real world values (RPM),
        as opposed to percentages. */
     void TankDrive     (double left, double right);
-    void SetupPIDGains (double p, double i, double d, double ff, double iz);
+    void SetupRightPIDGains (double p, double i, double d, double ff, double iz);
+    void SetupLeftPIDGains  (double p, double i, double d, double ff, double iz);
 
     void StopMotor      () override;
     void GetDescription (wpi::raw_ostream& desc) const override;

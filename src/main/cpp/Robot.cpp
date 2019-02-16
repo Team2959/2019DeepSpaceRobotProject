@@ -18,12 +18,11 @@ DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 OI Robot::m_oi;
 
 void Robot::RobotInit() {
-  m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
-  // frc::CameraServer::GetInstance()->StartAutomaticCapture();
-  m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(TABLE_NAME);
-  m_driveTrainSubsystem.Init();
-  // m_driveTrainSubsystem.DashboardDataInit();
+    m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
+    frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+    // frc::CameraServer::GetInstance()->StartAutomaticCapture();
+    m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(TABLE_NAME);
+    m_driveTrainSubsystem.Init();
 }
 
 /**
