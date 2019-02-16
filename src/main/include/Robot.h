@@ -31,7 +31,6 @@ class Robot : public frc::TimedRobot {
 
   static OI m_oi;
 
-
   void RobotInit() override;
   void RobotPeriodic() override;
   void DisabledInit() override;

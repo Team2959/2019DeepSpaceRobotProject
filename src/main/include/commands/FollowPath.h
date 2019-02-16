@@ -8,18 +8,13 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include "utilities/conditioning.h"
 
-class DriveWithControllerCommand : public frc::Command {
+class FollowPath : public frc::Command {
  public:
-  DriveWithControllerCommand();
+  FollowPath();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-
-  private: 
-
-   cwtech::UniformConditioning jsc;
 };

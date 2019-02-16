@@ -29,7 +29,8 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
-
+  
+  m_driveTrainSubsystem.Init();
   m_cargoArmSubsystem.DashboardDataInit();
   m_liftAndShuttleSubsytem.DashboardDataInit();
   frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
@@ -45,18 +46,23 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() 
 {
-  double  frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
-  auto  targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
+
+  double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
+  auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   // Testing of Raspberry Pi info through network tables
-  std::cout<<"front framenumber = "<<frameNumber<<"\n";
+  /*std::cout<<"front framenumber = "<<frameNumber<<"\n";
   for(auto i = 0; i < targetRect.size(); ++i)
-    std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";
-
-  if (m_periodic++ % 10 == 0)
-  {
+    std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";*/
+  m_periodic++;
+  
+  if (m_periodic == 2) {
+    m_driveTrainSubsystem.DashboardDataUpdate();
+  } else if (m_periodic == 4) {
     m_cargoArmSubsystem.DashboardData();
+  } else if (m_periodic >= 10) { 
     m_liftAndShuttleSubsytem.DashboardData();
+    m_periodic = 0;
   }
 }
 
@@ -67,7 +73,11 @@ void Robot::RobotPeriodic()
  */
 void Robot::DisabledInit() {}
 
-void Robot::DisabledPeriodic() { frc::Scheduler::GetInstance()->Run(); }
+void Robot::DisabledPeriodic()
+{
+    m_driveTrainSubsystem.DisabledWatchDog();
+    frc::Scheduler::GetInstance()->Run();
+}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
