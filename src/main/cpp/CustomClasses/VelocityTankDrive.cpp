@@ -26,11 +26,15 @@ VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSpar
 
 void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent)
 {
-    // motor.RestoreFactoryDefaults();
+    motor.RestoreFactoryDefaults();
     motor.ClearFaults();
     motor.SetSmartCurrentLimit(driveMaxCurrent);
-    motor.SetRampRate(motorMaxSpeed / (robotMaxAccel * driveSafetyFactor));
+    // motor.SetClosedLoopRampRate(motorMaxSpeed / (robotMaxAccel));
     motor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitFwdEn, false);
+    motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitRevEn, false);
+    motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitFwdEn, false);
+    motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitRevEn, false);
 }
 
 void VelocityTankDrive::SetupPIDController(rev::CANPIDController& pid)
@@ -51,18 +55,7 @@ void VelocityTankDrive::TankDrive(double left, double right)
 
     rev::CANError er = m_rightPID.SetReference(right, rev::ControlType::kVelocity);
     rev::CANError el = m_leftPID.SetReference(left, rev::ControlType::kVelocity);
-
-    if (er != rev::CANError::kOK || el != rev::CANError::kOK) {
-        std::cout << "Drive Error: Right: " << (int)er << " Left: " << (int)el << std::endl;
-    }
-
-    unsigned int rfaults = m_rightPrimary.GetFaults() | m_rightPrimary.GetStickyFaults();
-    unsigned int lfaults = m_leftPrimary.GetFaults() | m_leftPrimary.GetStickyFaults();
-
-    if (rfaults | lfaults) {
-        std::cout << "Drive Faults: R: " << rfaults << " L: " << lfaults << std::endl;
-    }
-
+    
     FeedWatchdog();
 }
 void VelocityTankDrive::SetupPIDGains (double p, double i, double d, double ff, double iz)
