@@ -6,9 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "CustomClasses/VelocityTankDrive.h"
-
 #include <frc/smartdashboard/SmartDashboard.h>
-
 #include <iostream>
 
 VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary):
@@ -16,10 +14,6 @@ VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSpar
     m_rightPID(m_rightPrimary),  m_leftPID(m_leftPrimary),
     m_rightEncoder(m_rightPrimary),  m_leftEncoder(m_leftPrimary)
 {
-    // Set the PIDF gains for the primary motor controllers
-    SetupRightPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
-    SetupLeftPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
-
     //NavX Communication
     //ahrs = new AHRS(SerialPort::Port::kUSB);
 }

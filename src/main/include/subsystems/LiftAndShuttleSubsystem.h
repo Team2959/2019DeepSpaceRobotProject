@@ -41,8 +41,13 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void MoveShuttleToPosition(double position);
   void ShuttleStopAtCurrentPosition();
 
+  // Smart Dashboard debug/info
+  void DashboardDataInit();
+
  public:
   LiftAndShuttleSubsystem();
+
+  void OnRobotInit();
 
   bool IsShuttleAtPosition(double targetPosition);
 
@@ -52,6 +57,5 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition, bool isShuttleArmSafe);
 
   // Smart Dashboard debug/info
-  void DashboardDataInit();
   void DashboardData();
 };

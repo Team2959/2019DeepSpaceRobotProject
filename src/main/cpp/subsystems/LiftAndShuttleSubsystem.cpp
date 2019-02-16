@@ -30,6 +30,13 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   // m_pidConfigShuttle.allowableClosedloopError = 128;
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, false);
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
+}
+
+void LiftAndShuttleSubsystem::OnRobotInit()
+{
+  MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80);
+  MotorControllerHelpers::SetupSparkMax(m_liftFollower1, 80);
+  MotorControllerHelpers::SetupSparkMax(m_liftFollower2, 80);
 
   // Lift motor contorller configuration
   m_liftFollower1.Follow(m_liftPrimary);
@@ -37,11 +44,13 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
 
   m_liftPidController = m_liftPrimary.GetPIDController();
   m_liftPidController.SetP(1.0);
-  m_liftPidController.SetI(1.0);  
+  m_liftPidController.SetI(0.01);  
   m_liftPidController.SetD(0);
   m_liftPidController.SetIZone(0);
   m_liftPidController.SetFF(0);
-  m_liftPidController.SetOutputRange(kLiftBottomPosition, kLiftTopPosition);
+  m_liftPidController.SetOutputRange(-1, 1);
+
+  DashboardDataInit();
 }
 
 bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
