@@ -19,7 +19,7 @@ DriveTrainSubsystem Robot::m_driveTrainSubsystem;
 HatchSubsystem Robot::m_hatchSubsystem;
 CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
-LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsytem;
+LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsystem;
 // create instance of OI
 OI Robot::m_oi;
 

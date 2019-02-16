@@ -5,13 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/PlaceHatchCommandGroup.h"
-#include "commands/AttachHatchCommand.h"
-#include "commands/ReleaseHatchCommand.h"
-#include "commands/RetractMechanismCommand.h"
-#include <frc/commands/TimedCommand.h>
+#include "commands/EjectCargoCommandGroup.h"
 
-PlaceHatchCommandGroup::PlaceHatchCommandGroup() {
+EjectCargoCommandGroup::EjectCargoCommandGroup() {
   // Add Commands here:
   // e.g. AddSequential(new Command1());
   //      AddSequential(new Command2());
@@ -28,9 +24,4 @@ PlaceHatchCommandGroup::PlaceHatchCommandGroup() {
   // e.g. if Command1 requires chassis, and Command2 requires arm,
   // a CommandGroup containing them would require both the chassis and the
   // arm.
-  AddSequential(new AttachHatchCommand());
-  AddSequential(new frc::TimedCommand(0.25));
-  AddSequential(new ReleaseHatchCommand());
-  AddSequential(new frc::TimedCommand(0.25));
-  AddSequential(new RetractMechanismCommand());
 }

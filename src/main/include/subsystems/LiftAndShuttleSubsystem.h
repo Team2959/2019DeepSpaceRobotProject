@@ -21,11 +21,10 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANSparkMax m_liftPrimary { kLiftPrimaryCanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_liftFollower1 { kLiftFollower1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   rev::CANSparkMax m_liftFollower2 { kLiftFollower2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
-  rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
-  rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
+  rev::CANPIDController m_liftPidController { m_liftPrimary };
+  rev::CANEncoder m_liftEncoder { m_liftPrimary };
 
   // Lift methods
-  bool IsLiftAtPosition(double targetPosition);
   bool IsLiftSafeForShuttleMoveThroughMiddle();
   double CurrentLiftPosition();
   void MoveLiftToPosition(double position);
@@ -37,7 +36,6 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfigShuttle;
 
   // Shuttle methods
-  double CurrentShuttlePosition();
   void MoveShuttleToPosition(double position);
   void ShuttleStopAtCurrentPosition();
 
@@ -50,6 +48,9 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void OnRobotInit();
 
   bool IsShuttleAtPosition(double targetPosition);
+  double CurrentShuttlePosition();
+
+  bool IsLiftAtPosition(double targetPosition);
 
   // Movement Control Interface
   bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);

@@ -7,14 +7,9 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/CommandGroup.h>
 
-class SecureHatchCommand : public frc::Command {
+class ClimbCommandGroup : public frc::CommandGroup {
  public:
-  SecureHatchCommand();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  ClimbCommandGroup();
 };

@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
+#include "commands/MoveLiftAndShuttleCommand.h"
 
-class PlaceHatchCommandGroup : public frc::CommandGroup {
+class MoveLiftCommand : public MoveLiftAndShuttleCommand {
  public:
-  PlaceHatchCommandGroup();
+  MoveLiftCommand(double targetLiftPosition);
 };

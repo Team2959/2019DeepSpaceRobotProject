@@ -47,7 +47,7 @@ bool CargoArmSubsystem::IsArmAboveCargoShuttle()
 void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShuttleClearForFullExtension)
 {
   auto position = targetPosition;
-  if (fabs(targetPosition) > kArmIsClearOfShuttle && !kArmIsClearOfShuttle)
+  if (fabs(targetPosition) > kArmIsClearOfShuttle && !isShuttleClearForFullExtension)
   {
     position = kArmIsClearOfShuttle;
     if (targetPosition < 0)
