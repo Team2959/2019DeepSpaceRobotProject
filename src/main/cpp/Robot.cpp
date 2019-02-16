@@ -14,15 +14,26 @@
 #include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
 #include <iostream>
 
+// create instance of subsystems
 DriveTrainSubsystem Robot::m_driveTrainSubsystem;
+HatchSubsystem Robot::m_hatchSubsystem;
+CargoControlSubsystem Robot::m_cargoControlSubsystem;
+CargoArmSubsystem Robot::m_cargoArmSubsystem;
+LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsytem;
+// create instance of OI
 OI Robot::m_oi;
 
 void Robot::RobotInit() {
-    m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
-    frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
-    // frc::CameraServer::GetInstance()->StartAutomaticCapture();
-    m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(TABLE_NAME);
-    m_driveTrainSubsystem.Init();
+  m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
+  m_chooser.AddOption("My Auto", &m_myAuto);
+  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
+  
+  m_driveTrainSubsystem.Init();
+  m_cargoArmSubsystem.DashboardDataInit();
+  m_liftAndShuttleSubsytem.DashboardDataInit();
+  frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
 }
 
 /**
@@ -35,18 +46,24 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() 
 {
-  // double  frameNumber = m_networkTable->GetNumber(FRAME_NUMBER, 0.0);
-  // auto  targetRect = m_networkTable->GetNumberArray(TARGET_COORDS, std::vector<double>{});
+
+  double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
+  auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   // Testing of Raspberry Pi info through network tables
-  /*std::cout<<"framenumber = "<<frameNumber<<"\n";
+  /*std::cout<<"front framenumber = "<<frameNumber<<"\n";
   for(auto i = 0; i < targetRect.size(); ++i)
-    std::cout << "targetRect[" << i << "] = " << targetRect[i] << "\n";*/
-  if (counter > 5) {
-    //m_driveTrainSubsystem.DashboardDataUpdate();
-    counter = 0;
+    std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";*/
+  m_periodic++;
+  
+  if (m_periodic == 2) {
+    m_driveTrainSubsystem.DashboardDataUpdate();
+  } else if (m_periodic == 4) {
+    m_cargoArmSubsystem.DashboardData();
+  } else if (m_periodic >= 10) { 
+    m_liftAndShuttleSubsytem.DashboardData();
+    m_periodic = 0;
   }
-  counter++;
 }
 
 /**
