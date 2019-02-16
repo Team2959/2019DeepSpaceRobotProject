@@ -6,13 +6,13 @@ void MotorControllerHelpers::ConfigureTalonSrxMotorController(
     ctre::phoenix::motorcontrol::can::SlotConfiguration & pidConfig,
     bool sensorPhase)
 {
-    motorController.ConfigSelectedFeedbackSensor(
+  motorController.ConfigSelectedFeedbackSensor(
         ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Absolute, 0, 0);
 
 	motorController.Config_kP(0, pidConfig.kP, 0);
 	motorController.Config_kI(0, pidConfig.kI, 0);
 	motorController.Config_kD(0, pidConfig.kD, 0);
-    motorController.Config_kF(0, pidConfig.kF, 0);
+  motorController.Config_kF(0, pidConfig.kF, 0);
 	motorController.Config_IntegralZone(0, pidConfig.integralZone, 0);
 
 	motorController.SetSensorPhase(sensorPhase);
@@ -99,6 +99,18 @@ void MotorControllerHelpers::DashboardDataTalonSrx(
     motorController.ConfigPeakOutputForward(peakOutput, 0);
     motorController.ConfigPeakOutputReverse(-peakOutput, 0);
   }
+}
+
+void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent)
+{
+  motor.RestoreFactoryDefaults();
+  motor.ClearFaults();
+  motor.SetSmartCurrentLimit(driveMaxCurrent);
+  motor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitFwdEn, false);
+  motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitRevEn, false);
+  motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitFwdEn, false);
+  motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitRevEn, false);
 }
 
 void MotorControllerHelpers::DashboardInitSparkMax(

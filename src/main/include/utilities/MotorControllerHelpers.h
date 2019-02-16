@@ -3,6 +3,7 @@
 #include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 #include <rev/CANPIDController.h>
 #include <rev/CANEncoder.h>
+#include <rev/CANSparkMax.h>
 
 // Functions to consolidate configuration of motor controllers
 //  and interact with smart dashboard to setup/troubleshoot
@@ -24,6 +25,8 @@ public:
         std::string name,
         ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController,
         ctre::phoenix::motorcontrol::can::SlotConfiguration & pidConfig);
+
+    static void SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent);
 
     static void DashboardInitSparkMax(
         std::string name,

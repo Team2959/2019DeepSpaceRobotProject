@@ -31,8 +31,8 @@ void Robot::RobotInit() {
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
   
   m_driveTrainSubsystem.Init();
+  m_liftAndShuttleSubsytem.OnRobotInit();
   m_cargoArmSubsystem.DashboardDataInit();
-  m_liftAndShuttleSubsytem.DashboardDataInit();
   frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
 }
 
