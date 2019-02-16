@@ -25,7 +25,6 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANEncoder m_liftEncoder { m_liftPrimary };
 
   // Lift methods
-  bool IsLiftAtPosition(double targetPosition);
   bool IsLiftSafeForShuttleMoveThroughMiddle();
   double CurrentLiftPosition();
   void MoveLiftToPosition(double position);
@@ -45,6 +44,8 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
 
   bool IsShuttleAtPosition(double targetPosition);
   double CurrentShuttlePosition();
+
+  bool IsLiftAtPosition(double targetPosition);
 
   // Movement Control Interface
   bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);

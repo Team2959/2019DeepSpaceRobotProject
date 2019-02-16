@@ -6,8 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/DeliverCommandGroup.h"
-#include "triggers/CargoInTrigger.h"
-#include "commands/ExtendCargoArmCommand.h"
+#include "commands/TiltCargoArmCommand.h"
 #include "commands/MoveCargoTowardFrontCommand.h"
 #include "commands/MoveCargoTowardRearCommand.h"
 #include "commands/StopCargoControlWheelsCommand.h"
@@ -16,6 +15,7 @@
 #include "commands/RetractMechanismCommand.h"
 #include <frc/commands/TimedCommand.h>
 #include "Robot.h"
+#include "subsystems/LiftAndShuttlePositions.h"
 
 DeliverCommandGroup::DeliverCommandGroup() {
   // Add Commands here:
@@ -38,15 +38,21 @@ DeliverCommandGroup::DeliverCommandGroup() {
   // cargo or hatch panal
   if(Robot::m_cargoControlSubsystem.CargoIn() == true){
   //For cargo
+
+      // Check to see if tilting arm is needed
+      if (Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(kLiftCargoShipPosition) == true)
+      {
+        AddSequential(new TiltCargoArmCommand());
+      }
+  
     if(Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition()>=0){
     //deliver front
-      AddSequential(new ExtendCargoArmCommand());
       AddSequential(new MoveCargoTowardFrontCommand());
     }
     else{
     //deliver back
-      AddSequential(new ExtendCargoArmCommand());
       AddSequential(new MoveCargoTowardRearCommand());
+
     }
     AddSequential(new StopCargoControlWheelsCommand());
   }

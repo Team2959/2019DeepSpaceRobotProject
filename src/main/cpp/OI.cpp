@@ -32,7 +32,7 @@ OI::OI()
 
   m_liftFloor.WhenPressed(new MoveLiftCommand(kLiftFloorPosition));
   m_liftBottom.WhenPressed(new MoveLiftCommand(kLiftBottomPosition));
-  m_liftCargoShuttle.WhenPressed(new MoveLiftCommand(kLiftCargoShuttlePosition));
+  m_liftCargoShuttle.WhenPressed(new MoveLiftCommand(kLiftCargoShipPosition));
   m_liftMiddleRocket.WhenPressed(new MoveLiftCommand(kLiftMiddlePosition));
   m_liftTopRocket.WhenPressed(new MoveLiftCommand(kLiftTopPosition));
 
