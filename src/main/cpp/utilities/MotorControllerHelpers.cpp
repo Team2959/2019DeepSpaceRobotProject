@@ -1,4 +1,4 @@
-#include "utilities/MotorControllerHelpers.h"
+#include "Utilities/MotorControllerHelpers.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void MotorControllerHelpers::ConfigureTalonSrxMotorController(
@@ -6,13 +6,13 @@ void MotorControllerHelpers::ConfigureTalonSrxMotorController(
     ctre::phoenix::motorcontrol::can::SlotConfiguration & pidConfig,
     bool sensorPhase)
 {
-    motorController.ConfigSelectedFeedbackSensor(
+  motorController.ConfigSelectedFeedbackSensor(
         ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Absolute, 0, 0);
 
 	motorController.Config_kP(0, pidConfig.kP, 0);
 	motorController.Config_kI(0, pidConfig.kI, 0);
 	motorController.Config_kD(0, pidConfig.kD, 0);
-    motorController.Config_kF(0, pidConfig.kF, 0);
+  motorController.Config_kF(0, pidConfig.kF, 0);
 	motorController.Config_IntegralZone(0, pidConfig.integralZone, 0);
 
 	motorController.SetSensorPhase(sensorPhase);
@@ -101,9 +101,22 @@ void MotorControllerHelpers::DashboardDataTalonSrx(
   }
 }
 
+void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent)
+{
+  motor.RestoreFactoryDefaults();
+  motor.ClearFaults();
+  motor.SetSmartCurrentLimit(driveMaxCurrent);
+  motor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitFwdEn, false);
+  motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitRevEn, false);
+  motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitFwdEn, false);
+  motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitRevEn, false);
+}
+
 void MotorControllerHelpers::DashboardInitSparkMax(
     std::string name,
-    rev::CANPIDController & pidConfig)
+    rev::CANPIDController & pidConfig,
+    rev::CANEncoder & encoder)
 {
   // display PID coefficients on SmartDashboard
   frc::SmartDashboard::PutNumber(name + ": P Gain", pidConfig.GetP());
@@ -116,14 +129,18 @@ void MotorControllerHelpers::DashboardInitSparkMax(
 
   frc::SmartDashboard::PutNumber(name + ": Go To Position", 0);
   frc::SmartDashboard::PutNumber(name + ": Target", 0);
-  frc::SmartDashboard::PutNumber(name + ": Position", 0);
-  frc::SmartDashboard::PutNumber(name + ": Velocity", 0);
+  frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
+  frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());
 }
 
 void MotorControllerHelpers::DashboardDataSparkMax(
     std::string name,
-    rev::CANPIDController & pidConfig)
+    rev::CANPIDController & pidConfig,
+    rev::CANEncoder & encoder)
 {
+  frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
+  frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());
+
   // display PID coefficients on SmartDashboard
   auto kP = frc::SmartDashboard::GetNumber(name + ": P Gain", pidConfig.GetP());
   auto kI = frc::SmartDashboard::GetNumber(name + ": I Gain", pidConfig.GetI());

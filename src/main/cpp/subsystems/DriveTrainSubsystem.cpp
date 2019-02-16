@@ -10,22 +10,60 @@
 
 DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
 {
-  // needed to invert both drives for going forward with differential drive on competition bot
-  m_left1Primary.SetInverted(true);
-  m_right1Primary.SetInverted(true);
-  
-  m_right2Follower.Follow(m_right1Primary);
-  m_left2Follower.Follow(m_left1Primary);
+    // Set up the follower motor controllers
+    VelocityTankDrive::SetupSparkMax(m_rightPrimary, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
+    VelocityTankDrive::SetupSparkMax(m_rightFollower, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
+    VelocityTankDrive::SetupSparkMax(m_leftPrimary, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
+    VelocityTankDrive::SetupSparkMax(m_leftFollower, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
+   
+    m_rightFollower.Follow(m_rightPrimary);
+    m_leftFollower.Follow(m_leftPrimary);
 }
 
 void DriveTrainSubsystem::InitDefaultCommand()
 {
-  SetDefaultCommand(new DriveWithControllerCommand());
+    SetDefaultCommand(new DriveWithControllerCommand());
+ 
+    // Set the default command for a subsystem here.
+    // SetDefaultCommand(new MySpecialCommand());
 }
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
-void DriveTrainSubsystem::MyTankDrive(double leftSpeed, double rightSpeed)
+void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed){
+    m_tankDrive.TankDrive(leftSpeed, rightSpeed);
+}
+
+void DriveTrainSubsystem::Init()
 {
-  m_tankDrive.TankDrive(leftSpeed, rightSpeed);
+    m_tankDrive.SetupRightPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
+    m_tankDrive.SetupLeftPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
+
+    // DEBUG
+    DashboardDataInit();
+}
+
+void DriveTrainSubsystem::DashboardDataInit ()
+{
+    m_tankDrive.DashboardDataInit();
+}
+void DriveTrainSubsystem::DashboardDataUpdate ()
+{
+    m_tankDrive.DashboardDataUpdate();
+}
+
+double DriveTrainSubsystem::GetMaxSpeed()
+{
+    return kDriveSafetyFactor * kMotorMaxSpeed;
+}
+
+double DriveTrainSubsystem::GetMaxAccel()
+{
+    return kDriveSafetyFactor * kRobotMaxAccel;
+}
+
+void DriveTrainSubsystem::DisabledWatchDog ()
+{
+    m_tankDrive.DisabledWatchDog();
+
 }
