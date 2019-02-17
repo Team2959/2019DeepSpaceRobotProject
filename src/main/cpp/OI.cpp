@@ -23,12 +23,21 @@
 #include "commands/ClimbCommandGroup.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 
+#include "commands/AttachHatchCommand.h"
+#include "commands/ReleaseHatchCommand.h"
+#include "commands/RetractMechanismCommand.h"
+#include "commands/PrepForHatchCommand.h"
+
 OI::OI()
 {
   m_shuttleTargetFront = true;
   
   // Driver Buttons
   m_deliver.WhenPressed(new DeliverCommandGroup());
+  m_safetyH.WhenPressed(new PrepForHatchCommand());
+  m_attachH.WhenPressed(new AttachHatchCommand ());
+  m_releaseH.WhenPressed(new ReleaseHatchCommand());
+  m_retractH.WhenPressed(new RetractMechanismCommand());
 
   // Co-Pilot Buttons
   m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));

@@ -17,9 +17,23 @@
 
 class OI
 {
+public:
+  OI();
+
+  // USB connections
+  frc::Joystick m_leftDriverJoystick { kLeftDriverUSBController };
+  frc::Joystick m_rightDriverJoystick { kRighttDriverUSBController };
+  frc::Joystick m_coPilotJoystick { kCoPilotUSBController };
+
+  bool m_shuttleTargetFront;
+
 private:
   // Driver buttons
   frc::JoystickButton m_deliver { &m_rightDriverJoystick, 1};
+  frc::JoystickButton m_safetyH { &m_rightDriverJoystick, 2};
+  frc::JoystickButton m_attachH { &m_rightDriverJoystick, 3};
+  frc::JoystickButton m_releaseH { &m_rightDriverJoystick, 4};
+  frc::JoystickButton m_retractH { &m_rightDriverJoystick, 5};
 
   // Co Pilot Buttons
   frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 4};
@@ -45,16 +59,4 @@ private:
   LiftBottomSwitch m_liftLimitSwitch;
   ShuttleFrontLimitTrigger m_shuttleFrontSwitch;
   ShuttleRearLimitTrigger m_shuttleBackSwitch;
-
-
-
- public:
-  OI();
-
-  // USB connections
-  frc::Joystick m_leftDriverJoystick { kLeftDriverUSBController };
-  frc::Joystick m_rightDriverJoystick { kRighttDriverUSBController };
-  frc::Joystick m_coPilotJoystick { kCoPilotUSBController };
-
-  bool m_shuttleTargetFront;
 };
