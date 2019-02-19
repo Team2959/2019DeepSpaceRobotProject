@@ -56,6 +56,9 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
 
 void LiftAndShuttleSubsystem::OnRobotInit()
 {
+	m_leftShuttle.SetSelectedSensorPosition(0,0,0);
+	m_rightShuttle.SetSelectedSensorPosition(0,0,0);
+
   MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80);
   MotorControllerHelpers::SetupSparkMax(m_liftFollower1, 80);
   MotorControllerHelpers::SetupSparkMax(m_liftFollower2, 80);
