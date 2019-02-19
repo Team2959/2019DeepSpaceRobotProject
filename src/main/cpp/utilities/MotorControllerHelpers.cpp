@@ -115,17 +115,19 @@ void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double drive
 
 void MotorControllerHelpers::DashboardInitSparkMax(
     std::string name,
-    rev::CANPIDController & pidConfig,
-    rev::CANEncoder & encoder)
+    rev::CANEncoder & encoder,
+    double kP, double kI, double kD,
+    double iZone, double ff,
+    double outputMin, double outputMax)
 {
   // display PID coefficients on SmartDashboard
-  frc::SmartDashboard::PutNumber(name + ": P Gain", pidConfig.GetP());
-  frc::SmartDashboard::PutNumber(name + ": I Gain", pidConfig.GetI());
-  frc::SmartDashboard::PutNumber(name + ": D Gain", pidConfig.GetD());
-  frc::SmartDashboard::PutNumber(name + ": I Zone", pidConfig.GetIZone());
-  frc::SmartDashboard::PutNumber(name + ": Feed Forward", pidConfig.GetFF());
-  frc::SmartDashboard::PutNumber(name + ": Ouput Min", pidConfig.GetOutputMin());
-  frc::SmartDashboard::PutNumber(name + ": Ouput Max", pidConfig.GetOutputMax());
+  frc::SmartDashboard::PutNumber(name + ": P Gain", kP);
+  frc::SmartDashboard::PutNumber(name + ": I Gain", kI);
+  frc::SmartDashboard::PutNumber(name + ": D Gain", kD);
+  frc::SmartDashboard::PutNumber(name + ": I Zone", iZone);
+  frc::SmartDashboard::PutNumber(name + ": Feed Forward", ff);
+  frc::SmartDashboard::PutNumber(name + ": Ouput Min", outputMin);
+  frc::SmartDashboard::PutNumber(name + ": Ouput Max", outputMax);
 
   frc::SmartDashboard::PutNumber(name + ": Go To Position", 0);
   frc::SmartDashboard::PutNumber(name + ": Target", 0);

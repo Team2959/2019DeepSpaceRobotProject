@@ -63,8 +63,6 @@ void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShu
     m_right.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
 
     frc::SmartDashboard::PutNumber("Arm: Target", position);
-    frc::SmartDashboard::PutNumber("Arm: Position", CurrentArmPosition());
-    frc::SmartDashboard::PutNumber("Arm: Velocity", m_left.GetSelectedSensorVelocity());
   }
 }
 
@@ -77,6 +75,7 @@ void CargoArmSubsystem::DashboardDataInit()
 {
   frc::SmartDashboard::PutData(this);
   MotorControllerHelpers::DashboardInitTalonSrx("Arm", m_pidConfig);
+  frc::SmartDashboard::PutBoolean("Arm: Start", false);
 }
 
 void CargoArmSubsystem::DashboardData()
@@ -84,6 +83,14 @@ void CargoArmSubsystem::DashboardData()
   MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_left, m_pidConfig);
   MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_right, m_pidConfig);
 
-  auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", m_lastTargetPosition);
-  MoveCargoArmToPosition(targetPosition, true);
+  frc::SmartDashboard::PutNumber("Arm: Position", CurrentArmPosition());
+  frc::SmartDashboard::PutNumber("Arm: Velocity", m_left.GetSelectedSensorVelocity());
+
+
+  auto start = frc::SmartDashboard::GetBoolean("Arm: Start", false);
+  if (start)
+  {
+    auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", m_lastTargetPosition);
+    MoveCargoArmToPosition(targetPosition, true);
+  }
 }
