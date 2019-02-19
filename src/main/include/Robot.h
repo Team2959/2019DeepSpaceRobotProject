@@ -19,6 +19,8 @@
 #include "subsystems/CargoControlSubsystem.h"
 #include "subsystems/CargoArmSubsystem.h"
 #include "subsystems/LiftAndShuttleSubsystem.h"
+#include "subsystems/ClimbSubsystem.h"
+
 
 class Robot : public frc::TimedRobot {
  public:
@@ -28,6 +30,7 @@ class Robot : public frc::TimedRobot {
   static CargoControlSubsystem m_cargoControlSubsystem;
   static CargoArmSubsystem m_cargoArmSubsystem;
   static LiftAndShuttleSubsystem m_liftAndShuttleSubsystem;
+  static ClimbSubsystem m_climbSubsystem;
 
   static OI m_oi;
 
