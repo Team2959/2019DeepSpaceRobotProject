@@ -10,7 +10,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/MotorControllerHelpers.h"
 
-constexpr int kCloseEnoughToPosition = 100;
+constexpr int kCloseEnoughToPosition = 250;
 constexpr int kArmIsClearOfShuttle = 4000;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
@@ -25,7 +25,7 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
   // m_pidConfig.allowableClosedloopError = 128;
 
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_left, m_pidConfig, false);
-  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_right, m_pidConfig, false);
+  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_right, m_pidConfig, true);
 }
 
 double CargoArmSubsystem::CurrentArmPosition()
