@@ -71,7 +71,7 @@ void Robot::RobotPeriodic()
     {
       m_liftAndShuttleSubsystem.StopAndZero();
       m_cargoArmSubsystem.StopAndZero();
-    } 
+    }
   }
 }
 
