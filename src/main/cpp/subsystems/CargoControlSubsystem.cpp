@@ -6,12 +6,27 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/CargoControlSubsystem.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsystem") {}
 
+void CargoControlSubsystem::OnRobotInit()
+{
+  frc::SmartDashboard::PutBoolean("Cargo 1", false);
+  frc::SmartDashboard::PutBoolean("Cargo 2", false);
+
+  frc::SmartDashboard::PutData(this);
+}
+
+void CargoControlSubsystem::DashboardData()
+{
+  frc::SmartDashboard::PutBoolean("Cargo 1", !m_cargoIn.Get());
+  frc::SmartDashboard::PutBoolean("Cargo 2", !m_cargoIn2.Get());
+}
+
 bool CargoControlSubsystem::CargoIn() const
 {
-  return m_cargoIn.Get();
+  return !m_cargoIn.Get() || !m_cargoIn2.Get();
 }
 
 void CargoControlSubsystem::CargoBallTowardsFront()

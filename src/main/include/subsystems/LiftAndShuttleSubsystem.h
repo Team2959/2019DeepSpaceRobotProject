@@ -38,8 +38,8 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_rightShuttle { kRightCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfigShuttle;
-  frc::DigitalInput m_shuttleBackSwitch{kCargoArmBackSwitchTrigger};
-  frc::DigitalInput m_shuttleFrontSwitch{kCargoArmFrontSwitchTrigger};
+  frc::DigitalInput m_shuttleBackSwitch{kCargoShuttleBackSwitchTrigger};
+  frc::DigitalInput m_shuttleFrontSwitch{kCargoShuttleFrontSwitchTrigger};
 
   // Shuttle methods
   void MoveShuttleToPosition(double position);

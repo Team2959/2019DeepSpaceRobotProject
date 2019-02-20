@@ -70,17 +70,17 @@ void LiftAndShuttleSubsystem::OnRobotInit()
 
 bool LiftAndShuttleSubsystem::IsAtShuttleFrontLimit() const
 {
-  return m_shuttleFrontSwitch.Get();
+  return !m_shuttleFrontSwitch.Get();
 }
 
 bool LiftAndShuttleSubsystem::IsAtShuttleRearLimit() const
 {
-  return m_shuttleBackSwitch.Get();
+  return !m_shuttleBackSwitch.Get();
 }
 
 bool LiftAndShuttleSubsystem::IsLiftAtBottom() const
 {
-  return m_liftBottomLimitSwitch.Get();
+  return !m_liftBottomLimitSwitch.Get();
 }
 
 bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
@@ -328,9 +328,9 @@ void LiftAndShuttleSubsystem::DashboardData()
     MoveLiftToPosition(targetPosition);
   }
 
-  frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", m_liftBottomLimitSwitch.Get());
-  frc::SmartDashboard::PutBoolean("Shtl: Front Limit", m_shuttleFrontSwitch.Get());
-  frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", m_shuttleBackSwitch.Get());
+  frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", IsLiftAtBottom());
+  frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
+  frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", IsAtShuttleRearLimit());
 }
 
 void LiftAndShuttleSubsystem::StopAndZero()

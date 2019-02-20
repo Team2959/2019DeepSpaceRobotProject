@@ -32,8 +32,8 @@ void Robot::RobotInit() {
   
   m_driveTrainSubsystem.Init();
   m_liftAndShuttleSubsystem.OnRobotInit();
-  //m_cargoArmSubsystem.DashboardDataInit();
-  //frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
+  m_cargoArmSubsystem.DashboardDataInit();
+  m_cargoControlSubsystem.OnRobotInit();
 
   m_hatchSubsystem.RetractMechanism();
   frc::SmartDashboard::PutBoolean("ZeroMotors", false);
@@ -62,7 +62,8 @@ void Robot::RobotPeriodic()
   if (m_periodic == 2) {
     m_driveTrainSubsystem.DashboardDataUpdate();
   } else if (m_periodic == 4) {
-    //m_cargoArmSubsystem.DashboardData();
+    m_cargoArmSubsystem.DashboardData();
+    m_cargoControlSubsystem.DashboardData();
   } else if (m_periodic >= 10) { 
     m_liftAndShuttleSubsystem.DashboardData();
     m_periodic = 0;
