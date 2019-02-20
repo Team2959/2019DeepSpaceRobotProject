@@ -2,8 +2,8 @@
 
 // Define Lift and Shuttle Positions to be used outside subsystem
 constexpr int kShuttleMiddlePosition = 0;
-constexpr int kShuttleFrontPosition = 5000;
-constexpr int kShuttleRearPosition = -3000;
+constexpr int kShuttleFrontPosition = 11400;
+constexpr int kShuttleRearPosition = -5200;
 
 constexpr int kLiftFloorPosition = 0;
 constexpr int kLiftBottomPosition = 4;

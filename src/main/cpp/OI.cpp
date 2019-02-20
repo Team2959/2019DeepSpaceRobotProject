@@ -63,6 +63,6 @@ OI::OI()
 
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
 
-  m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
-  m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
+  //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
+  //m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
 }

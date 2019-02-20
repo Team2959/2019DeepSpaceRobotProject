@@ -12,9 +12,9 @@
 #include <frc/DigitalInput.h>
 
 
-constexpr int kShuttleCloseEnoughToPosition = 100;
-constexpr int kShuttleSafeFrontPosition = 1000;
-constexpr int kShuttleSafeRearPosition = -kShuttleSafeFrontPosition;
+constexpr int kShuttleCloseEnoughToPosition = 250;
+constexpr int kShuttleSafeFrontPosition = 5000;
+constexpr int kShuttleSafeRearPosition = -3700;
 
 constexpr int kLiftCloseEnoughToPosition = 0.5;
 constexpr int kLiftMaxSafeHeight = 2;
@@ -25,24 +25,8 @@ constexpr double kLiftMaxAcceleration = 1000;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
-  // configure limit switches
-  m_leftShuttle.ConfigForwardLimitSwitchSource(
-    ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector,
-    ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
-  
-  m_leftShuttle.ConfigReverseLimitSwitchSource(
-  ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector,
-  ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
-
-    m_rightShuttle.ConfigForwardLimitSwitchSource(
-    ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector,
-    ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
-  
-  m_rightShuttle.ConfigReverseLimitSwitchSource(
-  ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector,
-  ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
   // Shuttle motor controller configuration
-  m_leftShuttle.GetSlotConfigs(m_pidConfigShuttle);
+  m_rightShuttle.GetSlotConfigs(m_pidConfigShuttle);
   m_pidConfigShuttle.kP = 0.1;
   m_pidConfigShuttle.kI = 0;
   m_pidConfigShuttle.kD = 0;
@@ -50,12 +34,15 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   // m_pidConfigShuttle.integralZone = x;
   // m_pidConfigShuttle.closedLoopPeakOutput = 1.0;
   // m_pidConfigShuttle.allowableClosedloopError = 128;
-  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, false);
+  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, true);
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
 }
 
 void LiftAndShuttleSubsystem::OnRobotInit()
 {
+	m_leftShuttle.SetSelectedSensorPosition(0,0,0);
+	m_rightShuttle.SetSelectedSensorPosition(0,0,0);
+
   MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80);
   MotorControllerHelpers::SetupSparkMax(m_liftFollower1, 80);
   MotorControllerHelpers::SetupSparkMax(m_liftFollower2, 80);
@@ -104,7 +91,7 @@ bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
 
 double LiftAndShuttleSubsystem::CurrentShuttlePosition()
 {
-  return m_leftShuttle.GetSelectedSensorPosition(0);
+  return m_rightShuttle.GetSelectedSensorPosition(0);
 }
 
 void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
@@ -118,13 +105,6 @@ void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
 void LiftAndShuttleSubsystem::ShuttleStopAtCurrentPosition()
 {
   MoveShuttleToPosition(CurrentShuttlePosition());
-}
-
-void LiftAndShuttleSubsystem::LiftBottomReset()
-{
-  m_liftEncoder.SetPosition(0);
-  m_liftPidController.SetReference(0,rev::ControlType::kPosition);
-  m_liftPrimary.StopMotor();
 }
 
 void LiftAndShuttleSubsystem::CargoShuttleFrontStop()
@@ -141,6 +121,13 @@ void LiftAndShuttleSubsystem::CargoShuttleBackStop()
   m_leftShuttle.StopMotor();
   m_leftShuttle.SetSelectedSensorPosition(kShuttleRearPosition);
   m_rightShuttle.SetSelectedSensorPosition(kShuttleRearPosition);
+}
+
+void LiftAndShuttleSubsystem::LiftBottomReset()
+{
+  m_liftPrimary.StopMotor();
+  m_liftEncoder.SetPosition(0);
+  m_liftPidController.SetReference(0,rev::ControlType::kPosition);
 }
 
 // Lift Code
@@ -296,7 +283,7 @@ void LiftAndShuttleSubsystem::DashboardData()
   MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_leftShuttle, m_pidConfigShuttle);
   MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_rightShuttle, m_pidConfigShuttle);
   frc::SmartDashboard::PutNumber("Shtl: Position", CurrentShuttlePosition());
-  frc::SmartDashboard::PutNumber("Shtl: Velocity", m_leftShuttle.GetSelectedSensorVelocity());
+  frc::SmartDashboard::PutNumber("Shtl: Velocity", m_rightShuttle.GetSelectedSensorVelocity());
 
   auto startShuttle = frc::SmartDashboard::GetBoolean("Shtl: Start", false);
   if (startShuttle)
