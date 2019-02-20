@@ -36,6 +36,7 @@ void Robot::RobotInit() {
   //frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
 
   m_hatchSubsystem.RetractMechanism();
+  frc::SmartDashboard::PutBoolean("ZeroMotors", false);
 }
 
 /**
@@ -65,6 +66,12 @@ void Robot::RobotPeriodic()
   } else if (m_periodic >= 10) { 
     m_liftAndShuttleSubsystem.DashboardData();
     m_periodic = 0;
+
+    if (frc::SmartDashboard::GetBoolean("ZeroMotors", false))
+    {
+      m_liftAndShuttleSubsystem.StopAndZero();
+      m_cargoArmSubsystem.StopAndZero();
+    } 
   }
 }
 

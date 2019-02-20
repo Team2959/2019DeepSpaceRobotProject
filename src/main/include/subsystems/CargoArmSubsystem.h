@@ -35,4 +35,5 @@ class CargoArmSubsystem : public frc::Subsystem {
 
   void DashboardDataInit();
   void DashboardData();
+  void StopAndZero();
 };

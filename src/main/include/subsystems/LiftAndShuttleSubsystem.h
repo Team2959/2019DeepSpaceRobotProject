@@ -70,6 +70,8 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void CargoShuttleFrontStop();
   void CargoShuttleBackStop();
 
+  void StopAndZero();
+
   // Smart Dashboard debug/info
   void DashboardData();
 };

@@ -94,3 +94,11 @@ void CargoArmSubsystem::DashboardData()
     MoveCargoArmToPosition(targetPosition, true);
   }
 }
+
+void CargoArmSubsystem::StopAndZero()
+{
+ m_right.StopMotor();
+  m_left.StopMotor();
+  m_right.SetSelectedSensorPosition(0,0,0);
+  m_left.SetSelectedSensorPosition(0,0,0);
+}

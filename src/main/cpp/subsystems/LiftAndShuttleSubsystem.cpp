@@ -345,3 +345,14 @@ void LiftAndShuttleSubsystem::DashboardData()
   frc::SmartDashboard::PutBoolean("Shtl: Front Limit", m_shuttleFrontSwitch.Get());
   frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", m_shuttleBackSwitch.Get());
 }
+
+void LiftAndShuttleSubsystem::StopAndZero()
+{
+  m_liftPrimary.StopMotor();
+  m_rightShuttle.StopMotor();
+  m_leftShuttle.StopMotor();
+  m_rightShuttle.SetSelectedSensorPosition(0,0,0);
+  m_leftShuttle.SetSelectedSensorPosition(0,0,0);
+  m_liftEncoder.SetPosition(0);
+  m_liftPidController.SetReference(0,rev::ControlType::kPosition);
+}
