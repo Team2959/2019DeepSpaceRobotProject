@@ -9,9 +9,10 @@
 #include "subsystems/CargoArmPositions.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/MotorControllerHelpers.h"
+#include <algorithm>
 
-constexpr int kCloseEnoughToPosition = 250;
-constexpr int kArmIsClearOfShuttle = 4000;
+constexpr double kCloseEnoughToPosition = 250;
+constexpr double kArmIsClearOfShuttle = 4000;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 {
@@ -91,13 +92,15 @@ void CargoArmSubsystem::DashboardData()
   if (start)
   {
     auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", m_lastTargetPosition);
+    targetPosition = std::min(targetPosition, kArmFrontPosition + kCloseEnoughToPosition);
+    targetPosition = std::max(targetPosition, kArmTiltBackwardPosition - kCloseEnoughToPosition);
     MoveCargoArmToPosition(targetPosition, true);
   }
 }
 
 void CargoArmSubsystem::StopAndZero()
 {
- m_right.StopMotor();
+  m_right.StopMotor();
   m_left.StopMotor();
   m_right.SetSelectedSensorPosition(0,0,0);
   m_left.SetSelectedSensorPosition(0,0,0);

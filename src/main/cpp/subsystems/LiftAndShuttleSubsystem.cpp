@@ -10,14 +10,14 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/MotorControllerHelpers.h"
 #include <frc/DigitalInput.h>
+#include <algorithm>
 
+constexpr double kShuttleCloseEnoughToPosition = 250;
+constexpr double kShuttleSafeFrontPosition = 5000;
+constexpr double kShuttleSafeRearPosition = -3700;
 
-constexpr int kShuttleCloseEnoughToPosition = 250;
-constexpr int kShuttleSafeFrontPosition = 5000;
-constexpr int kShuttleSafeRearPosition = -3700;
-
-constexpr int kLiftCloseEnoughToPosition = 0.5;
-constexpr int kLiftMaxSafeHeight = 2;
+constexpr double kLiftCloseEnoughToPosition = 0.1;
+constexpr double kLiftMaxSafeHeight = 2;
 constexpr double kLiftKP = 5e-5;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
@@ -289,6 +289,8 @@ void LiftAndShuttleSubsystem::DashboardData()
   if (startShuttle)
   {
     auto targetPosition = frc::SmartDashboard::GetNumber("Shtl: Go To Position", 0);
+    targetPosition = std::min(targetPosition, kShuttleFrontPosition + kShuttleCloseEnoughToPosition);
+    targetPosition = std::max(targetPosition, kShuttleRearPosition - kShuttleCloseEnoughToPosition);
     MoveShuttleToPosition(targetPosition);
   }
 
@@ -325,6 +327,8 @@ void LiftAndShuttleSubsystem::DashboardData()
   if (startLift)
   {
     auto targetPosition = frc::SmartDashboard::GetNumber("Lift: Go To Position", 0);
+    targetPosition = std::min(targetPosition, kLiftTopPosition + kLiftCloseEnoughToPosition);
+    targetPosition = std::max(targetPosition, kLiftFloorPosition);
     MoveLiftToPosition(targetPosition);
   }
 
@@ -338,8 +342,8 @@ void LiftAndShuttleSubsystem::StopAndZero()
   m_liftPrimary.StopMotor();
   m_rightShuttle.StopMotor();
   m_leftShuttle.StopMotor();
-  m_rightShuttle.SetSelectedSensorPosition(0,0,0);
-  m_leftShuttle.SetSelectedSensorPosition(0,0,0);
+  m_rightShuttle.SetSelectedSensorPosition(0, 0, 0);
+  m_leftShuttle.SetSelectedSensorPosition(0, 0, 0);
   m_liftEncoder.SetPosition(0);
-  m_liftPidController.SetReference(0,rev::ControlType::kPosition);
+  m_liftPidController.SetReference(0, rev::ControlType::kPosition);
 }
