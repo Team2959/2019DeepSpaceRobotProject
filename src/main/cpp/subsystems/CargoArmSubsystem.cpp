@@ -29,6 +29,41 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_right, m_pidConfig, true);
 }
 
+void CargoArmSubsystem::OnRobotInit()
+{
+  DashboardDebugInit();
+}
+
+void CargoArmSubsystem::OnRobotPeriodic()
+{
+  DashboardDebugPeriodic();
+}
+
+void CargoArmSubsystem::DashboardDebugInit()
+{
+  frc::SmartDashboard::PutData(this);
+  frc::SmartDashboard::PutBoolean("Arm: Start", false);
+  MotorControllerHelpers::DashboardInitTalonSrx("Arm", m_pidConfig);
+}
+
+void CargoArmSubsystem::DashboardDebugPeriodic()
+{
+  MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_left, m_pidConfig);
+  MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_right, m_pidConfig);
+
+  frc::SmartDashboard::PutNumber("Arm: Position", CurrentArmPosition());
+  frc::SmartDashboard::PutNumber("Arm: Velocity", m_left.GetSelectedSensorVelocity());
+
+  auto start = frc::SmartDashboard::GetBoolean("Arm: Start", false);
+  if (start)
+  {
+    auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", m_lastTargetPosition);
+    targetPosition = std::min(targetPosition, kArmFrontPosition + kCloseEnoughToPosition);
+    targetPosition = std::max(targetPosition, kArmTiltBackwardPosition - kCloseEnoughToPosition);
+    MoveCargoArmToPosition(targetPosition, true);
+  }
+}
+
 double CargoArmSubsystem::CurrentArmPosition()
 {
   // actually check position is at target position
@@ -70,32 +105,6 @@ void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShu
 void CargoArmSubsystem::StopAtCurrentPosition()
 {
   MoveCargoArmToPosition(CurrentArmPosition(), true);
-}
-
-void CargoArmSubsystem::DashboardDataInit()
-{
-  frc::SmartDashboard::PutData(this);
-  MotorControllerHelpers::DashboardInitTalonSrx("Arm", m_pidConfig);
-  frc::SmartDashboard::PutBoolean("Arm: Start", false);
-}
-
-void CargoArmSubsystem::DashboardData()
-{
-  MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_left, m_pidConfig);
-  MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_right, m_pidConfig);
-
-  frc::SmartDashboard::PutNumber("Arm: Position", CurrentArmPosition());
-  frc::SmartDashboard::PutNumber("Arm: Velocity", m_left.GetSelectedSensorVelocity());
-
-
-  auto start = frc::SmartDashboard::GetBoolean("Arm: Start", false);
-  if (start)
-  {
-    auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", m_lastTargetPosition);
-    targetPosition = std::min(targetPosition, kArmFrontPosition + kCloseEnoughToPosition);
-    targetPosition = std::max(targetPosition, kArmTiltBackwardPosition - kCloseEnoughToPosition);
-    MoveCargoArmToPosition(targetPosition, true);
-  }
 }
 
 void CargoArmSubsystem::StopAndZero()

@@ -32,7 +32,7 @@ void Robot::RobotInit() {
   
   m_driveTrainSubsystem.Init();
   m_liftAndShuttleSubsystem.OnRobotInit();
-  m_cargoArmSubsystem.DashboardDataInit();
+  m_cargoArmSubsystem.OnRobotInit();
   m_cargoControlSubsystem.OnRobotInit();
 
   m_hatchSubsystem.RetractMechanism();
@@ -49,9 +49,8 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() 
 {
-
-  double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
-  auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
+  //double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
+  //auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   // Testing of Raspberry Pi info through network tables
   /*std::cout<<"front framenumber = "<<frameNumber<<"\n";
@@ -59,20 +58,19 @@ void Robot::RobotPeriodic()
     std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";*/
   m_periodic++;
   
-  if (m_periodic == 2) {
+  if (m_periodic == 2)
+  {
     m_driveTrainSubsystem.DashboardDataUpdate();
-  } else if (m_periodic == 4) {
-    m_cargoArmSubsystem.DashboardData();
+  }
+  else if (m_periodic == 4)
+  {
+    m_cargoArmSubsystem.OnRobotPeriodic();
     m_cargoControlSubsystem.DashboardData();
-  } else if (m_periodic >= 10) { 
+  }
+  else if (m_periodic >= 10)
+  { 
     m_liftAndShuttleSubsystem.DashboardData();
     m_periodic = 0;
-
-    if (frc::SmartDashboard::GetBoolean("ZeroMotors", false))
-    {
-      m_liftAndShuttleSubsystem.StopAndZero();
-      m_cargoArmSubsystem.StopAndZero();
-    } 
   }
 }
 
@@ -86,6 +84,11 @@ void Robot::DisabledInit() {}
 void Robot::DisabledPeriodic()
 {
     m_driveTrainSubsystem.DisabledWatchDog();
+    if (m_periodic == 9 && frc::SmartDashboard::GetBoolean("ZeroMotors", false))
+    {
+      m_liftAndShuttleSubsystem.StopAndZero();
+      m_cargoArmSubsystem.StopAndZero();
+    } 
     frc::Scheduler::GetInstance()->Run();
 }
 
