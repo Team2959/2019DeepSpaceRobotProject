@@ -46,12 +46,14 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void ShuttleStopAtCurrentPosition();
 
   // Smart Dashboard debug/info
-  void DashboardDataInit();
+  void DashboardDebugInit();
+  void DashboardDebugPeriodic();
 
  public:
   LiftAndShuttleSubsystem();
 
   void OnRobotInit();
+  void OnRobotPeriodic();
 
   bool IsAtShuttleRearLimit() const;
   bool IsAtShuttleFrontLimit() const;
@@ -71,7 +73,4 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void CargoShuttleBackStop();
 
   void StopAndZero();
-
-  // Smart Dashboard debug/info
-  void DashboardData();
 };

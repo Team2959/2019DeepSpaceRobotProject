@@ -69,7 +69,7 @@ void Robot::RobotPeriodic()
   }
   else if (m_periodic >= 10)
   { 
-    m_liftAndShuttleSubsystem.DashboardData();
+    m_liftAndShuttleSubsystem.OnRobotPeriodic();
     m_periodic = 0;
   }
 }
