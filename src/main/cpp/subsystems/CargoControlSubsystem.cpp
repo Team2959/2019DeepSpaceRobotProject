@@ -15,13 +15,24 @@ void CargoControlSubsystem::OnRobotInit()
   frc::SmartDashboard::PutBoolean("Cargo 1", false);
   frc::SmartDashboard::PutBoolean("Cargo 2", false);
 
-  frc::SmartDashboard::PutData(this);
+  DashboardDebugInit();
 }
 
-void CargoControlSubsystem::DashboardData()
+void CargoControlSubsystem::OnRobotPeriodic()
 {
   frc::SmartDashboard::PutBoolean("Cargo 1", !m_cargoIn.Get());
   frc::SmartDashboard::PutBoolean("Cargo 2", !m_cargoIn2.Get());
+
+  DashboardDebugPeriodic();
+}
+
+void CargoControlSubsystem::DashboardDebugInit()
+{
+  frc::SmartDashboard::PutData(this);
+}
+
+void CargoControlSubsystem::DashboardDebugPeriodic()
+{
 }
 
 bool CargoControlSubsystem::CargoIn() const

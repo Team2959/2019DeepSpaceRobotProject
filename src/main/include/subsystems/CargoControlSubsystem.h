@@ -21,13 +21,16 @@ class CargoControlSubsystem : public frc::Subsystem {
   frc::DigitalInput m_cargoIn2 { kCargoIn2Switch };
 
   void ChangeWheelsSpeed(double speed);
+  
+  void DashboardDebugInit();
+  void DashboardDebugPeriodic();
 
  public:
   CargoControlSubsystem();
 
   void OnRobotInit();
-  void DashboardData();
-  
+  void OnRobotPeriodic();
+ 
   bool CargoIn() const;
   
   void CargoBallTowardsFront();

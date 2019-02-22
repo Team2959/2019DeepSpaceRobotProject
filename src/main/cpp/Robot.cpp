@@ -65,7 +65,7 @@ void Robot::RobotPeriodic()
   else if (m_periodic == 4)
   {
     m_cargoArmSubsystem.OnRobotPeriodic();
-    m_cargoControlSubsystem.DashboardData();
+    m_cargoControlSubsystem.OnRobotPeriodic();
   }
   else if (m_periodic >= 10)
   { 
