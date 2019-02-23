@@ -28,19 +28,22 @@ private:
 
 
     VelocityTankDrive m_tankDrive { m_leftPrimary, m_rightPrimary };
+    
+    // Smart Dashboard debug/info
+    void DashboardDebugInit ();
+    void DashboardDebugPeriodic ();
 
 public:
     DriveTrainSubsystem();
     void InitDefaultCommand() override;
 
-    void TankDrive(double leftSpeed, double rightSpeed);
+    void OnRobotInit ();
+    void OnRobotPeriodic();
 
-    void DashboardDataInit ();
-    void DashboardDataUpdate ();
+    void TankDrive(double leftSpeed, double rightSpeed);
 
     double GetMaxSpeed ();
     double GetMaxAccel ();
 
     void DisabledWatchDog ();
-    void Init ();
 };

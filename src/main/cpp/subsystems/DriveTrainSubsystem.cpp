@@ -34,22 +34,27 @@ void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed){
     m_tankDrive.TankDrive(leftSpeed, rightSpeed);
 }
 
-void DriveTrainSubsystem::Init()
+void DriveTrainSubsystem::OnRobotInit()
 {
     m_tankDrive.SetupRightPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
     m_tankDrive.SetupLeftPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
 
     // DEBUG
-    DashboardDataInit();
+    DashboardDebugInit();
 }
 
-void DriveTrainSubsystem::DashboardDataInit ()
+void DriveTrainSubsystem::OnRobotPeriodic()
 {
-    m_tankDrive.DashboardDataInit();
+    DashboardDebugPeriodic();
 }
-void DriveTrainSubsystem::DashboardDataUpdate ()
+
+void DriveTrainSubsystem::DashboardDebugInit ()
 {
-    m_tankDrive.DashboardDataUpdate();
+    m_tankDrive.DashboardDebugInit();
+}
+void DriveTrainSubsystem::DashboardDebugPeriodic ()
+{
+    m_tankDrive.DashboardDebugPeriodic();
 }
 
 double DriveTrainSubsystem::GetMaxSpeed()

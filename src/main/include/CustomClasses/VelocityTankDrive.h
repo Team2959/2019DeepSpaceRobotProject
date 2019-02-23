@@ -55,6 +55,6 @@ public:
     void DisabledWatchDog ();
 
     // Testing functions only, should not be used in production
-    void DashboardDataInit   ();
-    void DashboardDataUpdate ();
+    void DashboardDebugInit ();
+    void DashboardDebugPeriodic ();  
 };

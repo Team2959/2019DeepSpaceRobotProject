@@ -30,7 +30,7 @@ void Robot::RobotInit() {
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
   
-  m_driveTrainSubsystem.Init();
+  m_driveTrainSubsystem.OnRobotInit();
   m_liftAndShuttleSubsystem.OnRobotInit();
   m_cargoArmSubsystem.OnRobotInit();
   m_cargoControlSubsystem.OnRobotInit();
@@ -60,7 +60,7 @@ void Robot::RobotPeriodic()
   
   if (m_periodic == 2)
   {
-    m_driveTrainSubsystem.DashboardDataUpdate();
+    m_driveTrainSubsystem.OnRobotPeriodic();
   }
   else if (m_periodic == 4)
   {
