@@ -106,7 +106,7 @@ void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double drive
   motor.RestoreFactoryDefaults();
   motor.ClearFaults();
   motor.SetSmartCurrentLimit(driveMaxCurrent);
-  motor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  motor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitFwdEn, false);
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kHardLimitRevEn, false);
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitFwdEn, false);
