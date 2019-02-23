@@ -26,7 +26,8 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
   // m_pidConfig.allowableClosedloopError = 128;
 
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_left, m_pidConfig, false);
-  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_right, m_pidConfig, true);
+  m_right.Follow(m_left);
+  m_right.SetInverted( ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
 }
 
 void CargoArmSubsystem::OnRobotInit()
@@ -49,7 +50,6 @@ void CargoArmSubsystem::DashboardDebugInit()
 void CargoArmSubsystem::DashboardDebugPeriodic()
 {
   MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_left, m_pidConfig);
-  MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_right, m_pidConfig);
 
   frc::SmartDashboard::PutNumber("Arm: Position", CurrentArmPosition());
   frc::SmartDashboard::PutNumber("Arm: Velocity", m_left.GetSelectedSensorVelocity());
@@ -96,7 +96,6 @@ void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShu
   {
     m_lastTargetPosition = position;
     m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
-    m_right.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
 
     frc::SmartDashboard::PutNumber("Arm: Target", position);
   }
@@ -109,8 +108,6 @@ void CargoArmSubsystem::StopAtCurrentPosition()
 
 void CargoArmSubsystem::StopAndZero()
 {
-  m_right.StopMotor();
   m_left.StopMotor();
-  m_right.SetSelectedSensorPosition(0,0,0);
   m_left.SetSelectedSensorPosition(0,0,0);
 }
