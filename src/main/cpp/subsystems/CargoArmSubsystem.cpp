@@ -18,12 +18,15 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 {
   m_left.GetSlotConfigs(m_pidConfig);
   m_pidConfig.kP = 0.1;
-  m_pidConfig.kI = 0;
+  m_pidConfig.kI = 0.0001;
   m_pidConfig.kD = 0;
-  m_pidConfig.kF = 0;
+  m_pidConfig.kF = 0.057;
   // m_pidConfig.integralZone = x;
   // m_pidConfig.closedLoopPeakOutput = 1.0;
   // m_pidConfig.allowableClosedloopError = 128;
+
+  m_left.ConfigMotionCruiseVelocity(5000, 10);
+  m_left.ConfigMotionAcceleration(4500,10);
 
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_left, m_pidConfig, false);
   m_right.Follow(m_left);
@@ -95,7 +98,7 @@ void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShu
   if (fabs(position - m_lastTargetPosition) > kCloseEnoughToPosition)
   {
     m_lastTargetPosition = position;
-    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
+    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
 
     frc::SmartDashboard::PutNumber("Arm: Target", position);
   }
