@@ -12,7 +12,7 @@
 #include <algorithm>
 
 constexpr double kCloseEnoughToPosition = 250;
-constexpr double kArmIsClearOfShuttle = 4000;
+constexpr double kArmIsClearOfShuttle = 8500;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 {
