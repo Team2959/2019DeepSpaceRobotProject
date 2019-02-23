@@ -74,13 +74,13 @@ void VelocityTankDrive::InitSendable (SendableBuilder& builder)
 
 }
 
-void VelocityTankDrive::DashboardDataInit () 
+void VelocityTankDrive::DashboardDebugInit () 
 {
     MotorControllerHelpers::DashboardInitSparkMax("Drive/Right", m_rightEncoder);
     MotorControllerHelpers::DashboardInitSparkMax("Drive/Left", m_leftEncoder);
 }
 
-void VelocityTankDrive::DashboardDataUpdate () 
+void VelocityTankDrive::DashboardDebugPeriodic () 
 {
     MotorControllerHelpers::DashboardDataSparkMax("Drive/Right", m_rightPID, m_rightEncoder);
     MotorControllerHelpers::DashboardDataSparkMax("Drive/Left", m_leftPID, m_leftEncoder);
