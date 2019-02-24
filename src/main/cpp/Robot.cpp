@@ -11,7 +11,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <cameraserver/CameraServer.h>
 
-#include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
+#include "../../../../2019RaspPIRoboRioShared/Shared.hpp"
 #include <iostream>
 
 // create instance of subsystems
