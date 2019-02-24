@@ -22,37 +22,38 @@ DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
 
 void DriveTrainSubsystem::InitDefaultCommand()
 {
-    SetDefaultCommand(new DriveWithControllerCommand());
- 
     // Set the default command for a subsystem here.
-    // SetDefaultCommand(new MySpecialCommand());
+    SetDefaultCommand(new DriveWithControllerCommand());
 }
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
-void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed){
+void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed)
+{
     m_tankDrive.TankDrive(leftSpeed, rightSpeed);
 }
 
-void DriveTrainSubsystem::OnRobotInit()
+void DriveTrainSubsystem::OnRobotInit(bool addDebugInfo)
 {
     m_tankDrive.SetupRightPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
     m_tankDrive.SetupLeftPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
 
-    // DEBUG
-    DashboardDebugInit();
+    if (addDebugInfo)
+        DashboardDebugInit();
 }
 
-void DriveTrainSubsystem::OnRobotPeriodic()
+void DriveTrainSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
-    DashboardDebugPeriodic();
+    if (updateDebugInfo)
+        DashboardDebugPeriodic();
 }
 
-void DriveTrainSubsystem::DashboardDebugInit ()
+void DriveTrainSubsystem::DashboardDebugInit()
 {
     m_tankDrive.DashboardDebugInit();
 }
-void DriveTrainSubsystem::DashboardDebugPeriodic ()
+
+void DriveTrainSubsystem::DashboardDebugPeriodic()
 {
     m_tankDrive.DashboardDebugPeriodic();
 }
@@ -67,8 +68,7 @@ double DriveTrainSubsystem::GetMaxAccel()
     return kDriveSafetyFactor * kRobotMaxAccel;
 }
 
-void DriveTrainSubsystem::DisabledWatchDog ()
+void DriveTrainSubsystem::DisabledWatchDog()
 {
     m_tankDrive.DisabledWatchDog();
-
 }

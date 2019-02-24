@@ -30,8 +30,8 @@ class CargoControlSubsystem : public frc::Subsystem {
  public:
   CargoControlSubsystem();
 
-  void OnRobotInit();
-  void OnRobotPeriodic();
+  void OnRobotInit(bool addDebugInfo);
+  void OnRobotPeriodic(bool updateDebugInfo);
  
   bool CargoIn() const;
   

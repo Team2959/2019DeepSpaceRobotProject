@@ -24,8 +24,8 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANSparkMax m_liftFollower2 { kLiftFollower2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   frc::DigitalInput m_liftBottomLimitSwitch{kLiftBottomSwitch};
 
-  rev::CANPIDController m_liftPidController { m_liftPrimary };
-  rev::CANEncoder m_liftEncoder { m_liftPrimary };
+  rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
+  rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
 
   // Lift methods
   bool IsLiftSafeForShuttleMoveThroughMiddle();
@@ -33,7 +33,6 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void MoveLiftToPosition(double position);
   void LiftStopAtCurrentPosition();
  
-
   // Shuttle control
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_rightShuttle { kRightCargoShuttleCanTalonSrxMotor };
@@ -48,12 +47,13 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   // Smart Dashboard debug/info
   void DashboardDebugInit();
   void DashboardDebugPeriodic();
+  bool m_updateDebugInfo = false;
 
  public:
   LiftAndShuttleSubsystem();
 
-  void OnRobotInit();
-  void OnRobotPeriodic();
+  void OnRobotInit(bool addDebugInfo);
+  void OnRobotPeriodic(bool updateDebugInfo);
 
   bool IsAtShuttleRearLimit() const;
   bool IsAtShuttleFrontLimit() const;

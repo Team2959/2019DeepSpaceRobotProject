@@ -12,20 +12,22 @@ constexpr double kWheelSpeed = 0.5;
 
 CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsystem") {}
 
-void CargoControlSubsystem::OnRobotInit()
+void CargoControlSubsystem::OnRobotInit(bool addDebugInfo)
 {
   frc::SmartDashboard::PutBoolean("Cargo 1", false);
   frc::SmartDashboard::PutBoolean("Cargo 2", false);
 
-  DashboardDebugInit();
+  if (addDebugInfo)
+    DashboardDebugInit();
 }
 
-void CargoControlSubsystem::OnRobotPeriodic()
+void CargoControlSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
   frc::SmartDashboard::PutBoolean("Cargo 1", !m_cargoIn.Get());
   frc::SmartDashboard::PutBoolean("Cargo 2", !m_cargoIn2.Get());
 
-  DashboardDebugPeriodic();
+  if (updateDebugInfo)
+    DashboardDebugPeriodic();
 }
 
 void CargoControlSubsystem::DashboardDebugInit()
@@ -39,17 +41,14 @@ void CargoControlSubsystem::DashboardDebugInit()
 void CargoControlSubsystem::DashboardDebugPeriodic()
 {
   auto start = frc::SmartDashboard::GetBoolean("Cargo Move", false);
-  auto speed = frc::SmartDashboard::GetNumber("Cargo Speed", 0.5);
-
   if (start && !CargoIn())
   {
-    ChangeWheelsSpeed(-speed);
+    ChangeWheelsSpeed(-frc::SmartDashboard::GetNumber("Cargo Speed", 0.5));
   }
   else
   {
     StopWheels();
   }
-  
 }
 
 bool CargoControlSubsystem::CargoIn() const

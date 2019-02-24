@@ -10,7 +10,7 @@
 #include <frc/commands/Subsystem.h>
 #include <rev/CANSparkMax.h>
 #include "RobotMap.h"
-#include "CustomClasses/VelocityTankDrive.h"
+#include "utilities/VelocityTankDrive.h"
 
 class DriveTrainSubsystem : public frc::Subsystem
 {
@@ -26,24 +26,23 @@ private:
     rev::CANSparkMax m_leftPrimary   {kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
     rev::CANSparkMax m_leftFollower  {kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
 
-
     VelocityTankDrive m_tankDrive { m_leftPrimary, m_rightPrimary };
     
     // Smart Dashboard debug/info
-    void DashboardDebugInit ();
-    void DashboardDebugPeriodic ();
+    void DashboardDebugInit();
+    void DashboardDebugPeriodic();
 
 public:
     DriveTrainSubsystem();
     void InitDefaultCommand() override;
 
-    void OnRobotInit ();
-    void OnRobotPeriodic();
+    void OnRobotInit(bool addDebugInfo);
+    void OnRobotPeriodic(bool updateDebugInfo);
 
     void TankDrive(double leftSpeed, double rightSpeed);
 
-    double GetMaxSpeed ();
-    double GetMaxAccel ();
+    double GetMaxSpeed();
+    double GetMaxAccel();
 
-    void DisabledWatchDog ();
+    void DisabledWatchDog();
 };

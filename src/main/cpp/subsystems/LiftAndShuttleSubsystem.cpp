@@ -38,7 +38,7 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
 }
 
-void LiftAndShuttleSubsystem::OnRobotInit()
+void LiftAndShuttleSubsystem::OnRobotInit(bool addDebugInfo)
 {
 	m_leftShuttle.SetSelectedSensorPosition(0,0,0);
 	m_rightShuttle.SetSelectedSensorPosition(0,0,0);
@@ -69,16 +69,19 @@ void LiftAndShuttleSubsystem::OnRobotInit()
   frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
   frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", IsAtShuttleRearLimit());
 
-  DashboardDebugInit();
+  m_updateDebugInfo = addDebugInfo;
+  if (addDebugInfo)
+    DashboardDebugInit();
 }
 
-void LiftAndShuttleSubsystem::OnRobotPeriodic()
+void LiftAndShuttleSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
   frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", IsLiftAtBottom());
   frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
   frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", IsAtShuttleRearLimit());
 
-  DashboardDebugPeriodic();
+  if (updateDebugInfo)
+    DashboardDebugPeriodic();
 }
 
 void LiftAndShuttleSubsystem::DashboardDebugInit()
@@ -183,7 +186,8 @@ void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
   m_leftShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
   m_rightShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
 
-  frc::SmartDashboard::PutNumber("Shtl: Target", position);
+  if (m_updateDebugInfo)
+    frc::SmartDashboard::PutNumber("Shtl: Target", position);
 }
 
 void LiftAndShuttleSubsystem::ShuttleStopAtCurrentPosition()
@@ -211,7 +215,7 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
 {
   m_liftPrimary.StopMotor();
   m_liftEncoder.SetPosition(0);
-  m_liftPidController.SetReference(0,rev::ControlType::kPosition);
+  MoveLiftToPosition(0);
 }
 
 // Lift Code
@@ -234,10 +238,14 @@ double LiftAndShuttleSubsystem::CurrentLiftPosition()
 
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
 {
-  auto arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", 0);
-  m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
+  double arbFF = 0.0;
+  if (m_updateDebugInfo)
+  {
+    arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", arbFF);
+    frc::SmartDashboard::PutNumber("Lift: Target", position);
+  }
 
-  frc::SmartDashboard::PutNumber("Lift: Target", position);
+  m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
 }
 
 void LiftAndShuttleSubsystem::LiftStopAtCurrentPosition()
@@ -354,5 +362,5 @@ void LiftAndShuttleSubsystem::StopAndZero()
   m_rightShuttle.SetSelectedSensorPosition(0, 0, 0);
   m_leftShuttle.SetSelectedSensorPosition(0, 0, 0);
   m_liftEncoder.SetPosition(0);
-  m_liftPidController.SetReference(0, rev::ControlType::kPosition);
+  MoveLiftToPosition(0);
 }
