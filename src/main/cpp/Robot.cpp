@@ -30,7 +30,7 @@ void Robot::RobotInit() {
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
 
-  m_debugDrive = true;
+  m_debugDrive = false;
   m_debugLiftAndShuttle = false;
   m_debugCargoArm = false;
   m_debugCargoControl = false;
