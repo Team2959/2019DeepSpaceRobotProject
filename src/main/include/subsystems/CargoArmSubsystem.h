@@ -25,12 +25,13 @@ class CargoArmSubsystem : public frc::Subsystem {
 
   void DashboardDebugInit();
   void DashboardDebugPeriodic();
+  bool m_updateDebugInfo = false;
 
  public:
   CargoArmSubsystem();
 
-  void OnRobotInit();
-  void OnRobotPeriodic();
+  void OnRobotInit(bool addDebugInfo);
+  void OnRobotPeriodic(bool updateDebugInfo);
 
   bool IsArmAtPosition(double targetPosition);
   bool IsArmAboveCargoShuttle();

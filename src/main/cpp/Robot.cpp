@@ -29,13 +29,19 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
-  
-  m_driveTrainSubsystem.OnRobotInit();
-  m_liftAndShuttleSubsystem.OnRobotInit();
-  m_cargoArmSubsystem.OnRobotInit();
-  m_cargoControlSubsystem.OnRobotInit();
 
-  m_hatchSubsystem.RetractMechanism();
+  m_debugDrive = true;
+  m_debugLiftAndShuttle = false;
+  m_debugCargoArm = false;
+  m_debugCargoControl = false;
+  m_debugHatch = false;
+  
+  m_driveTrainSubsystem.OnRobotInit(m_debugDrive);
+  m_liftAndShuttleSubsystem.OnRobotInit(m_debugLiftAndShuttle);
+  m_cargoArmSubsystem.OnRobotInit(m_debugCargoArm);
+  m_cargoControlSubsystem.OnRobotInit(m_debugCargoControl);
+  m_hatchSubsystem.OnRobotInit(m_debugHatch);
+
   frc::SmartDashboard::PutBoolean("ZeroMotors", false);
 }
 
@@ -60,16 +66,20 @@ void Robot::RobotPeriodic()
   
   if (m_periodic == 2)
   {
-    m_driveTrainSubsystem.OnRobotPeriodic();
+    m_driveTrainSubsystem.OnRobotPeriodic(m_debugDrive);
   }
   else if (m_periodic == 4)
   {
-    m_cargoArmSubsystem.OnRobotPeriodic();
-    m_cargoControlSubsystem.OnRobotPeriodic();
+    m_cargoArmSubsystem.OnRobotPeriodic(m_debugCargoArm);
+    m_cargoControlSubsystem.OnRobotPeriodic(m_debugCargoControl);
+  }
+  else if (m_periodic == 8)
+  {
+    m_hatchSubsystem.OnRobotPeriodic(m_debugHatch);
   }
   else if (m_periodic >= 10)
   { 
-    m_liftAndShuttleSubsystem.OnRobotPeriodic();
+    m_liftAndShuttleSubsystem.OnRobotPeriodic(m_debugLiftAndShuttle);
     m_periodic = 0;
   }
 }

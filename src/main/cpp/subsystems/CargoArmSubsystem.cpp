@@ -33,14 +33,17 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
   m_right.SetInverted( ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
 }
 
-void CargoArmSubsystem::OnRobotInit()
+void CargoArmSubsystem::OnRobotInit(bool addDebugInfo)
 {
-  DashboardDebugInit();
+  m_updateDebugInfo = addDebugInfo;
+  if (addDebugInfo)
+    DashboardDebugInit();
 }
 
-void CargoArmSubsystem::OnRobotPeriodic()
+void CargoArmSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
-  DashboardDebugPeriodic();
+  if (updateDebugInfo)
+    DashboardDebugPeriodic();
 }
 
 void CargoArmSubsystem::DashboardDebugInit()
@@ -100,7 +103,8 @@ void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShu
     m_lastTargetPosition = position;
     m_left.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
 
-    frc::SmartDashboard::PutNumber("Arm: Target", position);
+    if (m_updateDebugInfo)
+      frc::SmartDashboard::PutNumber("Arm: Target", position);
   }
 }
 
