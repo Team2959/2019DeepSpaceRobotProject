@@ -6,10 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/FollowPath.h"
+#include "Robot.h"
 
 FollowPath::FollowPath() {
   // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
+Requires(&Robot::m_driveTrainSubsystem);
 
 }
 
@@ -17,7 +18,9 @@ FollowPath::FollowPath() {
 void FollowPath::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void FollowPath::Execute() {}
+void FollowPath::Execute() {
+  Robot::m_driveTrainSubsystem.TankDrive(m_right[m_index], m_left[m_index]);
+}
 
 // Make this return true when this Command no longer needs to run execute()
 bool FollowPath::IsFinished() { return false; }
@@ -28,3 +31,8 @@ void FollowPath::End() {}
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void FollowPath::Interrupted() {}
+
+  double FollowPath::UnitCoversion(double x)
+  {
+return x*ConversionFactor;
+  }

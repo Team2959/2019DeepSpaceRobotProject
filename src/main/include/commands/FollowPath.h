@@ -8,6 +8,9 @@
 #pragma once
 
 #include <frc/commands/Command.h>
+#define _USE_MATH_DEFINES
+#include <cmath>
+#include <vector>
 
 class FollowPath : public frc::Command {
  public:
@@ -17,4 +20,12 @@ class FollowPath : public frc::Command {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
+
+  private:
+  double UnitCoversion(double x);
+  std::vector<double> m_right;
+  std::vector<double> m_left;
+  std::vector<double> m_heading;
+  double ConversionFactor = (1/(M_PI*4))*60;
+  int m_index = 0;
 };
