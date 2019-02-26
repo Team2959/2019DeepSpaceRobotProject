@@ -13,9 +13,11 @@
 #include "commands/AttachHatchCommand.h"
 #include "commands/ReleaseHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
+#include "commands/PrepForHatchCommand.h"
 #include <frc/commands/TimedCommand.h>
 #include "Robot.h"
 #include "subsystems/LiftAndShuttlePositions.h"
+#include "subsystems/HatchSubsystem.h"
 
 DeliverCommandGroup::DeliverCommandGroup() {
   // Add Commands here:
@@ -52,6 +54,7 @@ DeliverCommandGroup::DeliverCommandGroup() {
     else{
     //deliver back
       AddSequential(new MoveCargoTowardRearCommand());
+      AddSequential(new PrepForHatchCommand());
 
     }
     AddSequential(new StopCargoControlWheelsCommand());
