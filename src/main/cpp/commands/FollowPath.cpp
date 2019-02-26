@@ -20,6 +20,7 @@ void FollowPath::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void FollowPath::Execute() {
   Robot::m_driveTrainSubsystem.TankDrive(m_right[m_index], m_left[m_index]);
+  m_index++;
 }
 
 // Make this return true when this Command no longer needs to run execute()
