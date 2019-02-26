@@ -28,7 +28,7 @@ void DriveWithControllerCommand::Execute()
 {
     auto start = std::chrono::high_resolution_clock::now();
     Robot::m_driveTrainSubsystem.TankDrive(
-        jsc.Condition(1.0 * Robot::m_oi.m_leftDriverJoystick.GetY()),
+        jsc.Condition(-1.0 * Robot::m_oi.m_leftDriverJoystick.GetY()),
         jsc.Condition(1.0 * Robot::m_oi.m_rightDriverJoystick.GetY())
     );
     auto end = std::chrono::high_resolution_clock::now();

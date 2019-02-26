@@ -8,13 +8,40 @@
 #pragma once
 
 #include <frc/commands/Command.h>
+#include <subsystems/DriveTrainSubsystem.h>
+
+#define _USE_MATH_DEFINES
+#include <cmath>
+#include <deque>
+#include <string>
 
 class FollowPath : public frc::Command {
- public:
-  FollowPath();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+public:
+    FollowPath(const std::string& path, VelocityUnits units);
+    void Initialize() override;
+    void Execute() override;
+    bool IsFinished() override;
+    void End() override;
+    void Interrupted() override;
+
+
+    enum VelocityUnits {
+        kFeetPerSecond,
+        kMetersPerSecond,
+        kInchesPerSecond
+    };
+private:
+    struct Trajectory {
+        double elapsedTime;
+        double rightVelocity;
+        double leftVelocity;
+        double heading;
+    };
+
+    std::string m_pathName;
+    std::deque<Trajectory> m_trajectories;
+
+    void   LoadPathFile ();
+    double SetUnitCoversion(VelocityUnits v);
+    double m_conversionFactor = (1 / (M_PI * kDriveTrainWheelSize)) * 60;
 };

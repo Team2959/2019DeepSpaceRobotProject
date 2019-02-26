@@ -30,10 +30,6 @@ public:
 private:
   // Driver buttons
   frc::JoystickButton m_deliver { &m_rightDriverJoystick, 1};
-  frc::JoystickButton m_safetyH { &m_rightDriverJoystick, 2};
-  frc::JoystickButton m_attachH { &m_rightDriverJoystick, 3};
-  frc::JoystickButton m_releaseH { &m_rightDriverJoystick, 4};
-  frc::JoystickButton m_retractH { &m_rightDriverJoystick, 5};
 
   // Co Pilot Buttons
   frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 4};

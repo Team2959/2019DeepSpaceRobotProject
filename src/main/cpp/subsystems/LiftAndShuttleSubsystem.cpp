@@ -10,14 +10,14 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/MotorControllerHelpers.h"
 #include <frc/DigitalInput.h>
+#include <algorithm>
 
+constexpr double kShuttleCloseEnoughToPosition = 250;
+constexpr double kShuttleSafeFrontPosition = 5000;
+constexpr double kShuttleSafeRearPosition = -3700;
 
-constexpr int kShuttleCloseEnoughToPosition = 250;
-constexpr int kShuttleSafeFrontPosition = 5000;
-constexpr int kShuttleSafeRearPosition = -3700;
-
-constexpr int kLiftCloseEnoughToPosition = 0.5;
-constexpr int kLiftMaxSafeHeight = 2;
+constexpr double kLiftCloseEnoughToPosition = 0.1;
+constexpr double kLiftMaxSafeHeight = 2;
 constexpr double kLiftKP = 5e-5;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
@@ -38,7 +38,7 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
 }
 
-void LiftAndShuttleSubsystem::OnRobotInit()
+void LiftAndShuttleSubsystem::OnRobotInit(bool addDebugInfo)
 {
 	m_leftShuttle.SetSelectedSensorPosition(0,0,0);
 	m_rightShuttle.SetSelectedSensorPosition(0,0,0);
@@ -65,22 +65,109 @@ void LiftAndShuttleSubsystem::OnRobotInit()
 
   m_liftEncoder.SetPosition(0);
 
-  DashboardDataInit();
+  frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", IsLiftAtBottom());
+  frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
+  frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", IsAtShuttleRearLimit());
+
+  m_updateDebugInfo = addDebugInfo;
+  if (addDebugInfo)
+    DashboardDebugInit();
+}
+
+void LiftAndShuttleSubsystem::OnRobotPeriodic(bool updateDebugInfo)
+{
+  frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", IsLiftAtBottom());
+  frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
+  frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", IsAtShuttleRearLimit());
+
+  if (updateDebugInfo)
+    DashboardDebugPeriodic();
+}
+
+void LiftAndShuttleSubsystem::DashboardDebugInit()
+{
+  frc::SmartDashboard::PutData(this);
+  MotorControllerHelpers::DashboardInitTalonSrx("Shtl", m_pidConfigShuttle);
+  frc::SmartDashboard::PutBoolean("Shtl: Start", false);
+
+  MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftEncoder);
+  frc::SmartDashboard::PutBoolean("Lift: Start", false);
+
+  frc::SmartDashboard::PutNumber("Lift: Max Velocity", kLiftMaxVelocity);
+  frc::SmartDashboard::PutNumber("Lift: Min Velocity", 0);
+  frc::SmartDashboard::PutNumber("Lift: Max Acceleration", kLiftMaxAcceleration);
+  frc::SmartDashboard::PutNumber("Lift: Allowed Closed Loop Error", 0);
+  frc::SmartDashboard::PutNumber("Lift: Arb FF", 0);
+}
+
+void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
+{
+  MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_leftShuttle, m_pidConfigShuttle);
+  MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_rightShuttle, m_pidConfigShuttle);
+  frc::SmartDashboard::PutNumber("Shtl: Position", CurrentShuttlePosition());
+  frc::SmartDashboard::PutNumber("Shtl: Velocity", m_rightShuttle.GetSelectedSensorVelocity());
+
+  auto startShuttle = frc::SmartDashboard::GetBoolean("Shtl: Start", false);
+  if (startShuttle)
+  {
+    auto targetPosition = frc::SmartDashboard::GetNumber("Shtl: Go To Position", 0);
+    targetPosition = std::min(targetPosition, kShuttleFrontPosition + kShuttleCloseEnoughToPosition);
+    targetPosition = std::max(targetPosition, kShuttleRearPosition - kShuttleCloseEnoughToPosition);
+    MoveShuttleToPosition(targetPosition);
+  }
+
+  MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController, m_liftEncoder);
+
+  auto maxV = frc::SmartDashboard::GetNumber("Lift: Max Velocity", kLiftMaxVelocity);
+  if (fabs(maxV - m_liftPidController.GetSmartMotionMaxVelocity()) > 0.0001)
+  {
+    m_liftPidController.SetSmartMotionMaxVelocity(maxV);
+  }
+  auto minV = frc::SmartDashboard::GetNumber("Lift: Min Velocity", 0);
+  if (fabs(minV - m_liftPidController.GetSmartMotionMinOutputVelocity()) > 0.0001)
+  {
+    m_liftPidController.SetSmartMotionMinOutputVelocity(minV);
+  }
+  auto maxAcc = frc::SmartDashboard::GetNumber("Lift: Max Acceleration", kLiftMaxAcceleration);
+  if (fabs(maxAcc - m_liftPidController.GetSmartMotionMaxAccel()) > 0.0001)
+  {
+    m_liftPidController.SetSmartMotionMaxAccel(maxAcc);
+  }
+  auto err = frc::SmartDashboard::GetNumber("Lift: Allowed Closed Loop Error", 0);
+  if (fabs(err - m_liftPidController.GetSmartMotionAllowedClosedLoopError()) > 0.0001)
+  {
+    m_liftPidController.SetSmartMotionAllowedClosedLoopError(err);
+  }
+
+  frc::SmartDashboard::PutNumber("Lift: Position", CurrentLiftPosition());
+  frc::SmartDashboard::PutNumber("Lift: Velocity", m_liftEncoder.GetVelocity());
+
+  frc::SmartDashboard::PutNumber("Lift : Applied Output", m_liftPrimary.GetAppliedOutput() );
+  frc::SmartDashboard::PutNumber("Lift : Output Current", m_liftPrimary.GetOutputCurrent() );
+
+  auto startLift = frc::SmartDashboard::GetBoolean("Lift: Start", false);
+  if (startLift)
+  {
+    auto targetPosition = frc::SmartDashboard::GetNumber("Lift: Go To Position", 0);
+    targetPosition = std::min(targetPosition, kLiftTopPosition + kLiftCloseEnoughToPosition);
+    targetPosition = std::max(targetPosition, kLiftFloorPosition);
+    MoveLiftToPosition(targetPosition);
+  }
 }
 
 bool LiftAndShuttleSubsystem::IsAtShuttleFrontLimit() const
 {
-  return m_shuttleFrontSwitch.Get();
+  return !m_shuttleFrontSwitch.Get();
 }
 
 bool LiftAndShuttleSubsystem::IsAtShuttleRearLimit() const
 {
-  return m_shuttleBackSwitch.Get();
+  return !m_shuttleBackSwitch.Get();
 }
 
 bool LiftAndShuttleSubsystem::IsLiftAtBottom() const
 {
-  return m_liftBottomLimitSwitch.Get();
+  return !m_liftBottomLimitSwitch.Get();
 }
 
 bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
@@ -99,7 +186,8 @@ void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
   m_leftShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
   m_rightShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
 
-  frc::SmartDashboard::PutNumber("Shtl: Target", position);
+  if (m_updateDebugInfo)
+    frc::SmartDashboard::PutNumber("Shtl: Target", position);
 }
 
 void LiftAndShuttleSubsystem::ShuttleStopAtCurrentPosition()
@@ -127,7 +215,7 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
 {
   m_liftPrimary.StopMotor();
   m_liftEncoder.SetPosition(0);
-  m_liftPidController.SetReference(0,rev::ControlType::kPosition);
+  MoveLiftToPosition(0);
 }
 
 // Lift Code
@@ -150,10 +238,14 @@ double LiftAndShuttleSubsystem::CurrentLiftPosition()
 
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
 {
-  auto arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", 0);
-  m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
+  double arbFF = 0.0;
+  if (m_updateDebugInfo)
+  {
+    arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", arbFF);
+    frc::SmartDashboard::PutNumber("Lift: Target", position);
+  }
 
-  frc::SmartDashboard::PutNumber("Lift: Target", position);
+  m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
 }
 
 void LiftAndShuttleSubsystem::LiftStopAtCurrentPosition()
@@ -262,84 +354,13 @@ void LiftAndShuttleSubsystem::StopAtCurrentPosition()
   ShuttleStopAtCurrentPosition();
 }
 
-void LiftAndShuttleSubsystem::DashboardDataInit()
-{
-  frc::SmartDashboard::PutData(this);
-  MotorControllerHelpers::DashboardInitTalonSrx("Shtl", m_pidConfigShuttle);
-  frc::SmartDashboard::PutBoolean("Shtl: Start", false);
-
-  MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftEncoder);
-  frc::SmartDashboard::PutBoolean("Lift: Start", false);
-
-  frc::SmartDashboard::PutNumber("Lift: Max Velocity", kLiftMaxVelocity);
-  frc::SmartDashboard::PutNumber("Lift: Min Velocity", 0);
-  frc::SmartDashboard::PutNumber("Lift: Max Acceleration", kLiftMaxAcceleration);
-  frc::SmartDashboard::PutNumber("Lift: Allowed Closed Loop Error", 0);
-  frc::SmartDashboard::PutNumber("Lift: Arb FF", 0);
-}
-
-void LiftAndShuttleSubsystem::DashboardData()
-{
-  MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_leftShuttle, m_pidConfigShuttle);
-  MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_rightShuttle, m_pidConfigShuttle);
-  frc::SmartDashboard::PutNumber("Shtl: Position", CurrentShuttlePosition());
-  frc::SmartDashboard::PutNumber("Shtl: Velocity", m_rightShuttle.GetSelectedSensorVelocity());
-
-  auto startShuttle = frc::SmartDashboard::GetBoolean("Shtl: Start", false);
-  if (startShuttle)
-  {
-    auto targetPosition = frc::SmartDashboard::GetNumber("Shtl: Go To Position", 0);
-    MoveShuttleToPosition(targetPosition);
-  }
-
-  MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController, m_liftEncoder);
-
-  auto maxV = frc::SmartDashboard::GetNumber("Lift: Max Velocity", kLiftMaxVelocity);
-  if (fabs(maxV - m_liftPidController.GetSmartMotionMaxVelocity()) > 0.0001)
-  {
-    m_liftPidController.SetSmartMotionMaxVelocity(maxV);
-  }
-  auto minV = frc::SmartDashboard::GetNumber("Lift: Min Velocity", 0);
-  if (fabs(minV - m_liftPidController.GetSmartMotionMinOutputVelocity()) > 0.0001)
-  {
-    m_liftPidController.SetSmartMotionMinOutputVelocity(minV);
-  }
-  auto maxAcc = frc::SmartDashboard::GetNumber("Lift: Max Acceleration", kLiftMaxAcceleration);
-  if (fabs(maxAcc - m_liftPidController.GetSmartMotionMaxAccel()) > 0.0001)
-  {
-    m_liftPidController.SetSmartMotionMaxAccel(maxAcc);
-  }
-  auto err = frc::SmartDashboard::GetNumber("Lift: Allowed Closed Loop Error", 0);
-  if (fabs(err - m_liftPidController.GetSmartMotionAllowedClosedLoopError()) > 0.0001)
-  {
-    m_liftPidController.SetSmartMotionAllowedClosedLoopError(err);
-  }
-
-  frc::SmartDashboard::PutNumber("Lift: Position", CurrentLiftPosition());
-  frc::SmartDashboard::PutNumber("Lift: Velocity", m_liftEncoder.GetVelocity());
-
-  frc::SmartDashboard::PutNumber("Lift : Applied Output", m_liftPrimary.GetAppliedOutput() );
-  frc::SmartDashboard::PutNumber("Lift : Output Current", m_liftPrimary.GetOutputCurrent() );
-
-  auto startLift = frc::SmartDashboard::GetBoolean("Lift: Start", false);
-  if (startLift)
-  {
-    auto targetPosition = frc::SmartDashboard::GetNumber("Lift: Go To Position", 0);
-    MoveLiftToPosition(targetPosition);
-  }
-
-  frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", m_liftBottomLimitSwitch.Get());
-  frc::SmartDashboard::PutBoolean("Shtl: Front Limit", m_shuttleFrontSwitch.Get());
-  frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", m_shuttleBackSwitch.Get());
-}
-
 void LiftAndShuttleSubsystem::StopAndZero()
 {
   m_liftPrimary.StopMotor();
   m_rightShuttle.StopMotor();
   m_leftShuttle.StopMotor();
-  m_rightShuttle.SetSelectedSensorPosition(0,0,0);
-  m_leftShuttle.SetSelectedSensorPosition(0,0,0);
+  m_rightShuttle.SetSelectedSensorPosition(0, 0, 0);
+  m_leftShuttle.SetSelectedSensorPosition(0, 0, 0);
   m_liftEncoder.SetPosition(0);
-  m_liftPidController.SetReference(0,rev::ControlType::kPosition);
+  MoveLiftToPosition(0);
 }

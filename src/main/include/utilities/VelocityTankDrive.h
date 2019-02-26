@@ -37,24 +37,24 @@ private:
 
 public:
     // Constructor
-    explicit VelocityTankDrive (rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary);
+    explicit VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary);
 
-    static void SetupSparkMax  (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent);
+    static void SetupSparkMax(rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent);
 
     // TankDrive is an interface similar to that of the FRC differential drive class. 
     /* It shall accept a speed for each side of the robot drive in real world values (RPM),
        as opposed to percentages. */
-    void TankDrive     (double left, double right);
-    void SetupRightPIDGains (double p, double i, double d, double ff, double iz);
-    void SetupLeftPIDGains  (double p, double i, double d, double ff, double iz);
+    void TankDrive(double left, double right);
+    void SetupRightPIDGains(double p, double i, double d, double ff, double iz);
+    void SetupLeftPIDGains(double p, double i, double d, double ff, double iz);
 
-    void StopMotor      () override;
-    void GetDescription (wpi::raw_ostream& desc) const override;
-    void InitSendable   (SendableBuilder& builder) override;
+    void StopMotor() override;
+    void GetDescription(wpi::raw_ostream& desc) const override;
+    void InitSendable(SendableBuilder& builder) override;
 
-    void DisabledWatchDog ();
+    void DisabledWatchDog();
 
     // Testing functions only, should not be used in production
-    void DashboardDataInit   ();
-    void DashboardDataUpdate ();
+    void DashboardDebugInit();
+    void DashboardDebugPeriodic();  
 };

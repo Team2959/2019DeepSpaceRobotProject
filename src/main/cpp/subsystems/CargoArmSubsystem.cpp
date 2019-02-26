@@ -9,23 +9,65 @@
 #include "subsystems/CargoArmPositions.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/MotorControllerHelpers.h"
+#include <algorithm>
 
-constexpr int kCloseEnoughToPosition = 250;
-constexpr int kArmIsClearOfShuttle = 4000;
+constexpr double kCloseEnoughToPosition = 250;
+constexpr double kArmIsClearOfShuttle = 8500;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 {
   m_left.GetSlotConfigs(m_pidConfig);
   m_pidConfig.kP = 0.1;
-  m_pidConfig.kI = 0;
+  m_pidConfig.kI = 0.0001;
   m_pidConfig.kD = 0;
-  m_pidConfig.kF = 0;
+  m_pidConfig.kF = 0.057;
   // m_pidConfig.integralZone = x;
   // m_pidConfig.closedLoopPeakOutput = 1.0;
   // m_pidConfig.allowableClosedloopError = 128;
 
+  m_left.ConfigMotionCruiseVelocity(5000, 10);
+  m_left.ConfigMotionAcceleration(4500,10);
+
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_left, m_pidConfig, false);
-  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_right, m_pidConfig, true);
+  m_right.Follow(m_left);
+  m_right.SetInverted( ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
+}
+
+void CargoArmSubsystem::OnRobotInit(bool addDebugInfo)
+{
+  m_updateDebugInfo = addDebugInfo;
+  if (addDebugInfo)
+    DashboardDebugInit();
+}
+
+void CargoArmSubsystem::OnRobotPeriodic(bool updateDebugInfo)
+{
+  if (updateDebugInfo)
+    DashboardDebugPeriodic();
+}
+
+void CargoArmSubsystem::DashboardDebugInit()
+{
+  frc::SmartDashboard::PutData(this);
+  frc::SmartDashboard::PutBoolean("Arm: Start", false);
+  MotorControllerHelpers::DashboardInitTalonSrx("Arm", m_pidConfig);
+}
+
+void CargoArmSubsystem::DashboardDebugPeriodic()
+{
+  MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_left, m_pidConfig);
+
+  frc::SmartDashboard::PutNumber("Arm: Position", CurrentArmPosition());
+  frc::SmartDashboard::PutNumber("Arm: Velocity", m_left.GetSelectedSensorVelocity());
+
+  auto start = frc::SmartDashboard::GetBoolean("Arm: Start", false);
+  if (start)
+  {
+    auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", m_lastTargetPosition);
+    targetPosition = std::min(targetPosition, kArmFrontPosition + kCloseEnoughToPosition);
+    targetPosition = std::max(targetPosition, kArmTiltBackwardPosition - kCloseEnoughToPosition);
+    MoveCargoArmToPosition(targetPosition, true);
+  }
 }
 
 double CargoArmSubsystem::CurrentArmPosition()
@@ -59,10 +101,10 @@ void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShu
   if (fabs(position - m_lastTargetPosition) > kCloseEnoughToPosition)
   {
     m_lastTargetPosition = position;
-    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
-    m_right.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
+    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
 
-    frc::SmartDashboard::PutNumber("Arm: Target", position);
+    if (m_updateDebugInfo)
+      frc::SmartDashboard::PutNumber("Arm: Target", position);
   }
 }
 
@@ -71,34 +113,8 @@ void CargoArmSubsystem::StopAtCurrentPosition()
   MoveCargoArmToPosition(CurrentArmPosition(), true);
 }
 
-void CargoArmSubsystem::DashboardDataInit()
-{
-  frc::SmartDashboard::PutData(this);
-  MotorControllerHelpers::DashboardInitTalonSrx("Arm", m_pidConfig);
-  frc::SmartDashboard::PutBoolean("Arm: Start", false);
-}
-
-void CargoArmSubsystem::DashboardData()
-{
-  MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_left, m_pidConfig);
-  MotorControllerHelpers::DashboardDataTalonSrx("Arm", m_right, m_pidConfig);
-
-  frc::SmartDashboard::PutNumber("Arm: Position", CurrentArmPosition());
-  frc::SmartDashboard::PutNumber("Arm: Velocity", m_left.GetSelectedSensorVelocity());
-
-
-  auto start = frc::SmartDashboard::GetBoolean("Arm: Start", false);
-  if (start)
-  {
-    auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", m_lastTargetPosition);
-    MoveCargoArmToPosition(targetPosition, true);
-  }
-}
-
 void CargoArmSubsystem::StopAndZero()
 {
- m_right.StopMotor();
   m_left.StopMotor();
-  m_right.SetSelectedSensorPosition(0,0,0);
   m_left.SetSelectedSensorPosition(0,0,0);
 }

@@ -6,22 +6,64 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/CargoControlSubsystem.h"
+#include <frc/smartdashboard/SmartDashboard.h>
+
+constexpr double kWheelSpeed = 0.5;
 
 CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsystem") {}
 
+void CargoControlSubsystem::OnRobotInit(bool addDebugInfo)
+{
+  frc::SmartDashboard::PutBoolean("Cargo 1", false);
+  frc::SmartDashboard::PutBoolean("Cargo 2", false);
+
+  if (addDebugInfo)
+    DashboardDebugInit();
+}
+
+void CargoControlSubsystem::OnRobotPeriodic(bool updateDebugInfo)
+{
+  frc::SmartDashboard::PutBoolean("Cargo 1", !m_cargoIn.Get());
+  frc::SmartDashboard::PutBoolean("Cargo 2", !m_cargoIn2.Get());
+
+  if (updateDebugInfo)
+    DashboardDebugPeriodic();
+}
+
+void CargoControlSubsystem::DashboardDebugInit()
+{
+  frc::SmartDashboard::PutData(this);
+
+  frc::SmartDashboard::PutBoolean("Cargo Move", false);
+  frc::SmartDashboard::PutNumber("Cargo Speed", 0.5);
+}
+
+void CargoControlSubsystem::DashboardDebugPeriodic()
+{
+  auto start = frc::SmartDashboard::GetBoolean("Cargo Move", false);
+  if (start && !CargoIn())
+  {
+    ChangeWheelsSpeed(-frc::SmartDashboard::GetNumber("Cargo Speed", 0.5));
+  }
+  else
+  {
+    StopWheels();
+  }
+}
+
 bool CargoControlSubsystem::CargoIn() const
 {
-  return m_cargoIn.Get();
+  return !m_cargoIn.Get() && !m_cargoIn2.Get();
 }
 
 void CargoControlSubsystem::CargoBallTowardsFront()
 {
-  ChangeWheelsSpeed(1);
+  ChangeWheelsSpeed(-kWheelSpeed);
 }
 
 void CargoControlSubsystem::CargoBallTowardsRear()
 {
-  ChangeWheelsSpeed(-1);
+  ChangeWheelsSpeed(kWheelSpeed);
 }
 
 void CargoControlSubsystem::StopWheels()

@@ -24,8 +24,8 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANSparkMax m_liftFollower2 { kLiftFollower2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless };
   frc::DigitalInput m_liftBottomLimitSwitch{kLiftBottomSwitch};
 
-  rev::CANPIDController m_liftPidController { m_liftPrimary };
-  rev::CANEncoder m_liftEncoder { m_liftPrimary };
+  rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
+  rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
 
   // Lift methods
   bool IsLiftSafeForShuttleMoveThroughMiddle();
@@ -33,25 +33,27 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void MoveLiftToPosition(double position);
   void LiftStopAtCurrentPosition();
  
-
   // Shuttle control
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_rightShuttle { kRightCargoShuttleCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfigShuttle;
-  frc::DigitalInput m_shuttleBackSwitch{kCargoArmBackSwitchTrigger};
-  frc::DigitalInput m_shuttleFrontSwitch{kCargoArmFrontSwitchTrigger};
+  frc::DigitalInput m_shuttleBackSwitch{kCargoShuttleBackSwitchTrigger};
+  frc::DigitalInput m_shuttleFrontSwitch{kCargoShuttleFrontSwitchTrigger};
 
   // Shuttle methods
   void MoveShuttleToPosition(double position);
   void ShuttleStopAtCurrentPosition();
 
   // Smart Dashboard debug/info
-  void DashboardDataInit();
+  void DashboardDebugInit();
+  void DashboardDebugPeriodic();
+  bool m_updateDebugInfo = false;
 
  public:
   LiftAndShuttleSubsystem();
 
-  void OnRobotInit();
+  void OnRobotInit(bool addDebugInfo);
+  void OnRobotPeriodic(bool updateDebugInfo);
 
   bool IsAtShuttleRearLimit() const;
   bool IsAtShuttleFrontLimit() const;
@@ -71,7 +73,4 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void CargoShuttleBackStop();
 
   void StopAndZero();
-
-  // Smart Dashboard debug/info
-  void DashboardData();
 };

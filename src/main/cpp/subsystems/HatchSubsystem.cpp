@@ -6,8 +6,31 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/HatchSubsystem.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 HatchSubsystem::HatchSubsystem() : Subsystem("HatchSubsystem") {}
+
+void HatchSubsystem::OnRobotInit(bool addDebugInfo)
+{
+  RetractMechanism();
+
+  if (addDebugInfo)
+  {
+    frc::SmartDashboard::PutBoolean("Hatach: Safety", false);
+    frc::SmartDashboard::PutBoolean("Hatach: Attach", false);
+    frc::SmartDashboard::PutBoolean("Hatach: Release", false);
+  }
+}
+
+void HatchSubsystem::OnRobotPeriodic(bool updateDebugInfo)
+{
+  if (updateDebugInfo)
+  {
+    m_safety.Set(frc::SmartDashboard::GetBoolean("Hatach: Safety", false));
+    m_attach.Set(frc::SmartDashboard::GetBoolean("Hatach: Attach", false));
+    m_release.Set(frc::SmartDashboard::GetBoolean("Hatach: Release", false));
+  }
+}
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.

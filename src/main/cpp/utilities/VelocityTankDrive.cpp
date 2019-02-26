@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "CustomClasses/VelocityTankDrive.h"
+#include "utilities/VelocityTankDrive.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
 #include "utilities/MotorControllerHelpers.h"
@@ -36,7 +36,8 @@ void VelocityTankDrive::TankDrive(double left, double right)
 
     FeedWatchdog();
 }
-void VelocityTankDrive::SetupRightPIDGains (double p, double i, double d, double ff, double iz)
+
+void VelocityTankDrive::SetupRightPIDGains(double p, double i, double d, double ff, double iz)
 {
     m_rightPID.SetP(p);
     m_rightPID.SetI(i);
@@ -46,7 +47,7 @@ void VelocityTankDrive::SetupRightPIDGains (double p, double i, double d, double
     m_rightPID.SetOutputRange(-1, 1);
 }
 
-void VelocityTankDrive::SetupLeftPIDGains (double p, double i, double d, double ff, double iz)
+void VelocityTankDrive::SetupLeftPIDGains(double p, double i, double d, double ff, double iz)
 {
     m_leftPID.SetP(p);
     m_leftPID.SetI(i);
@@ -56,7 +57,7 @@ void VelocityTankDrive::SetupLeftPIDGains (double p, double i, double d, double 
     m_leftPID.SetOutputRange(-1, 1);
 }
 
-void VelocityTankDrive::StopMotor () 
+void VelocityTankDrive::StopMotor() 
 {
     m_rightPrimary.StopMotor();
     m_leftPrimary.StopMotor();
@@ -64,23 +65,22 @@ void VelocityTankDrive::StopMotor ()
     FeedWatchdog();
 }
 
-void VelocityTankDrive::GetDescription (wpi::raw_ostream& desc) const
+void VelocityTankDrive::GetDescription(wpi::raw_ostream& desc) const
 {
     desc << "Velocity Tank Drive";
 }
 
-void VelocityTankDrive::InitSendable (SendableBuilder& builder) 
+void VelocityTankDrive::InitSendable(SendableBuilder& builder) 
 {
-
 }
 
-void VelocityTankDrive::DashboardDataInit () 
+void VelocityTankDrive::DashboardDebugInit() 
 {
     MotorControllerHelpers::DashboardInitSparkMax("Drive/Right", m_rightEncoder);
     MotorControllerHelpers::DashboardInitSparkMax("Drive/Left", m_leftEncoder);
 }
 
-void VelocityTankDrive::DashboardDataUpdate () 
+void VelocityTankDrive::DashboardDebugPeriodic() 
 {
     MotorControllerHelpers::DashboardDataSparkMax("Drive/Right", m_rightPID, m_rightEncoder);
     MotorControllerHelpers::DashboardDataSparkMax("Drive/Left", m_leftPID, m_leftEncoder);
@@ -89,7 +89,7 @@ void VelocityTankDrive::DashboardDataUpdate ()
     frc::SmartDashboard::PutNumber("Drive/Left: Setpoint", m_leftSetpoint);
 }
 
-void VelocityTankDrive::DisabledWatchDog ()
+void VelocityTankDrive::DisabledWatchDog()
 {
     FeedWatchdog();
 }

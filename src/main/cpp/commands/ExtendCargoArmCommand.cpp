@@ -8,6 +8,7 @@
 #include "commands/ExtendCargoArmCommand.h"
 #include "subsystems/CargoArmPositions.h"
 #include "subsystems/LiftAndShuttlePositions.h"
+#include "subsystems/HatchSubsystem.h"
 #include "Robot.h"
 #include "commands/MoveCargoTowardRearCommand.h"
 
@@ -15,11 +16,13 @@ ExtendCargoArmCommand::ExtendCargoArmCommand() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_cargoArmSubsystem);
+  Requires(&Robot::m_hatchSubsystem);
 }
 
 // Called just before this Command runs the first time
 void ExtendCargoArmCommand::Initialize()
 {
+  Robot::m_hatchSubsystem.RetractMechanism();
 }
 
 // Called repeatedly when this Command is scheduled to run

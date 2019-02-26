@@ -19,7 +19,6 @@
 #include "commands/LiftLimitSwitchBottomCommand.h"
 #include "commands/CargoShuttleStopAtBackCommand.h"
 #include "commands/CargoShuttleStopAtFrontCommand.h"
-
 #include "commands/ClimbCommandGroup.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 
@@ -37,10 +36,6 @@ OI::OI()
   
   // Driver Buttons
   m_deliver.WhenPressed(new DeliverCommandGroup());
-  m_safetyH.WhenPressed(new PrepForHatchCommand());
-  m_attachH.WhenPressed(new AttachHatchCommand ());
-  m_releaseH.WhenPressed(new ReleaseHatchCommand());
-  m_retractH.WhenPressed(new RetractMechanismCommand());
 
   // Co-Pilot Buttons
   m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
@@ -63,9 +58,7 @@ OI::OI()
 
   // Sensor Triggers
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
-
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
-
   //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
   //m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
 }

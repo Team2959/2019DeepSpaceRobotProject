@@ -11,7 +11,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <cameraserver/CameraServer.h>
 
-#include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
+#include "../../../../2019RaspPIRoboRioShared/Shared.hpp"
 #include <iostream>
 
 // create instance of subsystems
@@ -29,13 +29,19 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
-  
-  m_driveTrainSubsystem.Init();
-  m_liftAndShuttleSubsystem.OnRobotInit();
-  //m_cargoArmSubsystem.DashboardDataInit();
-  //frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
 
-  m_hatchSubsystem.RetractMechanism();
+  m_debugDrive = true;
+  m_debugLiftAndShuttle = false;
+  m_debugCargoArm = false;
+  m_debugCargoControl = false;
+  m_debugHatch = false;
+  
+  m_driveTrainSubsystem.OnRobotInit(m_debugDrive);
+  m_liftAndShuttleSubsystem.OnRobotInit(m_debugLiftAndShuttle);
+  m_cargoArmSubsystem.OnRobotInit(m_debugCargoArm);
+  m_cargoControlSubsystem.OnRobotInit(m_debugCargoControl);
+  m_hatchSubsystem.OnRobotInit(m_debugHatch);
+
   frc::SmartDashboard::PutBoolean("ZeroMotors", false);
 }
 
@@ -49,9 +55,8 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() 
 {
-
-  double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
-  auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
+  //double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
+  //auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   // Testing of Raspberry Pi info through network tables
   /*std::cout<<"front framenumber = "<<frameNumber<<"\n";
@@ -59,12 +64,22 @@ void Robot::RobotPeriodic()
     std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";*/
   m_periodic++;
   
-  if (m_periodic == 2) {
-    m_driveTrainSubsystem.DashboardDataUpdate();
-  } else if (m_periodic == 4) {
-    //m_cargoArmSubsystem.DashboardData();
-  } else if (m_periodic >= 10) { 
-    m_liftAndShuttleSubsystem.DashboardData();
+  if (m_periodic == 2)
+  {
+    m_driveTrainSubsystem.OnRobotPeriodic(m_debugDrive);
+  }
+  else if (m_periodic == 4)
+  {
+    m_cargoArmSubsystem.OnRobotPeriodic(m_debugCargoArm);
+    m_cargoControlSubsystem.OnRobotPeriodic(m_debugCargoControl);
+  }
+  else if (m_periodic == 8)
+  {
+    m_hatchSubsystem.OnRobotPeriodic(m_debugHatch);
+  }
+  else if (m_periodic >= 10)
+  { 
+    m_liftAndShuttleSubsystem.OnRobotPeriodic(m_debugLiftAndShuttle);
     m_periodic = 0;
 
     if (frc::SmartDashboard::GetBoolean("ZeroMotors", false))
@@ -85,6 +100,11 @@ void Robot::DisabledInit() {}
 void Robot::DisabledPeriodic()
 {
     m_driveTrainSubsystem.DisabledWatchDog();
+    if (m_periodic == 9 && frc::SmartDashboard::GetBoolean("ZeroMotors", false))
+    {
+      m_liftAndShuttleSubsystem.StopAndZero();
+      m_cargoArmSubsystem.StopAndZero();
+    } 
     frc::Scheduler::GetInstance()->Run();
 }
 

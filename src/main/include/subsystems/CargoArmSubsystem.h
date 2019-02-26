@@ -23,8 +23,15 @@ class CargoArmSubsystem : public frc::Subsystem {
 
   double CurrentArmPosition();
 
+  void DashboardDebugInit();
+  void DashboardDebugPeriodic();
+  bool m_updateDebugInfo = false;
+
  public:
   CargoArmSubsystem();
+
+  void OnRobotInit(bool addDebugInfo);
+  void OnRobotPeriodic(bool updateDebugInfo);
 
   bool IsArmAtPosition(double targetPosition);
   bool IsArmAboveCargoShuttle();
@@ -33,7 +40,5 @@ class CargoArmSubsystem : public frc::Subsystem {
 
   void StopAtCurrentPosition();
 
-  void DashboardDataInit();
-  void DashboardData();
   void StopAndZero();
 };
