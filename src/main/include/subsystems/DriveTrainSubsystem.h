@@ -19,6 +19,7 @@ private:
     const double kDriveSafetyFactor = 0.90;    // Multiplier for establishing reliable limits
     const double kRobotMaxAccel     = 2207.07; // RPM / s
     const double kDriveMaxCurrent   = 80.0;    // Amps
+
     // It's desirable that everything possible under private except
     // for methods that implement subsystem capabilities
     rev::CANSparkMax m_rightPrimary  {kRight1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
@@ -46,3 +47,7 @@ public:
 
     void DisabledWatchDog();
 };
+
+const double kDriveTrainWheelBase = 1.5  // ft
+const double kDriveTrainGearRatio = 6.11 // unitless
+const double kDriveTrainWheelSize = 1/3  // ft (wheel diameter)

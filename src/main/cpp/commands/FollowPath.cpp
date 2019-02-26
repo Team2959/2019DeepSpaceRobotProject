@@ -8,23 +8,44 @@
 #include "commands/FollowPath.h"
 #include "Robot.h"
 
-FollowPath::FollowPath() {
-  // Use Requires() here to declare subsystem dependencies
-Requires(&Robot::m_driveTrainSubsystem);
+FollowPath::FollowPath(const std::string& path, VelocityUnits units):
+    m_pathName(path)
+{
+    // Use Requires() here to declare subsystem dependencies
+    Requires(&Robot::m_driveTrainSubsystem);
+
 
 }
 
 // Called just before this Command runs the first time
-void FollowPath::Initialize() {}
+void FollowPath::Initialize()
+{
+    // Setup initial path variables, such as right, left velocities, heading and times
+    LoadPathFile();
+}
 
 // Called repeatedly when this Command is scheduled to run
-void FollowPath::Execute() {
-  Robot::m_driveTrainSubsystem.TankDrive(m_right[m_index], m_left[m_index]);
-  m_index++;
+void FollowPath::Execute()
+{
+    if (m_trajectories.empty()) {
+        return;
+    }
+    
+    Trajectory current = m_trajectories.front();
+    
+    Robot::m_driveTrainSubsystem.TankDrive(
+        current.leftVelocity * m_conversionFactor,
+        current.rightVelocity * m_conversionFactor
+    );
+    
+    m_trajectories.pop_front();
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool FollowPath::IsFinished() { return false; }
+bool FollowPath::IsFinished()
+{
+    return m_trajectories.empty();
+}
 
 // Called once after isFinished returns true
 void FollowPath::End() {}
@@ -33,7 +54,23 @@ void FollowPath::End() {}
 // subsystems is scheduled to run
 void FollowPath::Interrupted() {}
 
-  double FollowPath::UnitCoversion(double x)
-  {
-return x*ConversionFactor;
-  }
+void FollowPath::SetUnitConversion (VelocityUnits v)
+{
+    switch (v) {
+    case kMetersPerSecond:
+        double feetToMeters = 0.3048;
+        m_unitConversion = (1 / (M_PI * kDriveTrainWheelSize * feetToMeters)) * 60;
+        break;
+    case kInchesPerSecond:
+        double feetToInches = 12;
+        m_unitConversion = (1 / (M_PI * kDriveTrainWheelSize * feetToInches)) * 60;
+        break;
+    default:
+        m_unitConversion = (1 / (M_PI * kDriveTrainWheelSize)) * 60;
+    }
+}
+
+void FollowPath::LoadPathFile ()
+{
+  
+}
