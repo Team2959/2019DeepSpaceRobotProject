@@ -15,6 +15,12 @@
 #include <deque>
 #include <string>
 
+enum VelocityUnits {
+    kFeetPerSecond,
+    kMetersPerSecond,
+    kInchesPerSecond
+};
+
 class FollowPath : public frc::Command {
 public:
     FollowPath(const std::string& path, VelocityUnits units);
@@ -23,13 +29,6 @@ public:
     bool IsFinished() override;
     void End() override;
     void Interrupted() override;
-
-
-    enum VelocityUnits {
-        kFeetPerSecond,
-        kMetersPerSecond,
-        kInchesPerSecond
-    };
 private:
     struct Trajectory {
         double elapsedTime;
@@ -42,6 +41,6 @@ private:
     std::deque<Trajectory> m_trajectories;
 
     void   LoadPathFile ();
-    double SetUnitCoversion(VelocityUnits v);
+    void   SetUnitConversion (VelocityUnits v);
     double m_conversionFactor = (1 / (M_PI * kDriveTrainWheelSize)) * 60;
 };
