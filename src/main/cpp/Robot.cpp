@@ -81,12 +81,6 @@ void Robot::RobotPeriodic()
   { 
     m_liftAndShuttleSubsystem.OnRobotPeriodic(m_debugLiftAndShuttle);
     m_periodic = 0;
-
-    if (frc::SmartDashboard::GetBoolean("ZeroMotors", false))
-    {
-      m_liftAndShuttleSubsystem.StopAndZero();
-      m_cargoArmSubsystem.StopAndZero();
-    }
   }
 }
 
