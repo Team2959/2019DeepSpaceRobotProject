@@ -22,11 +22,15 @@ private:
 
     // Motor controllers used in the robot drive
     rev::CANSparkMax& m_rightPrimary;
+    rev::CANSparkMax& m_rightFollow;
     rev::CANSparkMax& m_leftPrimary;
+    rev::CANSparkMax& m_leftFollow;
     
     // PID Controllers
     rev::CANPIDController m_rightPID;
+    rev::CANPIDController m_right2PID;
     rev::CANPIDController m_leftPID;
+    rev::CANPIDController m_left2PID;
 
     // Encoders
     rev::CANEncoder m_rightEncoder;
@@ -37,7 +41,7 @@ private:
 
 public:
     // Constructor
-    explicit VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& rightPrimary);
+    explicit VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSparkMax& leftFollow, rev::CANSparkMax& rightPrimary, rev::CANSparkMax& rightFollow);
 
     static void SetupSparkMax(rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent);
 

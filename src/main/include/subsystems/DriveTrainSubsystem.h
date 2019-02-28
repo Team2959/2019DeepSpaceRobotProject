@@ -26,7 +26,7 @@ private:
     rev::CANSparkMax m_leftPrimary   {kLeft1CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
     rev::CANSparkMax m_leftFollower  {kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
 
-    VelocityTankDrive m_tankDrive { m_leftPrimary, m_rightPrimary };
+    VelocityTankDrive m_tankDrive { m_leftPrimary, m_leftFollower, m_rightPrimary, m_rightFollower };
     
     // Smart Dashboard debug/info
     void DashboardDebugInit();

@@ -16,8 +16,8 @@ DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
     VelocityTankDrive::SetupSparkMax(m_leftPrimary, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
     VelocityTankDrive::SetupSparkMax(m_leftFollower, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
    
-    m_rightFollower.Follow(m_rightPrimary);
-    m_leftFollower.Follow(m_leftPrimary);
+    // m_rightFollower.Follow(m_rightPrimary);
+    // m_leftFollower.Follow(m_leftPrimary);
 }
 
 void DriveTrainSubsystem::InitDefaultCommand()

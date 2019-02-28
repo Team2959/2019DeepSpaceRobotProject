@@ -30,7 +30,7 @@ void Robot::RobotInit() {
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
 
-  m_debugDrive = true;
+  m_debugDrive = false;
   m_debugLiftAndShuttle = false;
   m_debugCargoArm = false;
   m_debugCargoControl = false;
@@ -43,6 +43,11 @@ void Robot::RobotInit() {
   m_hatchSubsystem.OnRobotInit(m_debugHatch);
 
   frc::SmartDashboard::PutBoolean("ZeroMotors", false);
+  frc::SmartDashboard::PutBoolean("Debug Drive", false);
+  frc::SmartDashboard::PutBoolean("Debug Lift", false);
+  frc::SmartDashboard::PutBoolean("Debug Cargo Arm", false);
+  frc::SmartDashboard::PutBoolean("Debug Cargo Control", false);
+  frc::SmartDashboard::PutBoolean("Debug Hatch", false);
 }
 
 /**
@@ -94,11 +99,19 @@ void Robot::DisabledInit() {}
 void Robot::DisabledPeriodic()
 {
     m_driveTrainSubsystem.DisabledWatchDog();
-    if (m_periodic == 9 && frc::SmartDashboard::GetBoolean("ZeroMotors", false))
+    if (m_periodic == 9)
     {
-      m_liftAndShuttleSubsystem.StopAndZero();
-      m_cargoArmSubsystem.StopAndZero();
-    } 
+      if (frc::SmartDashboard::GetBoolean("ZeroMotors", false))
+      {
+        m_liftAndShuttleSubsystem.StopAndZero();
+        m_cargoArmSubsystem.StopAndZero();
+      }
+      m_debugDrive = frc::SmartDashboard::GetBoolean("Debug Drive", false);
+      m_debugLiftAndShuttle = frc::SmartDashboard::GetBoolean("Debug Lift", false);
+      m_debugCargoArm = frc::SmartDashboard::GetBoolean("Debug Cargo Arm", false);
+      m_debugCargoControl = frc::SmartDashboard::GetBoolean("Debug Cargo Control", false);
+      m_debugHatch = frc::SmartDashboard::GetBoolean("Debug Hatch", false);
+    }
     frc::Scheduler::GetInstance()->Run();
 }
 
