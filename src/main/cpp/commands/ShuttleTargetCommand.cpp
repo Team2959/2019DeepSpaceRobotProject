@@ -7,10 +7,13 @@
 
 #include "commands/ShuttleTargetCommand.h"
 #include "Robot.h"
+#include <frc/smartdashboard/SmartDashboard.h>
+
 
 ShuttleTargetCommand::ShuttleTargetCommand(bool front) {
   // set the target shuttle direction based on input variable
   Robot::m_oi.m_shuttleTargetFront = front;
+  frc::SmartDashboard::PutBoolean("ShuttleForward", front);
 }
 
 // Called just before this Command runs the first time
