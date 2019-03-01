@@ -49,7 +49,7 @@ constexpr int kLiftBottomSwitch = 0;
 constexpr int kCargoShuttleFrontSwitchTrigger = 2;
 constexpr int kCargoShuttleBackSwitchTrigger = 3;
 constexpr int kCargoInSwitch = 1;
-constexpr int kCargoIn2Switch = 4;
+
 
 // Operator input USB ports
 constexpr int kLeftDriverUSBController = 0;

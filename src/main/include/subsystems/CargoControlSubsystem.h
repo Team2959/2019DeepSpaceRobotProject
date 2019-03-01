@@ -18,7 +18,7 @@ class CargoControlSubsystem : public frc::Subsystem {
   // for methods that implement subsystem capabilities
   frc::Spark m_wheels { kCargoArmWheelsPwmSparkMotor };
   frc::DigitalInput m_cargoIn { kCargoInSwitch };
-  frc::DigitalInput m_cargoIn2 { kCargoIn2Switch };
+
 
   void ChangeWheelsSpeed(double speed);
   

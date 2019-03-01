@@ -23,7 +23,7 @@ void CargoControlSubsystem::OnRobotInit()
 void CargoControlSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
   frc::SmartDashboard::PutBoolean("Cargo 1", !m_cargoIn.Get());
-  frc::SmartDashboard::PutBoolean("Cargo 2", !m_cargoIn2.Get());
+
 
   if (updateDebugInfo)
     DashboardDebugPeriodic();
@@ -52,7 +52,7 @@ void CargoControlSubsystem::DashboardDebugPeriodic()
 
 bool CargoControlSubsystem::CargoIn() const
 {
-  return !m_cargoIn.Get() || !m_cargoIn2.Get();
+  return !m_cargoIn.Get();
 }
 
 void CargoControlSubsystem::CargoBallTowardsFront()
