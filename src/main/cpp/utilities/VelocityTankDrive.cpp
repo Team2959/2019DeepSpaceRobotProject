@@ -105,6 +105,9 @@ void VelocityTankDrive::DashboardDebugPeriodic()
 
     frc::SmartDashboard::PutNumber("Drive/Right: Setpoint", m_rightSetpoint);
     frc::SmartDashboard::PutNumber("Drive/Left: Setpoint", m_leftSetpoint);
+
+    frc::SmartDashboard::PutNumber("Drive/Right: Error", m_rightSetpoint - m_rightEncoder.GetVelocity());
+    frc::SmartDashboard::PutNumber("Drive/Left: Error", m_leftSetpoint - m_leftEncoder.GetVelocity());
 }
 
 void VelocityTankDrive::DisabledWatchDog()

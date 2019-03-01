@@ -35,8 +35,10 @@ void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed)
 
 void DriveTrainSubsystem::OnRobotInit(bool addDebugInfo)
 {
-    m_tankDrive.SetupRightPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
-    m_tankDrive.SetupLeftPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
+    // P: 0.00012, I: 0.000156, D: 0.00000978, FF: 0.003
+    
+    m_tankDrive.SetupRightPIDGains(0.0, 0.0, 0.0, 0.003, 0.0);
+    m_tankDrive.SetupLeftPIDGains(0.0, 0.0, 0.0, 0.003, 0.0);
 
     if (addDebugInfo)
         DashboardDebugInit();

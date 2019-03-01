@@ -36,18 +36,18 @@ void Robot::RobotInit() {
   m_debugCargoControl = false;
   m_debugHatch = false;
   
-  m_driveTrainSubsystem.OnRobotInit(m_debugDrive);
-  m_liftAndShuttleSubsystem.OnRobotInit(m_debugLiftAndShuttle);
-  m_cargoArmSubsystem.OnRobotInit(m_debugCargoArm);
-  m_cargoControlSubsystem.OnRobotInit(m_debugCargoControl);
-  m_hatchSubsystem.OnRobotInit(m_debugHatch);
+  m_driveTrainSubsystem.OnRobotInit(true);
+  m_liftAndShuttleSubsystem.OnRobotInit(true);
+  m_cargoArmSubsystem.OnRobotInit(true);
+  m_cargoControlSubsystem.OnRobotInit(true);
+  m_hatchSubsystem.OnRobotInit(true);
 
   frc::SmartDashboard::PutBoolean("ZeroMotors", false);
-  frc::SmartDashboard::PutBoolean("Debug Drive", false);
-  frc::SmartDashboard::PutBoolean("Debug Lift", false);
-  frc::SmartDashboard::PutBoolean("Debug Cargo Arm", false);
-  frc::SmartDashboard::PutBoolean("Debug Cargo Control", false);
-  frc::SmartDashboard::PutBoolean("Debug Hatch", false);
+  frc::SmartDashboard::PutBoolean("Debug Drive", m_debugDrive);
+  frc::SmartDashboard::PutBoolean("Debug Lift", m_debugLiftAndShuttle);
+  frc::SmartDashboard::PutBoolean("Debug Cargo Arm", m_debugCargoArm);
+  frc::SmartDashboard::PutBoolean("Debug Cargo Control", m_debugCargoControl);
+  frc::SmartDashboard::PutBoolean("Debug Hatch", m_debugHatch);
 }
 
 /**
