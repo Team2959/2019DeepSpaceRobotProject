@@ -12,6 +12,10 @@
 #include "RobotMap.h"
 #include "utilities/VelocityTankDrive.h"
 
+const double kDriveTrainWheelBase = 1.5;  // ft
+const double kDriveTrainGearRatio = 6.11; // unitless
+const double kDriveTrainWheelSize = 1/3;  // ft (wheel diameter)
+
 class DriveTrainSubsystem : public frc::Subsystem
 {
 private:
@@ -37,7 +41,7 @@ public:
     DriveTrainSubsystem();
     void InitDefaultCommand() override;
 
-    void OnRobotInit(bool addDebugInfo);
+    void OnRobotInit();
     void OnRobotPeriodic(bool updateDebugInfo);
 
     void TankDrive(double leftSpeed, double rightSpeed);
@@ -47,7 +51,3 @@ public:
 
     void DisabledWatchDog();
 };
-
-const double kDriveTrainWheelBase = 1.5;  // ft
-const double kDriveTrainGearRatio = 6.11; // unitless
-const double kDriveTrainWheelSize = 1/3;  // ft (wheel diameter)

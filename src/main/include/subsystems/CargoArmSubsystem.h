@@ -30,7 +30,7 @@ class CargoArmSubsystem : public frc::Subsystem {
  public:
   CargoArmSubsystem();
 
-  void OnRobotInit(bool addDebugInfo);
+  void OnRobotInit();
   void OnRobotPeriodic(bool updateDebugInfo);
 
   bool IsArmAtPosition(double targetPosition);

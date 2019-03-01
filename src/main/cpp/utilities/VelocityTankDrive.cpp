@@ -49,6 +49,7 @@ void VelocityTankDrive::SetupRightPIDGains(double p, double i, double d, double 
     m_rightPID.SetIZone(iz);
     m_rightPID.SetFF(ff);
     m_rightPID.SetOutputRange(-1, 1);
+
     m_right2PID.SetP(p);
     m_right2PID.SetI(i);
     m_right2PID.SetD(d);
@@ -65,6 +66,7 @@ void VelocityTankDrive::SetupLeftPIDGains(double p, double i, double d, double f
     m_leftPID.SetIZone(iz);
     m_leftPID.SetFF(ff);
     m_leftPID.SetOutputRange(-1, 1);
+    
     m_left2PID.SetP(p);
     m_left2PID.SetI(i);
     m_left2PID.SetD(d);

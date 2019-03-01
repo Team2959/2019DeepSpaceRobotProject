@@ -29,18 +29,18 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
+  
+  m_driveTrainSubsystem.OnRobotInit();
+  m_liftAndShuttleSubsystem.OnRobotInit();
+  m_cargoArmSubsystem.OnRobotInit();
+  m_cargoControlSubsystem.OnRobotInit();
+  m_hatchSubsystem.OnRobotInit();
 
   m_debugDrive = false;
   m_debugLiftAndShuttle = false;
   m_debugCargoArm = false;
   m_debugCargoControl = false;
   m_debugHatch = false;
-  
-  m_driveTrainSubsystem.OnRobotInit(true);
-  m_liftAndShuttleSubsystem.OnRobotInit(true);
-  m_cargoArmSubsystem.OnRobotInit(true);
-  m_cargoControlSubsystem.OnRobotInit(true);
-  m_hatchSubsystem.OnRobotInit(true);
 
   frc::SmartDashboard::PutBoolean("ZeroMotors", false);
   frc::SmartDashboard::PutBoolean("Debug Drive", m_debugDrive);
