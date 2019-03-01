@@ -33,15 +33,14 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
   m_right.SetInverted( ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
 }
 
-void CargoArmSubsystem::OnRobotInit(bool addDebugInfo)
+void CargoArmSubsystem::OnRobotInit()
 {
-  m_updateDebugInfo = addDebugInfo;
-  if (addDebugInfo)
-    DashboardDebugInit();
+  DashboardDebugInit();
 }
 
 void CargoArmSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
+  m_updateDebugInfo = updateDebugInfo;
   if (updateDebugInfo)
     DashboardDebugPeriodic();
 }

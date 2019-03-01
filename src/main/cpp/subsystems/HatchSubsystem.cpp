@@ -10,16 +10,14 @@
 
 HatchSubsystem::HatchSubsystem() : Subsystem("HatchSubsystem") {}
 
-void HatchSubsystem::OnRobotInit(bool addDebugInfo)
+void HatchSubsystem::OnRobotInit()
 {
   RetractMechanism();
 
-  if (addDebugInfo)
-  {
-    frc::SmartDashboard::PutBoolean("Hatach: Safety", false);
-    frc::SmartDashboard::PutBoolean("Hatach: Attach", false);
-    frc::SmartDashboard::PutBoolean("Hatach: Release", false);
-  }
+  // Debug info
+  frc::SmartDashboard::PutBoolean("Hatach: Safety", false);
+  frc::SmartDashboard::PutBoolean("Hatach: Attach", false);
+  frc::SmartDashboard::PutBoolean("Hatach: Release", false);
 }
 
 void HatchSubsystem::OnRobotPeriodic(bool updateDebugInfo)

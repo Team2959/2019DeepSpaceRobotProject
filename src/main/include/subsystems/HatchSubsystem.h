@@ -22,7 +22,7 @@ class HatchSubsystem : public frc::Subsystem {
  public:
   HatchSubsystem();
 
-  void OnRobotInit(bool addDebugInfo);
+  void OnRobotInit();
   void OnRobotPeriodic(bool updateDebugInfo);
 
   void PrepForHatch();

@@ -112,9 +112,9 @@ void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double drive
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitFwdEn, false);
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitRevEn, false);
 
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus0, 1000);
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus1, 1000);
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus2, 1000);
+  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus0, 100);
+  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus1, 200);
+  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus2, 200);
 }
 
 void MotorControllerHelpers::DashboardInitSparkMax(
@@ -139,46 +139,127 @@ void MotorControllerHelpers::DashboardInitSparkMax(
   frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());
 }
 
-void MotorControllerHelpers::DashboardDataSparkMax(
+void MotorControllerHelpers::DashboardDataSparkMax3(
     std::string name,
     rev::CANPIDController & pidConfig,
+    rev::CANPIDController & pidConfig2,
+    rev::CANPIDController & pidConfig3,
     rev::CANEncoder & encoder)
 {
   frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
   frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());
 
-  // display PID coefficients on SmartDashboard
-  auto kP = frc::SmartDashboard::GetNumber(name + ": P Gain", pidConfig.GetP());
-  auto kI = frc::SmartDashboard::GetNumber(name + ": I Gain", pidConfig.GetI());
-  auto kD = frc::SmartDashboard::GetNumber(name + ": D Gain", pidConfig.GetD());
-  auto kIz = frc::SmartDashboard::GetNumber(name + ": I Zone", pidConfig.GetIZone());
-  auto kF = frc::SmartDashboard::GetNumber(name + ": Feed Forward", pidConfig.GetFF());
-  auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", pidConfig.GetOutputMin());
-  auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", pidConfig.GetOutputMax());
+  auto myP = pidConfig.GetP();
+  auto myI = pidConfig.GetI();
+  auto myD = pidConfig.GetD();
+  auto myIzone = pidConfig.GetIZone();
+  auto myFF = pidConfig.GetFF();
+  auto myOmin = pidConfig.GetOutputMin();
+  auto myOmax = pidConfig.GetOutputMax();
 
-  if (fabs(kP - pidConfig.GetP()) > 0.0001)
+  // display PID coefficients on SmartDashboard
+  auto kP = frc::SmartDashboard::GetNumber(name + ": P Gain", myP);
+  auto kI = frc::SmartDashboard::GetNumber(name + ": I Gain", myI);
+  auto kD = frc::SmartDashboard::GetNumber(name + ": D Gain", myD);
+  auto kIz = frc::SmartDashboard::GetNumber(name + ": I Zone", myIzone);
+  auto kF = frc::SmartDashboard::GetNumber(name + ": Feed Forward", myFF);
+  auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", myOmin);
+  auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", myOmax);
+
+  if (fabs(kP - myP) > 0.0001)
   {
     pidConfig.SetP(kP);
+    pidConfig2.SetP(kP);
+    pidConfig3.SetP(kP);  
   }
-  if (fabs(kI - pidConfig.GetI()) > 0.0001)
+  if (fabs(kI - myI) > 0.0001)
   {
     pidConfig.SetI(kI);
+    pidConfig2.SetI(kI);
+    pidConfig3.SetI(kI);
   }
-  if (fabs(kD - pidConfig.GetD()) > 0.0001)
+  if (fabs(kD - myD) > 0.0001)
   {
     pidConfig.SetD(kD);
+    pidConfig2.SetP(kD);
+    pidConfig3.SetP(kD);
   }
-  if (fabs(kF - pidConfig.GetFF()) > 0.0001)
+  if (fabs(kF - myFF) > 0.0001)
   {
     pidConfig.SetFF(kF);
+    pidConfig2.SetFF(kF);
+    pidConfig3.SetFF(kF);
   }
-  if (fabs(kIz - pidConfig.GetIZone()) > 0.0001)
+  if (fabs(kIz - myIzone) > 0.0001)
   {
     pidConfig.SetIZone(kIz);
+    pidConfig2.SetIZone(kIz);
+    pidConfig3.SetIZone(kIz);
   }
-  if (fabs(outputMin - pidConfig.GetOutputMin()) > 0.0001 ||
-        fabs(outputMax - pidConfig.GetOutputMin()) > 0.0001)
+  if (fabs(outputMin - myOmin) > 0.0001 ||
+        fabs(outputMax - myOmax) > 0.0001)
   {
     pidConfig.SetOutputRange(outputMin, outputMax);
+    pidConfig2.SetOutputRange(outputMin, outputMax);
+    pidConfig3.SetOutputRange(outputMin, outputMax);
+  }
+}
+
+void MotorControllerHelpers::DashboardDataSparkMax2(
+    std::string name,
+    rev::CANPIDController & pidConfig,
+    rev::CANPIDController & pidConfig2,
+    rev::CANEncoder & encoder)
+{
+  frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
+  frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());
+
+  auto myP = pidConfig.GetP();
+  auto myI = pidConfig.GetI();
+  auto myD = pidConfig.GetD();
+  auto myIzone = pidConfig.GetIZone();
+  auto myFF = pidConfig.GetFF();
+  auto myOmin = pidConfig.GetOutputMin();
+  auto myOmax = pidConfig.GetOutputMax();
+
+  // display PID coefficients on SmartDashboard
+  auto kP = frc::SmartDashboard::GetNumber(name + ": P Gain", myP);
+  auto kI = frc::SmartDashboard::GetNumber(name + ": I Gain", myI);
+  auto kD = frc::SmartDashboard::GetNumber(name + ": D Gain", myD);
+  auto kIz = frc::SmartDashboard::GetNumber(name + ": I Zone", myIzone);
+  auto kF = frc::SmartDashboard::GetNumber(name + ": Feed Forward", myFF);
+  auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", myOmin);
+  auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", myOmax);
+
+  if (fabs(kP - myP) > 0.0001)
+  {
+    pidConfig.SetP(kP);
+    pidConfig2.SetP(kP);
+  }
+  if (fabs(kI - myI) > 0.0001)
+  {
+    pidConfig.SetI(kI);
+    pidConfig2.SetI(kI);
+  }
+  if (fabs(kD - myD) > 0.0001)
+  {
+    pidConfig.SetD(kD);
+    pidConfig2.SetD(kD);
+  }
+  if (fabs(kF - myFF) > 0.0001)
+  {
+    pidConfig.SetFF(kF);
+    pidConfig2.SetFF(kF);
+  }
+  if (fabs(kIz - myIzone) > 0.0001)
+  {
+    pidConfig.SetIZone(kIz);
+    pidConfig2.SetIZone(kIz);
+  }
+  if (fabs(outputMin - myOmin) > 0.0001 ||
+        fabs(outputMax - myOmax) > 0.0001)
+  {
+    pidConfig.SetOutputRange(outputMin, outputMax);
+    pidConfig2.SetOutputRange(outputMin, outputMax);
   }
 }

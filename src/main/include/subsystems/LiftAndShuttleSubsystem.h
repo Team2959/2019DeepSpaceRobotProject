@@ -25,9 +25,13 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   frc::DigitalInput m_liftBottomLimitSwitch{kLiftBottomSwitch};
 
   rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
+  rev::CANPIDController m_liftPidController2 = m_liftFollower1.GetPIDController();
+  rev::CANPIDController m_liftPidController3 = m_liftFollower2.GetPIDController();
+
   rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
 
   // Lift methods
+  void ConfigureLiftPid(rev::CANPIDController & pidConfig);
   bool IsLiftSafeForShuttleMoveThroughMiddle();
   double CurrentLiftPosition();
   void MoveLiftToPosition(double position);
@@ -43,6 +47,7 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   // Shuttle methods
   void MoveShuttleToPosition(double position);
   void ShuttleStopAtCurrentPosition();
+  void StopShuttleAndSetPosition(double position);
 
   // Smart Dashboard debug/info
   void DashboardDebugInit();
@@ -52,25 +57,23 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
  public:
   LiftAndShuttleSubsystem();
 
-  void OnRobotInit(bool addDebugInfo);
+  void OnRobotInit();
   void OnRobotPeriodic(bool updateDebugInfo);
 
   bool IsAtShuttleRearLimit() const;
   bool IsAtShuttleFrontLimit() const;
-  bool IsLiftAtBottom() const;
-
   bool IsShuttleAtPosition(double targetPosition);
   double CurrentShuttlePosition();
-
-  bool IsLiftAtPosition(double targetPosition);
-
-  // Movement Control Interface
-  bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);
-  void StopAtCurrentPosition();
-  void MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition, bool isShuttleArmSafe);
-  void LiftBottomReset();
   void CargoShuttleFrontStop();
   void CargoShuttleBackStop();
 
+  bool IsLiftAtBottom() const;
+  bool IsLiftAtPosition(double targetPosition);
+  void LiftBottomReset();
+
+  // Movement Control Interface
+  bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);
+  void MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition, bool isShuttleArmSafe);
+  void StopAtCurrentPosition();
   void StopAndZero();
 };

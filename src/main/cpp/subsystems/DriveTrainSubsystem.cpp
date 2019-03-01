@@ -10,14 +10,16 @@
 
 DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
 {
-    // Set up the follower motor controllers
+    // Set up the motor controllers
     VelocityTankDrive::SetupSparkMax(m_rightPrimary, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
     VelocityTankDrive::SetupSparkMax(m_rightFollower, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
     VelocityTankDrive::SetupSparkMax(m_leftPrimary, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
     VelocityTankDrive::SetupSparkMax(m_leftFollower, kMotorMaxSpeed, kDriveSafetyFactor, kRobotMaxAccel, kDriveMaxCurrent);
    
-    m_rightFollower.Follow(m_rightPrimary);
-    m_leftFollower.Follow(m_leftPrimary);
+    // Not doing follower, since reduce CAN traffic in setup and slows sending into fo follower
+    //  therefore, configure like primary and send same info to all
+    // m_rightFollower.Follow(m_rightPrimary);
+    // m_leftFollower.Follow(m_leftPrimary);
 }
 
 void DriveTrainSubsystem::InitDefaultCommand()
@@ -33,13 +35,14 @@ void DriveTrainSubsystem::TankDrive(double leftSpeed, double rightSpeed)
     m_tankDrive.TankDrive(leftSpeed, rightSpeed);
 }
 
-void DriveTrainSubsystem::OnRobotInit(bool addDebugInfo)
+void DriveTrainSubsystem::OnRobotInit()
 {
-    m_tankDrive.SetupRightPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
-    m_tankDrive.SetupLeftPIDGains(5e-5, 1e-6, 0.0, 0.0, 0.0);
+    // P: 0.00012, I: 0.000156, D: 0.00000978, FF: 0.003
+    
+    m_tankDrive.SetupRightPIDGains(0.0, 0.0, 0.0, 0.003, 0.0);
+    m_tankDrive.SetupLeftPIDGains(0.0, 0.0, 0.0, 0.003, 0.0);
 
-    if (addDebugInfo)
-        DashboardDebugInit();
+    DashboardDebugInit();
 }
 
 void DriveTrainSubsystem::OnRobotPeriodic(bool updateDebugInfo)

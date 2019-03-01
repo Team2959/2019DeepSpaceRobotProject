@@ -22,9 +22,17 @@
 #include "commands/ClimbCommandGroup.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 
+#include "commands/AttachHatchCommand.h"
+#include "commands/ReleaseHatchCommand.h"
+#include "commands/RetractMechanismCommand.h"
+#include "commands/PrepForHatchCommand.h"
+
+#include <frc/smartdashboard/SmartDashboard.h>
+
 OI::OI()
 {
   m_shuttleTargetFront = true;
+  frc::SmartDashboard::PutBoolean("ShuttleForward", m_shuttleTargetFront);
   
   // Driver Buttons
   m_deliver.WhenPressed(new DeliverCommandGroup());

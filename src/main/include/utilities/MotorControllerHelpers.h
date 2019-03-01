@@ -35,8 +35,16 @@ public:
         double iZone = 0, double ff = 0,
         double outputMin = -1, double outputMax = 1);
 
-    static void DashboardDataSparkMax(
+    static void DashboardDataSparkMax3(
         std::string name,
         rev::CANPIDController & pidConfig,
+        rev::CANPIDController & pidConfig2,
+        rev::CANPIDController & pidConfig3,
+        rev::CANEncoder & encoder);
+
+    static void DashboardDataSparkMax2(
+        std::string name,
+        rev::CANPIDController & pidConfig,
+        rev::CANPIDController & pidConfig2,
         rev::CANEncoder & encoder);
 };

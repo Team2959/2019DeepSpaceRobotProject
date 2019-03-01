@@ -29,20 +29,25 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
+  
+  m_driveTrainSubsystem.OnRobotInit();
+  m_liftAndShuttleSubsystem.OnRobotInit();
+  m_cargoArmSubsystem.OnRobotInit();
+  m_cargoControlSubsystem.OnRobotInit();
+  m_hatchSubsystem.OnRobotInit();
 
   m_debugDrive = false;
   m_debugLiftAndShuttle = false;
   m_debugCargoArm = false;
   m_debugCargoControl = false;
   m_debugHatch = false;
-  
-  m_driveTrainSubsystem.OnRobotInit(m_debugDrive);
-  m_liftAndShuttleSubsystem.OnRobotInit(m_debugLiftAndShuttle);
-  m_cargoArmSubsystem.OnRobotInit(m_debugCargoArm);
-  m_cargoControlSubsystem.OnRobotInit(m_debugCargoControl);
-  m_hatchSubsystem.OnRobotInit(m_debugHatch);
 
   frc::SmartDashboard::PutBoolean("ZeroMotors", false);
+  frc::SmartDashboard::PutBoolean("Debug Drive", m_debugDrive);
+  frc::SmartDashboard::PutBoolean("Debug Lift", m_debugLiftAndShuttle);
+  frc::SmartDashboard::PutBoolean("Debug Cargo Arm", m_debugCargoArm);
+  frc::SmartDashboard::PutBoolean("Debug Cargo Control", m_debugCargoControl);
+  frc::SmartDashboard::PutBoolean("Debug Hatch", m_debugHatch);
 }
 
 /**
@@ -94,11 +99,19 @@ void Robot::DisabledInit() {}
 void Robot::DisabledPeriodic()
 {
     m_driveTrainSubsystem.DisabledWatchDog();
-    if (m_periodic == 9 && frc::SmartDashboard::GetBoolean("ZeroMotors", false))
+    if (m_periodic == 9)
     {
-      m_liftAndShuttleSubsystem.StopAndZero();
-      m_cargoArmSubsystem.StopAndZero();
-    } 
+      if (frc::SmartDashboard::GetBoolean("ZeroMotors", false))
+      {
+        m_liftAndShuttleSubsystem.StopAndZero();
+        m_cargoArmSubsystem.StopAndZero();
+      }
+      m_debugDrive = frc::SmartDashboard::GetBoolean("Debug Drive", false);
+      m_debugLiftAndShuttle = frc::SmartDashboard::GetBoolean("Debug Lift", false);
+      m_debugCargoArm = frc::SmartDashboard::GetBoolean("Debug Cargo Arm", false);
+      m_debugCargoControl = frc::SmartDashboard::GetBoolean("Debug Cargo Control", false);
+      m_debugHatch = frc::SmartDashboard::GetBoolean("Debug Hatch", false);
+    }
     frc::Scheduler::GetInstance()->Run();
 }
 
