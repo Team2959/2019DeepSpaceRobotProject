@@ -45,13 +45,6 @@ private:
     frc::DigitalInput m_whiteTape2 { kWhiteTapeSwitch2 };
     frc::DigitalInput m_whiteTape3 { kWhiteTapeSwitch3 };
 
-    try {
-            /* Communicate w/navX-MXP via the MXP SPI Bus.                                       */
-            /* Alternatively:  I2C::Port::kMXP, SerialPort::Port::kMXP or SerialPort::Port::kUSB */
-            /* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details.   */
-            ahrs = new AHRS(SerialPort::Port::kUSB);
-        } 
-
 public:
     DriveTrainSubsystem();
     void InitDefaultCommand() override;
