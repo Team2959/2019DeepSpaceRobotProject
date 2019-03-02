@@ -17,6 +17,11 @@
 
 class FollowPath : public frc::Command {
 public:
+  enum VelocityUnits {
+        kFeetPerSecond,
+        kMetersPerSecond,
+        kInchesPerSecond
+    };
     FollowPath(const std::string& path, VelocityUnits units);
     void Initialize() override;
     void Execute() override;
@@ -25,12 +30,10 @@ public:
     void Interrupted() override;
 
 
-    enum VelocityUnits {
-        kFeetPerSecond,
-        kMetersPerSecond,
-        kInchesPerSecond
-    };
+  
 private:
+    static constexpr double M_PI = 3.1415926535;
+    
     struct Trajectory {
         double elapsedTime;
         double rightVelocity;
@@ -40,8 +43,9 @@ private:
 
     std::string m_pathName;
     std::deque<Trajectory> m_trajectories;
-
     void   LoadPathFile ();
+    void SetUnitConversion (VelocityUnits v);
     double SetUnitCoversion(VelocityUnits v);
     double m_conversionFactor = (1 / (M_PI * kDriveTrainWheelSize)) * 60;
+    double m_unitConversion;
 };

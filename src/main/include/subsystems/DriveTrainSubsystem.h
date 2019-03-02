@@ -48,6 +48,6 @@ public:
     void DisabledWatchDog();
 };
 
-const double kDriveTrainWheelBase = 1.5  // ft
-const double kDriveTrainGearRatio = 6.11 // unitless
-const double kDriveTrainWheelSize = 1/3  // ft (wheel diameter)
+const double kDriveTrainWheelBase = 1.5;  // ft
+const double kDriveTrainGearRatio = 6.11; // unitless
+const double kDriveTrainWheelSize = 1/3;  // ft (wheel diameter)
