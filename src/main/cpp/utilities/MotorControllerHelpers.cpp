@@ -83,17 +83,17 @@ void MotorControllerHelpers::DashboardDataTalonSrx(
     pidConfig.kF = kF;
     motorController.Config_kF(0, kF, 0);
   }
-  if (fabs(kIz - pidConfig.integralZone) > 0.0001)
+  if (fabs(kIz - pidConfig.integralZone) > 0.00001)
   {
     pidConfig.integralZone = kIz;
     motorController.Config_IntegralZone(0, kIz, 0);
   }
-  if (fabs(error - pidConfig.allowableClosedloopError) > 0.0001)
+  if (fabs(error - pidConfig.allowableClosedloopError) > 0.00001)
   {
     pidConfig.allowableClosedloopError = error;
     motorController.ConfigAllowableClosedloopError(0, error, 0);
   }
-  if (fabs(peakOutput - pidConfig.closedLoopPeakOutput) > 0.0001)
+  if (fabs(peakOutput - pidConfig.closedLoopPeakOutput) > 0.00001)
   {
     pidConfig.closedLoopPeakOutput = peakOutput;
     motorController.ConfigPeakOutputForward(peakOutput, 0);

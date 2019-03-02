@@ -32,12 +32,18 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   m_pidConfigShuttle.kP = 0.1;
   m_pidConfigShuttle.kI = 0;
   m_pidConfigShuttle.kD = 0;
-  m_pidConfigShuttle.kF = 0;
+  m_pidConfigShuttle.kF = 0.2046;
   // m_pidConfigShuttle.integralZone = x;
   // m_pidConfigShuttle.closedLoopPeakOutput = 1.0;
   // m_pidConfigShuttle.allowableClosedloopError = 128;
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, true);
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
+
+  m_leftShuttle.ConfigMotionCruiseVelocity(2000, 10);
+  m_leftShuttle.ConfigMotionAcceleration(4500,10);
+
+  m_rightShuttle.ConfigMotionCruiseVelocity(2000, 10);
+  m_rightShuttle.ConfigMotionAcceleration(4500,10);
 }
 
 void LiftAndShuttleSubsystem::OnRobotInit()
@@ -45,6 +51,8 @@ void LiftAndShuttleSubsystem::OnRobotInit()
   // Zero shuttle positions
 	m_leftShuttle.SetSelectedSensorPosition(0,0,0);
 	m_rightShuttle.SetSelectedSensorPosition(0,0,0);
+
+  MoveShuttleToPosition(0);
 
   // Lift motor contorller configuration
   MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80);
@@ -203,8 +211,8 @@ double LiftAndShuttleSubsystem::CurrentShuttlePosition()
 
 void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
 {
-  m_leftShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
-  m_rightShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
+  m_leftShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
+  m_rightShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
 
   if (m_updateDebugInfo)
     frc::SmartDashboard::PutNumber("Shtl: Target", position);

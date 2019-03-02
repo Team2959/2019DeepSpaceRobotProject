@@ -36,6 +36,7 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 void CargoArmSubsystem::OnRobotInit()
 {
   DashboardDebugInit();
+  MoveCargoArmToPosition(0, false);
 }
 
 void CargoArmSubsystem::OnRobotPeriodic(bool updateDebugInfo)
