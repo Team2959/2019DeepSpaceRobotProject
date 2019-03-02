@@ -61,4 +61,8 @@ public:
     double rotateToAngleRate;
 
     void DisabledWatchDog();
+    
+    bool WhiteTape1() const;
+    bool WhiteTape2() const;
+    bool WhiteTape3() const;
 };

@@ -7,6 +7,7 @@
 
 #include "subsystems/DriveTrainSubsystem.h"
 #include "commands/DriveWithControllerCommand.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
 {
@@ -54,11 +55,19 @@ void DriveTrainSubsystem::OnRobotInit()
     m_tankDrive.SetupRightPIDGains(0.0003, 0.0, 0.0, 0.0002, 600);
     m_tankDrive.SetupLeftPIDGains(0.0003, 0.0, 0.0, 0.0002, 600);
 
+    frc::SmartDashboard::PutBoolean("White1", false);
+    frc::SmartDashboard::PutBoolean("White2", false);
+    frc::SmartDashboard::PutBoolean("White3", false);
+
     DashboardDebugInit();
 }
 
 void DriveTrainSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
+    frc::SmartDashboard::PutBoolean("White1", WhiteTape1());
+    frc::SmartDashboard::PutBoolean("White2", WhiteTape2());
+    frc::SmartDashboard::PutBoolean("White3", WhiteTape3());
+
     if (updateDebugInfo)
         DashboardDebugPeriodic();
 }
@@ -86,4 +95,19 @@ double DriveTrainSubsystem::GetMaxAccel()
 void DriveTrainSubsystem::DisabledWatchDog()
 {
     m_tankDrive.DisabledWatchDog();
+}
+
+bool DriveTrainSubsystem::WhiteTape1() const
+{
+    return !m_whiteTape1.Get();
+}
+
+bool DriveTrainSubsystem::WhiteTape2() const
+{
+    return !m_whiteTape2.Get();
+}
+
+bool DriveTrainSubsystem::WhiteTape3() const
+{
+    return !m_whiteTape3.Get();
 }

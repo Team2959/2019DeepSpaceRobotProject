@@ -31,7 +31,7 @@ private:
   // Driver buttons
   //Right
   frc::JoystickButton m_deliver { &m_rightDriverJoystick, 1};
-  frc::JoystickButton m_followLine { &m_leftDriverJoystick, 2};
+  frc::JoystickButton m_followLine { &m_rightDriverJoystick, 2};
 
   // Co Pilot Buttons
   frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 4};
