@@ -18,7 +18,8 @@ class CargoControlSubsystem : public frc::Subsystem {
   // for methods that implement subsystem capabilities
   frc::Spark m_wheels { kCargoArmWheelsPwmSparkMotor };
   frc::DigitalInput m_cargoIn { kCargoInSwitch };
-
+  double m_wheelPickupSpeed;
+  double m_wheelDeliverSpeed;
 
   void ChangeWheelsSpeed(double speed);
   
@@ -33,7 +34,6 @@ class CargoControlSubsystem : public frc::Subsystem {
  
   bool CargoIn() const;
   
-  void CargoBallTowardsFront();
-  void CargoBallTowardsRear();
+  void MoveCargoBall(bool bFront, bool bDeliver);
   void StopWheels();
 };

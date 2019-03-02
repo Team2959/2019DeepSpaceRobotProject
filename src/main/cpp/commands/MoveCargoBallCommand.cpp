@@ -5,30 +5,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/MoveCargoTowardFrontCommand.h"
+#include "commands/MoveCargoBallCommand.h"
 #include "Robot.h"
 
-MoveCargoTowardFrontCommand::MoveCargoTowardFrontCommand() {
+MoveCargoBallCommand::MoveCargoBallCommand(bool bFront, bool bDeliver)
+{
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_cargoControlSubsystem);
+
+  m_bFront = bFront;
+  m_bDeliver = bDeliver;
 }
 
 // Called just before this Command runs the first time
-void MoveCargoTowardFrontCommand::Initialize()
+void MoveCargoBallCommand::Initialize()
 {
-  Robot::m_cargoControlSubsystem.CargoBallTowardsFront();
+  Robot::m_cargoControlSubsystem.MoveCargoBall(m_bFront, m_bDeliver);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void MoveCargoTowardFrontCommand::Execute() {}
+void MoveCargoBallCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool MoveCargoTowardFrontCommand::IsFinished() { return true; }
+bool MoveCargoBallCommand::IsFinished()
+{
+  return Robot::m_cargoControlSubsystem.CargoIn() == false;
+}
 
 // Called once after isFinished returns true
-void MoveCargoTowardFrontCommand::End() {}
+void MoveCargoBallCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MoveCargoTowardFrontCommand::Interrupted() {}
+void MoveCargoBallCommand::Interrupted() {}

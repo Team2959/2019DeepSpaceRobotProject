@@ -8,14 +8,18 @@
 #include "subsystems/CargoControlSubsystem.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-constexpr double kWheelSpeed = 0.5;
+constexpr double kWheelPickupSpeed = 0.5;
+constexpr double kWheelDeliverSpeed = 1;
 
-CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsystem") {}
+CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsystem")
+{
+  m_wheelPickupSpeed = kWheelPickupSpeed;
+  m_wheelDeliverSpeed = kWheelDeliverSpeed;
+}
 
 void CargoControlSubsystem::OnRobotInit()
 {
   frc::SmartDashboard::PutBoolean("Cargo 1", false);
-  frc::SmartDashboard::PutBoolean("Cargo 2", false);
 
   DashboardDebugInit();
 }
@@ -23,7 +27,6 @@ void CargoControlSubsystem::OnRobotInit()
 void CargoControlSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
   frc::SmartDashboard::PutBoolean("Cargo 1", !m_cargoIn.Get());
-
 
   if (updateDebugInfo)
     DashboardDebugPeriodic();
@@ -34,7 +37,8 @@ void CargoControlSubsystem::DashboardDebugInit()
   frc::SmartDashboard::PutData(this);
 
   frc::SmartDashboard::PutBoolean("Cargo Move", false);
-  frc::SmartDashboard::PutNumber("Cargo Speed", 0.5);
+  frc::SmartDashboard::PutNumber("Cargo Pickup Speed", 0.5);
+  frc::SmartDashboard::PutNumber("Cargo Deliver Speed", 1);
 }
 
 void CargoControlSubsystem::DashboardDebugPeriodic()
@@ -42,7 +46,8 @@ void CargoControlSubsystem::DashboardDebugPeriodic()
   auto start = frc::SmartDashboard::GetBoolean("Cargo Move", false);
   if (start && !CargoIn())
   {
-    ChangeWheelsSpeed(-frc::SmartDashboard::GetNumber("Cargo Speed", 0.5));
+    m_wheelPickupSpeed = frc::SmartDashboard::GetNumber("Cargo Pickup Speed", 0.5);
+    m_wheelDeliverSpeed = frc::SmartDashboard::GetNumber("Cargo Deliver Speed", 1);
   }
   else
   {
@@ -55,14 +60,16 @@ bool CargoControlSubsystem::CargoIn() const
   return !m_cargoIn.Get();
 }
 
-void CargoControlSubsystem::CargoBallTowardsFront()
+void CargoControlSubsystem::MoveCargoBall(bool bFront, bool bDeliver)
 {
-  ChangeWheelsSpeed(-kWheelSpeed);
-}
-
-void CargoControlSubsystem::CargoBallTowardsRear()
-{
-  ChangeWheelsSpeed(kWheelSpeed);
+  auto speed = m_wheelDeliverSpeed;
+  if (bDeliver == false)
+    speed = m_wheelPickupSpeed;
+  
+  if(bFront == false)
+    speed *= -1;
+  
+  ChangeWheelsSpeed(speed);
 }
 
 void CargoControlSubsystem::StopWheels()

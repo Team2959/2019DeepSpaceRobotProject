@@ -7,8 +7,7 @@
 
 #include "commands/DeliverCommandGroup.h"
 #include "commands/TiltCargoArmCommand.h"
-#include "commands/MoveCargoTowardFrontCommand.h"
-#include "commands/MoveCargoTowardRearCommand.h"
+#include "commands/MoveCargoBallCommand.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 #include "commands/AttachHatchCommand.h"
 #include "commands/ReleaseHatchCommand.h"
@@ -41,21 +40,20 @@ DeliverCommandGroup::DeliverCommandGroup() {
   if(Robot::m_cargoControlSubsystem.CargoIn() == true){
   //For cargo
 
-      // Check to see if tilting arm is needed
-      if (Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(kLiftCargoShipPosition) == true)
-      {
-        AddSequential(new TiltCargoArmCommand());
-      }
+    // Check to see if tilting arm is needed
+    if (Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(kLiftCargoShipPosition) == true)
+    {
+      AddSequential(new TiltCargoArmCommand());
+    }
   
     if(Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition()>=0){
     //deliver front
-      AddSequential(new MoveCargoTowardFrontCommand());
+      AddSequential(new MoveCargoBallCommand(true, true));
     }
     else{
     //deliver back
-      AddSequential(new MoveCargoTowardRearCommand());
+      AddSequential(new MoveCargoBallCommand(false, true));
       AddSequential(new PrepForHatchCommand());
-
     }
     AddSequential(new StopCargoControlWheelsCommand());
   }

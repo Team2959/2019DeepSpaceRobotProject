@@ -10,7 +10,7 @@
 #include "subsystems/LiftAndShuttlePositions.h"
 #include "subsystems/HatchSubsystem.h"
 #include "Robot.h"
-#include "commands/MoveCargoTowardRearCommand.h"
+#include "commands/MoveCargoBallCommand.h"
 
 ExtendCargoArmCommand::ExtendCargoArmCommand() {
   // Use Requires() here to declare subsystem dependencies
@@ -39,7 +39,7 @@ void ExtendCargoArmCommand::Execute()
     // start wheels, once at front
     if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false)
     {
-      auto ptr = new MoveCargoTowardRearCommand();
+      auto ptr = new MoveCargoBallCommand(false, false);
       ptr->Start();
     }
   }

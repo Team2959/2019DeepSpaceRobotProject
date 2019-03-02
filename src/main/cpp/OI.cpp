@@ -57,7 +57,7 @@ OI::OI()
   m_climb.WhenPressed(new ClimbCommandGroup());
 
   // Sensor Triggers
-  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand());
+  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(0.25));
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
   //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
   //m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
