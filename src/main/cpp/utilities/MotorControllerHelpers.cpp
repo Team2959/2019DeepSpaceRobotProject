@@ -231,27 +231,27 @@ void MotorControllerHelpers::DashboardDataSparkMax2(
   auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", myOmin);
   auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", myOmax);
 
-  if (fabs(kP - myP) > 0.0001)
+  if (fabs(kP - myP) > 0.000001)
   {
     pidConfig.SetP(kP);
     pidConfig2.SetP(kP);
   }
-  if (fabs(kI - myI) > 0.0001)
+  if (fabs(kI - myI) > 0.000001)
   {
     pidConfig.SetI(kI);
     pidConfig2.SetI(kI);
   }
-  if (fabs(kD - myD) > 0.0001)
+  if (fabs(kD - myD) > 0.000001)
   {
     pidConfig.SetD(kD);
     pidConfig2.SetD(kD);
   }
-  if (fabs(kF - myFF) > 0.0001)
+  if (fabs(kF - myFF) > 0.000001)
   {
     pidConfig.SetFF(kF);
     pidConfig2.SetFF(kF);
   }
-  if (fabs(kIz - myIzone) > 0.0001)
+  if (fabs(kIz - myIzone) > 0.000001)
   {
     pidConfig.SetIZone(kIz);
     pidConfig2.SetIZone(kIz);
