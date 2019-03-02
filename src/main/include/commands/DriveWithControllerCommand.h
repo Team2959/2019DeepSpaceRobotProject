@@ -20,6 +20,5 @@ class DriveWithControllerCommand : public frc::Command {
   void Interrupted() override;
 
   private: 
-
    cwtech::UniformConditioning jsc;
 };

@@ -6,10 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/FollowLineCommand.h"
-#include "subsystems/DriveTrainSubsystem.h"
-FollowLineCommand::FollowLineCommand() {
+#include "Robot.h"
+
+FollowLineCommand::FollowLineCommand()
+{
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
+    Requires(&Robot::m_driveTrainSubsystem);
 }
 
 // Called just before this Command runs the first time
@@ -19,7 +22,7 @@ void FollowLineCommand::Initialize() {}
 void FollowLineCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool FollowLineCommand::IsFinished() { return false; }
+bool FollowLineCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void FollowLineCommand::End() {}
