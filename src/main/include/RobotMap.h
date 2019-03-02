@@ -38,17 +38,17 @@ constexpr int kClimbWheelsPwmSparkMotor = 1;
 constexpr int kClimbEngagePwmSparkMotor = 2;
 
 // PCM solenoid addresses
-constexpr int kCargoArmExtendSolenoid = 3;
 constexpr int kHatchAttachSolenoid = 0;
 constexpr int kHatchReleaseSolenoid = 1;
 constexpr int kHatchSafetySolenoid = 2;
+constexpr int kCargoArmExtendSolenoid = 3;
 constexpr int kTallClimbEngageSolenoid = 4;
 
 // Digital IO addresses
 constexpr int kLiftBottomSwitch = 0;
+constexpr int kCargoInSwitch = 1;
 constexpr int kCargoShuttleFrontSwitchTrigger = 2;
 constexpr int kCargoShuttleBackSwitchTrigger = 3;
-constexpr int kCargoInSwitch = 1;
 constexpr int kWhiteTapeSwitch1 = 4;
 constexpr int kWhiteTapeSwitch2 = 5;
 constexpr int kWhiteTapeSwitch3 = 6;
