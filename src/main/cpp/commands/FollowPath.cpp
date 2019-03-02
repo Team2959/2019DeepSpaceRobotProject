@@ -54,19 +54,24 @@ void FollowPath::End() {}
 // subsystems is scheduled to run
 void FollowPath::Interrupted() {}
 
-void FollowPath::SetUnitConversion (VelocityUnits v)
+void FollowPath::SetUnitConversion( VelocityUnits v )
 {
     switch (v) {
-    case kMetersPerSecond:
+    case VelocityUnits::kMetersPerSecond:
+    {
         double feetToMeters = 0.3048;
         m_unitConversion = (1 / (M_PI * kDriveTrainWheelSize * feetToMeters)) * 60;
-        break;
-    case kInchesPerSecond:
+    }
+    break;
+    case VelocityUnits::kInchesPerSecond:
+    {
         double feetToInches = 12;
         m_unitConversion = (1 / (M_PI * kDriveTrainWheelSize * feetToInches)) * 60;
-        break;
+    }
+    break;
     default:
         m_unitConversion = (1 / (M_PI * kDriveTrainWheelSize)) * 60;
+        break;
     }
 }
 

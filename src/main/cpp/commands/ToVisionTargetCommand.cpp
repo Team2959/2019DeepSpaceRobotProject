@@ -6,25 +6,26 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ToVisionTargetCommand.h"
+#include "../../include/Robot.h"
+#include "../../../../../2019RaspPIRoboRioShared/Shared.hpp"
 
 ToVisionTargetCommand::ToVisionTargetCommand() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(Robot::m_driveTrainSubsystem);
-  Requires(Robot::m_networkTable);
+  Requires(&Robot::m_driveTrainSubsystem);
 }
 
 // Called just before this Command runs the first time
 void ToVisionTargetCommand::Initialize() 
 {
-    m_networkTable.setDouble(Rpi2959Shared::Keys::FrontTargets, Rpi2959Shared::ProcessingTargets::PortTape); 
+    Robot::m_networkTable->PutNumber(Rpi2959Shared::Keys::FrontTargets, static_cast<double>(Rpi2959Shared::ProcessingTargets::PortTape)); 
     m_isFinished = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ToVisionTargetCommand::Execute()
 {
-  auto Results = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
+  auto Results = Robot::m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   if(Results.size() == 0)
   {
@@ -40,13 +41,13 @@ void ToVisionTargetCommand::Execute()
 
   std::tuple<double, double> ToVisionTargetCommand::ComputeRpms(double middle)
   {
-   if(Middle > 0.55)
+   if(middle > 0.55)
   {
       //Turn right
       //Can change speed with testing
       return std::make_tuple(0.1,-0.1);
   }
-  else if(Middle < 0.45)
+  else if(middle < 0.45)
   {
           //Turn left
       return std::make_tuple(-0.1,0.1);
@@ -65,7 +66,7 @@ bool ToVisionTargetCommand::IsFinished() { return m_isFinished; }
 // Called once after isFinished returns true
 void ToVisionTargetCommand::End() 
 {
-   m_networkTable.setDouble(Rpi2959Shared::Keys::FrontTargets, 0);
+   Robot::m_networkTable->PutNumber(Rpi2959Shared::Keys::FrontTargets, 0);
 }
 
 // Called when another command which requires one or more of the same

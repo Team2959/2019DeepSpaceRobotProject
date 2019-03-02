@@ -17,7 +17,7 @@
 
 class FollowPath : public frc::Command {
 public:
-  enum VelocityUnits {
+    enum class VelocityUnits {
         kFeetPerSecond,
         kMetersPerSecond,
         kInchesPerSecond
@@ -32,8 +32,8 @@ public:
 
   
 private:
-    static constexpr double M_PI = 3.1415926535;
-    
+    static constexpr double m_PI = 3.14159265359;
+
     struct Trajectory {
         double elapsedTime;
         double rightVelocity;
@@ -46,6 +46,6 @@ private:
     void   LoadPathFile ();
     void SetUnitConversion (VelocityUnits v);
     double SetUnitCoversion(VelocityUnits v);
-    double m_conversionFactor = (1 / (M_PI * kDriveTrainWheelSize)) * 60;
+    double m_conversionFactor = (1 / (m_PI * kDriveTrainWheelSize)) * 60;
     double m_unitConversion;
 };

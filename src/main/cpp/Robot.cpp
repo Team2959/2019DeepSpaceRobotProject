@@ -20,6 +20,7 @@ HatchSubsystem Robot::m_hatchSubsystem;
 CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
 LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsystem;
+std::shared_ptr<nt::NetworkTable> Robot::m_networkTable;
 // create instance of OI
 OI Robot::m_oi;
 
