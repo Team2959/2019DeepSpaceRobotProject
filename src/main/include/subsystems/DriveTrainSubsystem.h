@@ -11,6 +11,8 @@
 #include <rev/CANSparkMax.h>
 #include "RobotMap.h"
 #include "utilities/VelocityTankDrive.h"
+#include <frc/DigitalInput.h>
+
 
 const double kDriveTrainWheelBase = 1.5;  // ft
 const double kDriveTrainGearRatio = 6.11; // unitless
@@ -36,6 +38,10 @@ private:
     // Smart Dashboard debug/info
     void DashboardDebugInit();
     void DashboardDebugPeriodic();
+
+    frc::DigitalInput m_whiteTape1 { kWhiteTapeSwitch1 };
+    frc::DigitalInput m_whiteTape2 { kWhiteTapeSwitch2 };
+    frc::DigitalInput m_whiteTape3 { kWhiteTapeSwitch3 };
 
 public:
     DriveTrainSubsystem();
