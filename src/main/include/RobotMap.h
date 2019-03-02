@@ -50,7 +50,7 @@ constexpr int kCargoInSwitch = 1;
 constexpr int kCargoShuttleFrontSwitchTrigger = 2;
 constexpr int kCargoShuttleBackSwitchTrigger = 3;
 constexpr int kWhiteTapeSwitch1 = 4;
-constexpr int kWhiteTapeSwitch2 = 5;
+constexpr int kWhiteTapeSwitch2 = 7;
 constexpr int kWhiteTapeSwitch3 = 6;
 
 
