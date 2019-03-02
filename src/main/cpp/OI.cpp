@@ -27,6 +27,7 @@
 #include "commands/RetractMechanismCommand.h"
 #include "commands/PrepForHatchCommand.h"
 
+#include "commands/FollowLineCommand.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 OI::OI()
@@ -36,6 +37,7 @@ OI::OI()
   
   // Driver Buttons
   m_deliver.WhenPressed(new DeliverCommandGroup());
+  m_followLine.WhileHeld(new FollowLineCommand());
 
   // Co-Pilot Buttons
   m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
