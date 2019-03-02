@@ -56,6 +56,10 @@ void VelocityTankDrive::SetupRightPIDGains(double p, double i, double d, double 
     m_right2PID.SetIZone(iz);
     m_right2PID.SetFF(ff);
     m_right2PID.SetOutputRange(-1, 1);
+
+    MotorControllerHelpers::DashboardInitSparkMax(
+        "Drive/Right", m_rightEncoder,
+        p, i, d, iz, ff);
 }
 
 void VelocityTankDrive::SetupLeftPIDGains(double p, double i, double d, double ff, double iz)
@@ -73,6 +77,10 @@ void VelocityTankDrive::SetupLeftPIDGains(double p, double i, double d, double f
     m_left2PID.SetIZone(iz);
     m_left2PID.SetFF(ff);
     m_left2PID.SetOutputRange(-1, 1);
+
+    MotorControllerHelpers::DashboardInitSparkMax(
+        "Drive/Left", m_leftEncoder,
+        p, i, d, iz, ff);
 }
 
 void VelocityTankDrive::StopMotor() 
@@ -96,8 +104,6 @@ void VelocityTankDrive::InitSendable(SendableBuilder& builder)
 
 void VelocityTankDrive::DashboardDebugInit() 
 {
-    MotorControllerHelpers::DashboardInitSparkMax("Drive/Right", m_rightEncoder);
-    MotorControllerHelpers::DashboardInitSparkMax("Drive/Left", m_leftEncoder);
 }
 
 void VelocityTankDrive::DashboardDebugPeriodic() 
