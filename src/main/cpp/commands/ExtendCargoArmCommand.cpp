@@ -37,10 +37,11 @@ void ExtendCargoArmCommand::Execute()
     Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition, atFront);
 
     // start wheels, once at front
-    if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false)
+    if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false && m_wheelsStarted == false)
     {
       auto ptr = new MoveCargoBallCommand(false, false);
       ptr->Start();
+      m_wheelsStarted = true;
     }
   }
 }

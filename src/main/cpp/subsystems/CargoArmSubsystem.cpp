@@ -35,8 +35,9 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 
 void CargoArmSubsystem::OnRobotInit()
 {
-  DashboardDebugInit();
   MoveCargoArmToPosition(0, false);
+
+  DashboardDebugInit();
 }
 
 void CargoArmSubsystem::OnRobotPeriodic(bool updateDebugInfo)
@@ -117,4 +118,5 @@ void CargoArmSubsystem::StopAndZero()
 {
   m_left.StopMotor();
   m_left.SetSelectedSensorPosition(0,0,0);
+  MoveCargoArmToPosition(0, false);
 }

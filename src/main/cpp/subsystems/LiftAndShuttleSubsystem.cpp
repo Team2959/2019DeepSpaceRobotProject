@@ -70,6 +70,8 @@ void LiftAndShuttleSubsystem::OnRobotInit()
 
   m_liftEncoder.SetPosition(0);
 
+  MoveLiftToPosition(0);
+
   frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", IsLiftAtBottom());
   frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
   frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", IsAtShuttleRearLimit());
@@ -229,6 +231,7 @@ void LiftAndShuttleSubsystem::StopShuttleAndSetPosition(double position)
   m_leftShuttle.StopMotor();
   m_leftShuttle.SetSelectedSensorPosition(position);
   m_rightShuttle.SetSelectedSensorPosition(position);
+  MoveShuttleToPosition(position);
 }
 
 void LiftAndShuttleSubsystem::CargoShuttleFrontStop()

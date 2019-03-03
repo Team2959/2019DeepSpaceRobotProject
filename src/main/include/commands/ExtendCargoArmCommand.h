@@ -10,6 +10,9 @@
 #include <frc/commands/Command.h>
 
 class ExtendCargoArmCommand : public frc::Command {
+ private:
+  bool m_wheelsStarted = false;
+  
  public:
   ExtendCargoArmCommand();
   void Initialize() override;

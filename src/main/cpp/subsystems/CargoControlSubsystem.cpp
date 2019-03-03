@@ -19,6 +19,8 @@ CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsyste
 
 void CargoControlSubsystem::OnRobotInit()
 {
+  StopWheels();
+  
   frc::SmartDashboard::PutBoolean("Cargo 1", false);
 
   DashboardDebugInit();
