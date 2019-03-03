@@ -29,7 +29,7 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
 {
   // Shuttle motor controller configuration
   m_rightShuttle.GetSlotConfigs(m_pidConfigShuttle);
-  m_pidConfigShuttle.kP = 0.1;
+  m_pidConfigShuttle.kP = 0.37;
   m_pidConfigShuttle.kI = 0;
   m_pidConfigShuttle.kD = 0;
   m_pidConfigShuttle.kF = 0.2046;
@@ -39,10 +39,10 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, true);
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
 
-  m_leftShuttle.ConfigMotionCruiseVelocity(2000, 10);
+  m_leftShuttle.ConfigMotionCruiseVelocity(3000, 10);
   m_leftShuttle.ConfigMotionAcceleration(4500,10);
 
-  m_rightShuttle.ConfigMotionCruiseVelocity(2000, 10);
+  m_rightShuttle.ConfigMotionCruiseVelocity(3000, 10);
   m_rightShuttle.ConfigMotionAcceleration(4500,10);
 }
 
