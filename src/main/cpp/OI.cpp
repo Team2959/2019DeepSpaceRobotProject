@@ -29,6 +29,7 @@
 
 #include "commands/FollowLineCommand.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include "commands/DeliverShipCargoCommandGroup.h"
 
 OI::OI()
 {
@@ -45,7 +46,8 @@ OI::OI()
 
   m_liftFloor.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
   m_liftBottom.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Bottom));
-  m_liftCargoShuttle.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::CargoShip));
+  // m_liftCargoShuttle.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::CargoShip));
+  m_liftCargoShuttle.WhenPressed(new DeliverShipCargoCommandGroup());
   m_liftMiddleRocket.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::MiddleRocket));
   m_liftTopRocket.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::TopRocket));
 

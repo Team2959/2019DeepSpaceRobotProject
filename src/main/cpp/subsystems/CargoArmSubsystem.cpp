@@ -11,7 +11,7 @@
 #include "utilities/MotorControllerHelpers.h"
 #include <algorithm>
 
-constexpr double kCloseEnoughToPosition = 250;
+constexpr double kCloseEnoughToPosition = 500;
 constexpr double kArmIsClearOfShuttle = 8500;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")

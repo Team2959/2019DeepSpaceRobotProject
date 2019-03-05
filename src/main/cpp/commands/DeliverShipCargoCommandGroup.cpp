@@ -5,18 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "commands/DeliverShipCargoCommandGroup.h"
+#include "commands/MoveLiftAndShuttleCommand.h"
+#include "subsystems/LiftAndShuttlePositions.h"
+#include "commands/TiltCargoArmCommand.h"
+#include "commands/MoveCargoBallCommand.h"
 
-#include <frc/commands/Command.h>
-
-class ShuttleTargetCommand : public frc::Command {
- private:
-  bool m_bFront = false;
- public:
-  ShuttleTargetCommand(bool front = true);
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-};
+DeliverShipCargoCommandGroup::DeliverShipCargoCommandGroup() {
+  AddSequential(new MoveLiftAndShuttleCommand(kLiftFloorPosition, kShuttleMiddlePosition));
+  AddSequential(new TiltCargoArmCommand());
+  AddSequential(new MoveCargoBallCommand(true, true));
+}

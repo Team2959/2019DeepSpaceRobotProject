@@ -28,7 +28,7 @@ void TiltCargoArmCommand::Execute()
     // try to tilt arm forward
     Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmTiltForwardPosition, true);
   }
-  else if (Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleRearPosition) == true)
+  else //if (Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleRearPosition) == true)
   {
     // try to tilt arm backwards
     Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmTiltBackwardPosition, true);
@@ -43,7 +43,7 @@ bool TiltCargoArmCommand::IsFinished()
   {
     return true;
   }
-  else if (Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleRearPosition) == true &&
+  else if (//Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleRearPosition) == true &&
       Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmTiltBackwardPosition))
   {
     return true;

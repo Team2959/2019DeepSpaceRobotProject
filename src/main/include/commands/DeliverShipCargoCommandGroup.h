@@ -7,16 +7,9 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/CommandGroup.h>
 
-class ShuttleTargetCommand : public frc::Command {
- private:
-  bool m_bFront = false;
+class DeliverShipCargoCommandGroup : public frc::CommandGroup {
  public:
-  ShuttleTargetCommand(bool front = true);
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  DeliverShipCargoCommandGroup();
 };
