@@ -19,6 +19,6 @@ class ToVisionTargetCommand : public frc::Command {
   void Interrupted() override;
 
   private: 
-  std::tuple<double, double> ComputeRpms(double middle);
+  std::tuple<double, double> ComputeRpms(double middle, double separation);
   bool m_isFinished;
 };

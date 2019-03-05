@@ -25,39 +25,48 @@ void ToVisionTargetCommand::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void ToVisionTargetCommand::Execute()
 {
+  // If we have already marked as finished, do nothing
+  if( m_isFinished )
+    return;
   auto Results = Robot::m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   if(Results.size() == 0)
   {
+    m_isFinished = true;
     return;
   }
-    auto  LeftX = Results[0];   // in [0,1]
-   auto  RightX = Results[1];
-   auto Middle = (RightX + LeftX) / 2;
-   auto result = ComputeRpms(Middle);
-   Robot::m_driveTrainSubsystem.TankDrive(std::get<0>(result),std::get<1>(result));
-  
+
+  auto  LeftX = Results[0];   // in [0,1]
+  auto  RightX = Results[1];
+  auto Middle = (RightX + LeftX) / 2;
+  auto result = ComputeRpms(Middle, RightX - LeftX);
+  if((std::get<0>(result) == 0.0)&&(std::get<1>(result) == 0.0))
+    m_isFinished = true;
+  Robot::m_driveTrainSubsystem.TankDrive(std::get<0>(result),std::get<1>(result));
 }
 
-  std::tuple<double, double> ToVisionTargetCommand::ComputeRpms(double middle)
+  std::tuple<double, double> ToVisionTargetCommand::ComputeRpms(double middle, double separation)
   {
-   if(middle > 0.55)
-  {
-      //Turn right
-      //Can change speed with testing
-      return std::make_tuple(0.1,-0.1);
-  }
-  else if(middle < 0.45)
-  {
-          //Turn left
-      return std::make_tuple(-0.1,0.1);
-  }
-  else
-  {
+    if(middle > 0.55)    // Turn right
+    {
+      auto  rotationSpeed = 2.0 * (middle - 0.5); // Need to change speed with testing
+      return std::make_tuple(rotationSpeed,-rotationSpeed);
+    }
+    else if(middle < 0.45)  // Turn left
+    {
+      auto  rotationSpeed = 2.0 * (0.5 - middle); // Need to change speed with testing
+      return std::make_tuple(-rotationSpeed,rotationSpeed);
+    }
+    else if(separation < 0.5) // Drive forward
+    {
+      auto  rotationSpeed = (0.5 - separation) / 2.0; // Need to change speed with testing
+      return std::make_tuple(rotationSpeed,rotationSpeed);
+    }
+    else
+    {
       m_isFinished = true;
       return std::make_tuple(0,0);
-  }
-
+    }
   }
 
 // Make this return true when this Command no longer needs to run execute()
