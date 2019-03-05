@@ -184,7 +184,7 @@ bool LiftAndShuttleSubsystem::IsAtShuttleRearLimit() const
 
 bool LiftAndShuttleSubsystem::IsLiftAtBottom() const
 {
-  return !m_liftBottomLimitSwitch.Get();
+  return true;//!m_liftBottomLimitSwitch.Get();
 }
 
 bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
@@ -235,17 +235,17 @@ void LiftAndShuttleSubsystem::CargoShuttleBackStop()
 
 void LiftAndShuttleSubsystem::LiftBottomReset()
 {
-  m_liftPrimary.StopMotor();
-  m_liftFollower1.StopMotor();
-  m_liftFollower2.StopMotor();
-  m_liftEncoder.SetPosition(0);
-  MoveLiftToPosition(0);
+  // m_liftPrimary.StopMotor();
+  // m_liftFollower1.StopMotor();
+  // m_liftFollower2.StopMotor();
+  // m_liftEncoder.SetPosition(0);
+  // MoveLiftToPosition(0);
 }
 
 bool LiftAndShuttleSubsystem::IsLiftAtPosition(double targetPosition)
 {
   // actually check position is near target position
-  return fabs(CurrentLiftPosition() - targetPosition) < kLiftCloseEnoughToPosition;
+  return true;//fabs(CurrentLiftPosition() - targetPosition) < kLiftCloseEnoughToPosition;
 }
 
 bool LiftAndShuttleSubsystem::IsLiftSafeForShuttleMoveThroughMiddle()
@@ -255,7 +255,7 @@ bool LiftAndShuttleSubsystem::IsLiftSafeForShuttleMoveThroughMiddle()
 
 double LiftAndShuttleSubsystem::CurrentLiftPosition()
 {
-  return m_liftEncoder.GetPosition();
+  return 0;//m_liftEncoder.GetPosition();
 }
 
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
@@ -267,7 +267,7 @@ void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
     frc::SmartDashboard::PutNumber("Lift: Target", position);
   }
 
-  m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
+  //m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
 }
 
 void LiftAndShuttleSubsystem::LiftStopAtCurrentPosition()

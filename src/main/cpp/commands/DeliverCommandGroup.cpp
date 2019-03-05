@@ -43,7 +43,7 @@ DeliverCommandGroup::DeliverCommandGroup() {
     // Check to see if tilting arm is needed
     if (Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(kLiftCargoShipPosition) == true)
     {
-      AddSequential(new TiltCargoArmCommand());
+      //AddSequential(new TiltCargoArmCommand());
     }
   
     if(Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition()>=0){
