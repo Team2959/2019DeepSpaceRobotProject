@@ -29,7 +29,7 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
 {
   // Shuttle motor controller configuration
   m_rightShuttle.GetSlotConfigs(m_pidConfigShuttle);
-  m_pidConfigShuttle.kP = 0.1;
+  m_pidConfigShuttle.kP = 0.37;
   m_pidConfigShuttle.kI = 0;
   m_pidConfigShuttle.kD = 0;
   m_pidConfigShuttle.kF = 0.2046;
