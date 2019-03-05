@@ -21,5 +21,11 @@ class MoveLiftCommand : public MoveLiftAndShuttleCommand
     TopRocket
   };
 
+ private:
+  LiftTargetLevel m_liftTarget;
+
+ public:
   MoveLiftCommand(LiftTargetLevel liftTarget);
+
+  void Initialize() override;
 };

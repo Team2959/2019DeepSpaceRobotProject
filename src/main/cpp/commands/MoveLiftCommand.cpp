@@ -11,6 +11,11 @@
 
 MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget) : MoveLiftAndShuttleCommand(0, 0)
 {
+  m_liftTarget = liftTarget;
+}
+
+void MoveLiftCommand::Initialize()
+{
   // if shuttle target is front -> set shuttle target postion to kShuttleFrontPosition
   if (Robot::m_oi.m_shuttleTargetFront == true)
   {
@@ -23,7 +28,7 @@ MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget) : MoveLiftAndShuttl
   }
 
   auto cargoIn = Robot::m_cargoControlSubsystem.CargoIn();
-  switch (liftTarget)
+  switch (m_liftTarget)
   {
     case LiftTargetLevel::Floor:
       m_targetLiftPosition = kLiftFloorPosition;
