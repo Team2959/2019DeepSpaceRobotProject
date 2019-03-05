@@ -9,7 +9,17 @@
 
 #include "commands/MoveLiftAndShuttleCommand.h"
 
-class MoveLiftCommand : public MoveLiftAndShuttleCommand {
+class MoveLiftCommand : public MoveLiftAndShuttleCommand
+{
  public:
-  MoveLiftCommand(double targetLiftPosition);
+  enum LiftTargetLevel
+  {
+    Floor,
+    Bottom,
+    CargoShip,
+    MiddleRocket,
+    TopRocket
+  };
+
+  MoveLiftCommand(LiftTargetLevel liftTarget);
 };

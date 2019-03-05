@@ -39,14 +39,14 @@ TwoHatchesOnRocketAutonomousCommandGroup::TwoHatchesOnRocketAutonomousCommandGro
   //AddSequential(new FollowPath());
   //AddSequential(new FollowPath());
   
-  AddParallel(new MoveLiftAndShuttleCommand(kLiftBottomPosition, kShuttleFrontPosition));
+  AddParallel(new MoveLiftAndShuttleCommand(kLiftBottomHatchPosition, kShuttleFrontPosition));
   //AddSequential(new VisionToTargetCommand());
 
   AddSequential(new GrabHatchCommandGroup());
   //AddSequential(new FollowPath());
   //AddSequential(new FollowPath());
   
-  AddParallel(new MoveLiftAndShuttleCommand(kLiftBottomPosition, kShuttleFrontPosition));
+  AddParallel(new MoveLiftAndShuttleCommand(kLiftBottomHatchPosition, kShuttleFrontPosition));
   //AddSequential(new VisionToTargetCommand());
 
   AddSequential(new DeliverCommandGroup());

@@ -25,12 +25,7 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   frc::DigitalInput m_liftBottomLimitSwitch{kLiftBottomSwitch};
 
   rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
-  // rev::CANPIDController m_liftPidController2 = m_liftFollower1.GetPIDController();
-  // rev::CANPIDController m_liftPidController3 = m_liftFollower2.GetPIDController();
-
   rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
-  // rev::CANEncoder m_liftEncoder2 = m_liftFollower1.GetEncoder();
-  // rev::CANEncoder m_liftEncoder3 = m_liftFollower2.GetEncoder();
 
   // Lift methods
   void ConfigureLiftPid(rev::CANPIDController & pidConfig);
