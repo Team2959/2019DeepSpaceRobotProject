@@ -57,7 +57,7 @@ void ToVisionTargetCommand::Execute()
       auto  rotationSpeed = 2.0 * (0.5 - middle); // Need to change speed with testing
       return std::make_tuple(-rotationSpeed,rotationSpeed);
     }
-    else if(separation < 0.5) // Drive forward
+    else if(separation < 0.4) // Drive forward...0.4 should be fairly close to brushing up against the spacecraft
     {
       auto  rotationSpeed = (0.5 - separation) / 2.0; // Need to change speed with testing
       return std::make_tuple(rotationSpeed,rotationSpeed);
