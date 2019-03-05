@@ -21,6 +21,18 @@ DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
     //  therefore, configure like primary and send same info to all
     // m_rightFollower.Follow(m_rightPrimary);
     // m_leftFollower.Follow(m_leftPrimary);
+
+     try {
+        /* Communicate w/navX-MXP via the MXP SPI Bus.                                       */
+        /* Alternatively:  I2C::Port::kMXP, SerialPort::Port::kMXP or SerialPort::Port::kUSB */
+        /* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details.   */
+        ahrs = new AHRS(SerialPort::Port::kUSB);
+    } catch (std::exception ex ) {
+        std::string err_string = "Error instantiating navX-MXP:  ";
+        err_string += ex.what();
+        DriverStation::ReportError(err_string.c_str());
+    }
+
 }
 
 void DriveTrainSubsystem::InitDefaultCommand()

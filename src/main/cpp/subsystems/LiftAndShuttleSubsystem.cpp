@@ -39,10 +39,10 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, true);
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
 
-  m_leftShuttle.ConfigMotionCruiseVelocity(2000, 10);
+  m_leftShuttle.ConfigMotionCruiseVelocity(3000, 10);
   m_leftShuttle.ConfigMotionAcceleration(4500,10);
 
-  m_rightShuttle.ConfigMotionCruiseVelocity(2000, 10);
+  m_rightShuttle.ConfigMotionCruiseVelocity(3000, 10);
   m_rightShuttle.ConfigMotionAcceleration(4500,10);
 }
 
