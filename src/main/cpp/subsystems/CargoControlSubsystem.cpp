@@ -50,6 +50,7 @@ void CargoControlSubsystem::DashboardDebugPeriodic()
   {
     m_wheelPickupSpeed = frc::SmartDashboard::GetNumber("Cargo Pickup Speed", 0.5);
     m_wheelDeliverSpeed = frc::SmartDashboard::GetNumber("Cargo Deliver Speed", 1);
+    ChangeWheelsSpeed(m_wheelPickupSpeed);
   }
   else
   {
