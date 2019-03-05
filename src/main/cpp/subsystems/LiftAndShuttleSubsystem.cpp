@@ -69,6 +69,8 @@ void LiftAndShuttleSubsystem::OnRobotInit()
   ConfigureLiftPid(m_liftPidController3);
 
   m_liftEncoder.SetPosition(0);
+  m_liftEncoder2.SetPosition(0);
+  m_liftEncoder3.SetPosition(0);
 
   MoveLiftToPosition(0);
 
@@ -252,6 +254,8 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
   m_liftFollower1.StopMotor();
   m_liftFollower2.StopMotor();
   m_liftEncoder.SetPosition(0);
+  m_liftEncoder2.SetPosition(0);
+  m_liftEncoder3.SetPosition(0);
   MoveLiftToPosition(0);
 }
 
