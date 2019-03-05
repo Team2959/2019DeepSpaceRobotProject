@@ -5,9 +5,10 @@ constexpr double kShuttleMiddlePosition = 0;
 constexpr double kShuttleFrontPosition = 11000;
 constexpr double kShuttleRearPosition = -4500; // -3700 is for cable track tripping switch, -5200 is for near hard stop
 
-constexpr double kLiftFloorPosition = 0;
-constexpr double kLiftBottomPosition = 4;
-constexpr double kLiftCargoShipPosition = 24;
-constexpr double kLiftMiddlePosition = 40;
-constexpr double kLiftTopPosition = 55;
-constexpr double kLiftRemoveHatchFromWallPosition = kLiftBottomPosition + 6;
+constexpr double kLiftFloorPosition = 0;    // cargo pickup from floor
+constexpr double kLiftBottomPosition = 4;   // pickup hatch or deliver hatch or cargo to bottom level
+constexpr double kLiftCargoShipPosition = 24;   // deliver cargo to cargo ship
+constexpr double kLiftMiddlePosition = 40;      // deliver to middle rocket level
+constexpr double kLiftTopPosition = 55;         // deliver to top rocket level
+constexpr double kLiftRemoveHatchFromWallPosition = kLiftBottomPosition + 2;    // position for lifting hatch out of brushes from wall
+constexpr double kLiftRocketCargoOffset = 0;    // adjustment to vertical position when delivering cargo to rocket, which is offset from hatch level

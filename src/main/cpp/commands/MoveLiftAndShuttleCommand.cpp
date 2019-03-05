@@ -7,6 +7,7 @@
 
 #include "commands/MoveLiftAndShuttleCommand.h"
 #include "Robot.h"
+#include "subsystems/LiftAndShuttlePositions.h"
 
 MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition)
 {
@@ -16,6 +17,13 @@ MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition, 
 
   m_targetLiftPosition = targetLiftPosition;
   m_targetShuttlePosition = targetShuttlePosition;
+
+  if (Robot::m_cargoControlSubsystem.CargoIn() &&
+      fabs(m_targetLiftPosition - kLiftCargoShipPosition) > 0.01)
+  {
+    // adjust lift position if delivering cargo to rocket
+    m_targetLiftPosition += kLiftRocketCargoOffset;
+  }
 }
 
 // Called just before this Command runs the first time
