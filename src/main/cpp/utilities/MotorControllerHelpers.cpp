@@ -103,7 +103,7 @@ void MotorControllerHelpers::DashboardDataTalonSrx(
   }
 }
 
-void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent)
+void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent, bool reduce)
 {
   motor.RestoreFactoryDefaults();
   motor.ClearFaults();
@@ -114,9 +114,12 @@ void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double drive
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitFwdEn, false);
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitRevEn, false);
 
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus0, 100);
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus1, 200);
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus2, 200);
+  if (reduce)
+  {
+    motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus0, 100);
+    motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus1, 200);
+    motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus2, 200);
+  }
 }
 
 void MotorControllerHelpers::DashboardInitSparkMax(
@@ -144,8 +147,8 @@ void MotorControllerHelpers::DashboardInitSparkMax(
 void MotorControllerHelpers::DashboardDataSparkMax3(
     std::string name,
     rev::CANPIDController & pidConfig,
-    rev::CANPIDController & pidConfig2,
-    rev::CANPIDController & pidConfig3,
+    // rev::CANPIDController & pidConfig2,
+    // rev::CANPIDController & pidConfig3,
     rev::CANEncoder & encoder)
 {
   frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
@@ -171,39 +174,39 @@ void MotorControllerHelpers::DashboardDataSparkMax3(
   if (fabs(kP - myP) > kCloseToSameValue)
   {
     pidConfig.SetP(kP);
-    pidConfig2.SetP(kP);
-    pidConfig3.SetP(kP);  
+    // pidConfig2.SetP(kP);
+    // pidConfig3.SetP(kP);  
   }
   if (fabs(kI - myI) > kCloseToSameValue)
   {
     pidConfig.SetI(kI);
-    pidConfig2.SetI(kI);
-    pidConfig3.SetI(kI);
+    // pidConfig2.SetI(kI);
+    // pidConfig3.SetI(kI);
   }
   if (fabs(kD - myD) > kCloseToSameValue)
   {
     pidConfig.SetD(kD);
-    pidConfig2.SetP(kD);
-    pidConfig3.SetP(kD);
+    // pidConfig2.SetP(kD);
+    // pidConfig3.SetP(kD);
   }
   if (fabs(kF - myFF) > kCloseToSameValue)
   {
     pidConfig.SetFF(kF);
-    pidConfig2.SetFF(kF);
-    pidConfig3.SetFF(kF);
+    // pidConfig2.SetFF(kF);
+    // pidConfig3.SetFF(kF);
   }
   if (fabs(kIz - myIzone) > kCloseToSameValue)
   {
     pidConfig.SetIZone(kIz);
-    pidConfig2.SetIZone(kIz);
-    pidConfig3.SetIZone(kIz);
+    // pidConfig2.SetIZone(kIz);
+    // pidConfig3.SetIZone(kIz);
   }
   if (fabs(outputMin - myOmin) > kCloseToSameValue ||
         fabs(outputMax - myOmax) > kCloseToSameValue)
   {
     pidConfig.SetOutputRange(outputMin, outputMax);
-    pidConfig2.SetOutputRange(outputMin, outputMax);
-    pidConfig3.SetOutputRange(outputMin, outputMax);
+    // pidConfig2.SetOutputRange(outputMin, outputMax);
+    // pidConfig3.SetOutputRange(outputMin, outputMax);
   }
 }
 

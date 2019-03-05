@@ -26,7 +26,7 @@ public:
         ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController,
         ctre::phoenix::motorcontrol::can::SlotConfiguration & pidConfig);
 
-    static void SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent);
+    static void SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent, bool reduce);
 
     static void DashboardInitSparkMax(
         std::string name,
@@ -38,8 +38,8 @@ public:
     static void DashboardDataSparkMax3(
         std::string name,
         rev::CANPIDController & pidConfig,
-        rev::CANPIDController & pidConfig2,
-        rev::CANPIDController & pidConfig3,
+        // rev::CANPIDController & pidConfig2,
+        // rev::CANPIDController & pidConfig3,
         rev::CANEncoder & encoder);
 
     static void DashboardDataSparkMax2(
