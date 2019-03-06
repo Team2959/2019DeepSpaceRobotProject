@@ -8,7 +8,7 @@
 #include "commands/TwoHatchesOnRocketAutonomousCommandGroup.h"
 #include "Robot.h"
 #include "commands/FollowPath.h"
-#include "commands/DeliverCommandGroup.h"
+#include "commands/DeliverConditionalCommand.h"
 #include "commands/MoveLiftAndShuttleCommand.h"
 #include "commands/GrabHatchCommandGroup.h"
 #include "subsystems/LiftAndShuttlePositions.h"
@@ -35,7 +35,7 @@ TwoHatchesOnRocketAutonomousCommandGroup::TwoHatchesOnRocketAutonomousCommandGro
   //AddSequential(new FollowPath());  //Drive off platform to back side of rocket
   //AddSequential(new FollowPath());
   //AddSequential(new VisionToTargetCommand());
-  AddSequential(new DeliverCommandGroup());
+  AddSequential(new DeliverConditionalCommand());
   //AddSequential(new FollowPath());
   //AddSequential(new FollowPath());
   
@@ -49,5 +49,5 @@ TwoHatchesOnRocketAutonomousCommandGroup::TwoHatchesOnRocketAutonomousCommandGro
   AddParallel(new MoveLiftAndShuttleCommand(kLiftBottomHatchPosition, kShuttleFrontPosition));
   //AddSequential(new VisionToTargetCommand());
 
-  AddSequential(new DeliverCommandGroup());
+  AddSequential(new DeliverConditionalCommand());
 }
