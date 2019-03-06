@@ -7,6 +7,7 @@
 
 #include "commands/MoveLiftAndShuttleCommand.h"
 #include "Robot.h"
+#include "subsystems/LiftAndShuttlePositions.h"
 
 MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition)
 {

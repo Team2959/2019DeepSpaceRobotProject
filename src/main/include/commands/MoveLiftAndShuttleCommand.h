@@ -11,10 +11,8 @@
 
 class MoveLiftAndShuttleCommand : public frc::Command
 {
-private:
-  double m_targetLiftPosition;
-
 protected:
+  double m_targetLiftPosition;
   double m_targetShuttlePosition;
 
 public:

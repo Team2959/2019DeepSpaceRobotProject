@@ -37,9 +37,7 @@ void MotorControllerHelpers::DashboardInitTalonSrx(
   frc::SmartDashboard::PutNumber(name + ": I Zone", pidConfig.integralZone);
   frc::SmartDashboard::PutNumber(name + ": Feed Forward", pidConfig.kF);
   frc::SmartDashboard::PutNumber(name + ": Closed Loop Err", pidConfig.allowableClosedloopError);
-  // frc::SmartDashboard::PutNumber(name + ": Max Int Acc", pidConfig.maxIntegralAccumulator);
   frc::SmartDashboard::PutNumber(name + ": Cl Loop Peak Output", pidConfig.closedLoopPeakOutput);
-  // frc::SmartDashboard::PutNumber(name + ": Cl Loop Period", pidConfig.closedLoopPeriod);
 
   frc::SmartDashboard::PutNumber(name + ": Go To Position", 0);
   frc::SmartDashboard::PutNumber(name + ": Target", 0);
@@ -59,41 +57,39 @@ void MotorControllerHelpers::DashboardDataTalonSrx(
   auto kIz = frc::SmartDashboard::GetNumber(name + ": I Zone", pidConfig.integralZone);
   auto kF = frc::SmartDashboard::GetNumber(name + ": Feed Forward", pidConfig.kF);
   auto error = frc::SmartDashboard::GetNumber(name + ": Closed Loop Err", pidConfig.allowableClosedloopError);
-  // auto accumulator = frc::SmartDashboard::GetNumber(name + ": Max Int Acc", pidConfig.maxIntegralAccumulator);
   auto peakOutput = frc::SmartDashboard::GetNumber(name + ": Cl Loop Peak Output", pidConfig.closedLoopPeakOutput);
-  // auto period = frc::SmartDashboard::GetNumber(name + ": Cl Loop Period", pidConfig.closedLoopPeriod);
 
-  if (fabs(kP - pidConfig.kP) > 0.0001)
+  if (fabs(kP - pidConfig.kP) > kCloseToSameValue)
   {
     pidConfig.kP = kP;
     motorController.Config_kP(0, kP, 0);
   }
-  if (fabs(kI - pidConfig.kI) > 0.0001)
+  if (fabs(kI - pidConfig.kI) > kCloseToSameValue)
   {
     pidConfig.kI = kI;
     motorController.Config_kI(0, kI, 0);
   }
-  if (fabs(kD - pidConfig.kD) > 0.0001)
+  if (fabs(kD - pidConfig.kD) > kCloseToSameValue)
   {
     pidConfig.kD = kD;
     motorController.Config_kD(0, kD, 0);
   }
-  if (fabs(kF - pidConfig.kF) > 0.0001)
+  if (fabs(kF - pidConfig.kF) > kCloseToSameValue)
   {
     pidConfig.kF = kF;
     motorController.Config_kF(0, kF, 0);
   }
-  if (fabs(kIz - pidConfig.integralZone) > 0.0001)
+  if (fabs(kIz - pidConfig.integralZone) > kCloseToSameValue)
   {
     pidConfig.integralZone = kIz;
     motorController.Config_IntegralZone(0, kIz, 0);
   }
-  if (fabs(error - pidConfig.allowableClosedloopError) > 0.0001)
+  if (fabs(error - pidConfig.allowableClosedloopError) > kCloseToSameValue)
   {
     pidConfig.allowableClosedloopError = error;
     motorController.ConfigAllowableClosedloopError(0, error, 0);
   }
-  if (fabs(peakOutput - pidConfig.closedLoopPeakOutput) > 0.0001)
+  if (fabs(peakOutput - pidConfig.closedLoopPeakOutput) > kCloseToSameValue)
   {
     pidConfig.closedLoopPeakOutput = peakOutput;
     motorController.ConfigPeakOutputForward(peakOutput, 0);
@@ -101,7 +97,7 @@ void MotorControllerHelpers::DashboardDataTalonSrx(
   }
 }
 
-void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent)
+void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent, bool reduceCanTraffic)
 {
   motor.RestoreFactoryDefaults();
   motor.ClearFaults();
@@ -112,9 +108,12 @@ void MotorControllerHelpers::SetupSparkMax(rev::CANSparkMax& motor, double drive
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitFwdEn, false);
   motor.SetParameter(rev::CANSparkMaxLowLevel::ConfigParameter::kSoftLimitRevEn, false);
 
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus0, 100);
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus1, 200);
-  motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus2, 200);
+  if (reduceCanTraffic)
+  {
+    motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus0, 100);
+    motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus1, 200);
+    motor.SetPeriodicFramePeriod(rev::CANSparkMaxLowLevel::PeriodicFrame::kStatus2, 200);
+  }
 }
 
 void MotorControllerHelpers::DashboardInitSparkMax(
@@ -139,11 +138,9 @@ void MotorControllerHelpers::DashboardInitSparkMax(
   frc::SmartDashboard::PutNumber(name + ": Velocity", encoder.GetVelocity());
 }
 
-void MotorControllerHelpers::DashboardDataSparkMax3(
+void MotorControllerHelpers::DashboardDataSparkMax(
     std::string name,
     rev::CANPIDController & pidConfig,
-    rev::CANPIDController & pidConfig2,
-    rev::CANPIDController & pidConfig3,
     rev::CANEncoder & encoder)
 {
   frc::SmartDashboard::PutNumber(name + ": Position", encoder.GetPosition());
@@ -166,42 +163,30 @@ void MotorControllerHelpers::DashboardDataSparkMax3(
   auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", myOmin);
   auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", myOmax);
 
-  if (fabs(kP - myP) > 0.0001)
+  if (fabs(kP - myP) > kCloseToSameValue)
   {
     pidConfig.SetP(kP);
-    pidConfig2.SetP(kP);
-    pidConfig3.SetP(kP);  
   }
-  if (fabs(kI - myI) > 0.0001)
+  if (fabs(kI - myI) > kCloseToSameValue)
   {
     pidConfig.SetI(kI);
-    pidConfig2.SetI(kI);
-    pidConfig3.SetI(kI);
   }
-  if (fabs(kD - myD) > 0.0001)
+  if (fabs(kD - myD) > kCloseToSameValue)
   {
     pidConfig.SetD(kD);
-    pidConfig2.SetP(kD);
-    pidConfig3.SetP(kD);
   }
-  if (fabs(kF - myFF) > 0.0001)
+  if (fabs(kF - myFF) > kCloseToSameValue)
   {
     pidConfig.SetFF(kF);
-    pidConfig2.SetFF(kF);
-    pidConfig3.SetFF(kF);
   }
-  if (fabs(kIz - myIzone) > 0.0001)
+  if (fabs(kIz - myIzone) > kCloseToSameValue)
   {
     pidConfig.SetIZone(kIz);
-    pidConfig2.SetIZone(kIz);
-    pidConfig3.SetIZone(kIz);
   }
-  if (fabs(outputMin - myOmin) > 0.0001 ||
-        fabs(outputMax - myOmax) > 0.0001)
+  if (fabs(outputMin - myOmin) > kCloseToSameValue ||
+        fabs(outputMax - myOmax) > kCloseToSameValue)
   {
     pidConfig.SetOutputRange(outputMin, outputMax);
-    pidConfig2.SetOutputRange(outputMin, outputMax);
-    pidConfig3.SetOutputRange(outputMin, outputMax);
   }
 }
 
@@ -231,33 +216,33 @@ void MotorControllerHelpers::DashboardDataSparkMax2(
   auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", myOmin);
   auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", myOmax);
 
-  if (fabs(kP - myP) > 0.000001)
+  if (fabs(kP - myP) > kCloseToSameValue)
   {
     pidConfig.SetP(kP);
     pidConfig2.SetP(kP);
   }
-  if (fabs(kI - myI) > 0.000001)
+  if (fabs(kI - myI) > kCloseToSameValue)
   {
     pidConfig.SetI(kI);
     pidConfig2.SetI(kI);
   }
-  if (fabs(kD - myD) > 0.000001)
+  if (fabs(kD - myD) > kCloseToSameValue)
   {
     pidConfig.SetD(kD);
     pidConfig2.SetD(kD);
   }
-  if (fabs(kF - myFF) > 0.000001)
+  if (fabs(kF - myFF) > kCloseToSameValue)
   {
     pidConfig.SetFF(kF);
     pidConfig2.SetFF(kF);
   }
-  if (fabs(kIz - myIzone) > 0.000001)
+  if (fabs(kIz - myIzone) > kCloseToSameValue)
   {
     pidConfig.SetIZone(kIz);
     pidConfig2.SetIZone(kIz);
   }
-  if (fabs(outputMin - myOmin) > 0.0001 ||
-        fabs(outputMax - myOmax) > 0.0001)
+  if (fabs(outputMin - myOmin) > kCloseToSameValue ||
+        fabs(outputMax - myOmax) > kCloseToSameValue)
   {
     pidConfig.SetOutputRange(outputMin, outputMax);
     pidConfig2.SetOutputRange(outputMin, outputMax);

@@ -5,6 +5,8 @@
 #include <rev/CANEncoder.h>
 #include <rev/CANSparkMax.h>
 
+constexpr double kCloseToSameValue = 0.0000001;
+
 // Functions to consolidate configuration of motor controllers
 //  and interact with smart dashboard to setup/troubleshoot
 
@@ -26,7 +28,7 @@ public:
         ctre::phoenix::motorcontrol::can::WPI_TalonSRX & motorController,
         ctre::phoenix::motorcontrol::can::SlotConfiguration & pidConfig);
 
-    static void SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent);
+    static void SetupSparkMax(rev::CANSparkMax& motor, double driveMaxCurrent, bool reduceCanTraffic);
 
     static void DashboardInitSparkMax(
         std::string name,
@@ -35,11 +37,9 @@ public:
         double iZone = 0, double ff = 0,
         double outputMin = -1, double outputMax = 1);
 
-    static void DashboardDataSparkMax3(
+    static void DashboardDataSparkMax(
         std::string name,
         rev::CANPIDController & pidConfig,
-        rev::CANPIDController & pidConfig2,
-        rev::CANPIDController & pidConfig3,
         rev::CANEncoder & encoder);
 
     static void DashboardDataSparkMax2(

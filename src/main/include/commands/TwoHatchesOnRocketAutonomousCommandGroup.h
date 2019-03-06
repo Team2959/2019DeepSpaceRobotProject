@@ -7,25 +7,9 @@
 
 #pragma once
 
-#include "commands/MoveLiftAndShuttleCommand.h"
+#include <frc/commands/CommandGroup.h>
 
-class MoveLiftCommand : public MoveLiftAndShuttleCommand
-{
+class TwoHatchesOnRocketAutonomousCommandGroup : public frc::CommandGroup {
  public:
-  enum LiftTargetLevel
-  {
-    Floor,
-    Bottom,
-    CargoShip,
-    MiddleRocket,
-    TopRocket
-  };
-
- private:
-  LiftTargetLevel m_liftTarget;
-
- public:
-  MoveLiftCommand(LiftTargetLevel liftTarget);
-
-  void Initialize() override;
+  TwoHatchesOnRocketAutonomousCommandGroup();
 };

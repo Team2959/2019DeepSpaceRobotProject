@@ -9,17 +9,16 @@
 #include "Robot.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-
 ShuttleTargetCommand::ShuttleTargetCommand(bool front) {
-  m_front = front;
+  m_bFront = front;
 }
 
 // Called just before this Command runs the first time
-void ShuttleTargetCommand::Initialize() 
+void ShuttleTargetCommand::Initialize()
 {
-    // set the target shuttle direction based on input variable
-  Robot::m_oi.m_shuttleTargetFront = m_front;
-  frc::SmartDashboard::PutBoolean("ShuttleForward", m_front);
+  // set the target shuttle direction based on input variable
+  Robot::m_oi.m_shuttleTargetFront = m_bFront;
+  frc::SmartDashboard::PutBoolean("ShuttleForward", m_bFront);
 }
 
 // Called repeatedly when this Command is scheduled to run

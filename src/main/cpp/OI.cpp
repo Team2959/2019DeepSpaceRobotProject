@@ -43,11 +43,11 @@ OI::OI()
   m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
   m_shuttleRear.WhenPressed(new ShuttleTargetCommand(false));
 
-  m_liftFloor.WhenPressed(new MoveLiftCommand(kLiftFloorPosition));
-  m_liftBottom.WhenPressed(new MoveLiftCommand(kLiftBottomPosition));
-  m_liftCargoShuttle.WhenPressed(new MoveLiftCommand(kLiftCargoShipPosition));
-  m_liftMiddleRocket.WhenPressed(new MoveLiftCommand(kLiftMiddlePosition));
-  m_liftTopRocket.WhenPressed(new MoveLiftCommand(kLiftTopPosition));
+  m_liftFloor.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
+  m_liftBottom.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Bottom));
+  m_liftCargoShuttle.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::CargoShip));
+  m_liftMiddleRocket.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::MiddleRocket));
+  m_liftTopRocket.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::TopRocket));
 
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
   m_cargoArmUp.WhenPressed(new CargoArmUpCommand());
@@ -59,7 +59,7 @@ OI::OI()
   m_climb.WhenPressed(new ClimbCommandGroup());
 
   // Sensor Triggers
-  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(0.25));
+  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(1.25));
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
   //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
   //m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());

@@ -13,31 +13,38 @@
 #include <algorithm>
 
 // Shuttle constants
-constexpr double kShuttleCloseEnoughToPosition = 250;
+constexpr double kShuttleCloseEnoughToPosition = 500;
 constexpr double kShuttleSafeFrontPosition = 5000;
 constexpr double kShuttleSafeRearPosition = -3700;
+constexpr double kShuttleKP = 0.37;
+constexpr double kShuttleKFf = 0.2046;
+constexpr double kShuttleCruiseVelocity = 3000;
+constexpr double kShuttleAcceleration = 4500;
 
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.1;
 constexpr double kLiftMaxSafeHeight = 2;
-constexpr double kLiftKP = 5e-5;
+constexpr double kLiftKP = 0.00012;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
-constexpr double kLiftMaxAcceleration = 1000;
+constexpr double kLiftMaxAcceleration = 9000;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
   // Shuttle motor controller configuration
   m_rightShuttle.GetSlotConfigs(m_pidConfigShuttle);
-  m_pidConfigShuttle.kP = 0.1;
+  m_pidConfigShuttle.kP = kShuttleKP;
   m_pidConfigShuttle.kI = 0;
   m_pidConfigShuttle.kD = 0;
-  m_pidConfigShuttle.kF = 0;
-  // m_pidConfigShuttle.integralZone = x;
-  // m_pidConfigShuttle.closedLoopPeakOutput = 1.0;
-  // m_pidConfigShuttle.allowableClosedloopError = 128;
+  m_pidConfigShuttle.kF = kShuttleKFf;
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, true);
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
+
+  m_leftShuttle.ConfigMotionCruiseVelocity(kShuttleCruiseVelocity, 10);
+  m_leftShuttle.ConfigMotionAcceleration(kShuttleAcceleration,10);
+
+  m_rightShuttle.ConfigMotionCruiseVelocity(kShuttleCruiseVelocity, 10);
+  m_rightShuttle.ConfigMotionAcceleration(kShuttleAcceleration,10);
 }
 
 void LiftAndShuttleSubsystem::OnRobotInit()
@@ -46,21 +53,19 @@ void LiftAndShuttleSubsystem::OnRobotInit()
 	m_leftShuttle.SetSelectedSensorPosition(0,0,0);
 	m_rightShuttle.SetSelectedSensorPosition(0,0,0);
 
-  // Lift motor contorller configuration
-  MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80);
-  MotorControllerHelpers::SetupSparkMax(m_liftFollower1, 80);
-  MotorControllerHelpers::SetupSparkMax(m_liftFollower2, 80);
+  MoveShuttleToPosition(0);
 
-  // Not doing follower, since reduce CAN traffic in setup and slows sending into fo follower
-  //  therefore, configure like primary and send same info to all
-  // m_liftFollower1.Follow(m_liftPrimary);
-  // m_liftFollower2.Follow(m_liftPrimary);
+  // Lift motor contorller configuration
+  MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80, false);
+
+  m_liftFollower1.Follow(m_liftPrimary);
+  m_liftFollower2.Follow(m_liftPrimary);
 
   ConfigureLiftPid(m_liftPidController);
-  ConfigureLiftPid(m_liftPidController2);
-  ConfigureLiftPid(m_liftPidController3);
 
   m_liftEncoder.SetPosition(0);
+
+  MoveLiftToPosition(0);
 
   frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", IsLiftAtBottom());
   frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
@@ -128,35 +133,27 @@ void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
     MoveShuttleToPosition(targetPosition);
   }
 
-  MotorControllerHelpers::DashboardDataSparkMax3("Lift", m_liftPidController, m_liftPidController2, m_liftPidController3, m_liftEncoder);
+  MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController, m_liftEncoder);
 
   auto maxV = frc::SmartDashboard::GetNumber("Lift: Max Velocity", kLiftMaxVelocity);
-  if (fabs(maxV - m_liftPidController.GetSmartMotionMaxVelocity()) > 0.0001)
+  if (fabs(maxV - m_liftPidController.GetSmartMotionMaxVelocity()) > kCloseToSameValue)
   {
     m_liftPidController.SetSmartMotionMaxVelocity(maxV);
-    m_liftPidController2.SetSmartMotionMaxVelocity(maxV);
-    m_liftPidController3.SetSmartMotionMaxVelocity(maxV);
   }
   auto minV = frc::SmartDashboard::GetNumber("Lift: Min Velocity", 0);
-  if (fabs(minV - m_liftPidController.GetSmartMotionMinOutputVelocity()) > 0.0001)
+  if (fabs(minV - m_liftPidController.GetSmartMotionMinOutputVelocity()) > kCloseToSameValue)
   {
     m_liftPidController.SetSmartMotionMinOutputVelocity(minV);
-    m_liftPidController2.SetSmartMotionMinOutputVelocity(minV);
-    m_liftPidController3.SetSmartMotionMinOutputVelocity(minV);
   }
   auto maxAcc = frc::SmartDashboard::GetNumber("Lift: Max Acceleration", kLiftMaxAcceleration);
-  if (fabs(maxAcc - m_liftPidController.GetSmartMotionMaxAccel()) > 0.0001)
+  if (fabs(maxAcc - m_liftPidController.GetSmartMotionMaxAccel()) > kCloseToSameValue)
   {
     m_liftPidController.SetSmartMotionMaxAccel(maxAcc);
-    m_liftPidController2.SetSmartMotionMaxAccel(maxAcc);
-    m_liftPidController3.SetSmartMotionMaxAccel(maxAcc);
   }
   auto err = frc::SmartDashboard::GetNumber("Lift: Allowed Closed Loop Error", 0);
-  if (fabs(err - m_liftPidController.GetSmartMotionAllowedClosedLoopError()) > 0.0001)
+  if (fabs(err - m_liftPidController.GetSmartMotionAllowedClosedLoopError()) > kCloseToSameValue)
   {
     m_liftPidController.SetSmartMotionAllowedClosedLoopError(err);
-    m_liftPidController2.SetSmartMotionAllowedClosedLoopError(err);
-    m_liftPidController3.SetSmartMotionAllowedClosedLoopError(err);
   }
 
   frc::SmartDashboard::PutNumber("Lift: Position", CurrentLiftPosition());
@@ -169,7 +166,7 @@ void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
   if (startLift)
   {
     auto targetPosition = frc::SmartDashboard::GetNumber("Lift: Go To Position", 0);
-    targetPosition = std::min(targetPosition, kLiftTopPosition + kLiftCloseEnoughToPosition);
+    targetPosition = std::min(targetPosition, kLiftTopHatchPosition + 5);
     targetPosition = std::max(targetPosition, kLiftFloorPosition);
     MoveLiftToPosition(targetPosition);
   }
@@ -203,8 +200,8 @@ double LiftAndShuttleSubsystem::CurrentShuttlePosition()
 
 void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
 {
-  m_leftShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
-  m_rightShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::Position, position);
+  m_leftShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
+  m_rightShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
 
   if (m_updateDebugInfo)
     frc::SmartDashboard::PutNumber("Shtl: Target", position);
@@ -221,6 +218,7 @@ void LiftAndShuttleSubsystem::StopShuttleAndSetPosition(double position)
   m_leftShuttle.StopMotor();
   m_leftShuttle.SetSelectedSensorPosition(position);
   m_rightShuttle.SetSelectedSensorPosition(position);
+  MoveShuttleToPosition(position);
 }
 
 void LiftAndShuttleSubsystem::CargoShuttleFrontStop()
@@ -270,8 +268,6 @@ void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
   }
 
   m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
-  m_liftPidController2.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
-  m_liftPidController3.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
 }
 
 void LiftAndShuttleSubsystem::LiftStopAtCurrentPosition()

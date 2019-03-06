@@ -127,6 +127,9 @@ void Robot::DisabledPeriodic()
  * the if-else structure below with additional strings & commands.
  */
 void Robot::AutonomousInit() {
+  m_cargoArmSubsystem.MoveCargoArmToPosition(0, false);
+  m_liftAndShuttleSubsystem.MoveToTargetPosition(0, 0, false);
+  
   // std::string autoSelected = frc::SmartDashboard::GetString(
   //     "Auto Selector", "Default");
   // if (autoSelected == "My Auto") {
@@ -153,6 +156,9 @@ void Robot::TeleopInit() {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
   }
+  
+  m_cargoArmSubsystem.StopAtCurrentPosition();
+  m_liftAndShuttleSubsystem.StopAtCurrentPosition();
 }
 
 void Robot::TeleopPeriodic() { frc::Scheduler::GetInstance()->Run(); }

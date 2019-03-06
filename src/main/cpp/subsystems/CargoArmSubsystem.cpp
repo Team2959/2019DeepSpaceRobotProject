@@ -11,7 +11,7 @@
 #include "utilities/MotorControllerHelpers.h"
 #include <algorithm>
 
-constexpr double kCloseEnoughToPosition = 250;
+constexpr double kCloseEnoughToPosition = 500;
 constexpr double kArmIsClearOfShuttle = 8500;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
@@ -35,6 +35,8 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 
 void CargoArmSubsystem::OnRobotInit()
 {
+  MoveCargoArmToPosition(0, false);
+
   DashboardDebugInit();
 }
 
@@ -116,4 +118,5 @@ void CargoArmSubsystem::StopAndZero()
 {
   m_left.StopMotor();
   m_left.SetSelectedSensorPosition(0,0,0);
+  MoveCargoArmToPosition(0, false);
 }

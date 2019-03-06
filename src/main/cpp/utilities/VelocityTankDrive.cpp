@@ -23,8 +23,7 @@ VelocityTankDrive::VelocityTankDrive(rev::CANSparkMax& leftPrimary, rev::CANSpar
 
 void VelocityTankDrive::SetupSparkMax (rev::CANSparkMax& motor, double motorMaxSpeed,double driveSafetyFactor, double robotMaxAccel, double driveMaxCurrent)
 {
-    MotorControllerHelpers::SetupSparkMax(motor, driveMaxCurrent);
-    // motor.SetClosedLoopRampRate(motorMaxSpeed / (robotMaxAccel));
+    MotorControllerHelpers::SetupSparkMax(motor, driveMaxCurrent, true);
 }
 
 void VelocityTankDrive::TankDrive(double left, double right)

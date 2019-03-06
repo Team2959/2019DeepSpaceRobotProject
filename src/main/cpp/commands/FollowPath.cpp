@@ -13,8 +13,6 @@ FollowPath::FollowPath(const std::string& path, VelocityUnits units):
 {
     // Use Requires() here to declare subsystem dependencies
     Requires(&Robot::m_driveTrainSubsystem);
-
-
 }
 
 // Called just before this Command runs the first time
@@ -54,7 +52,7 @@ void FollowPath::End() {}
 // subsystems is scheduled to run
 void FollowPath::Interrupted() {}
 
-void FollowPath::SetUnitConversion (VelocityUnits v)
+void FollowPath::SetUnitConversion(VelocityUnits v)
 {
     double factor = 1;
     
@@ -70,7 +68,6 @@ void FollowPath::SetUnitConversion (VelocityUnits v)
     m_conversionFactor = (1 / (M_PI * kDriveTrainWheelSize * factor)) * 60;
 }
 
-void FollowPath::LoadPathFile ()
+void FollowPath::LoadPathFile()
 {
-  
 }
