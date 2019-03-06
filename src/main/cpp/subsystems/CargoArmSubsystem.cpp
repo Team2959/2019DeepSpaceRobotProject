@@ -99,7 +99,7 @@ void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShu
     }
   }
 
-  if (fabs(position - m_lastTargetPosition) > kCloseEnoughToPosition)
+  // if (fabs(position - m_lastTargetPosition) > kCloseEnoughToPosition)
   {
     m_lastTargetPosition = position;
     m_left.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);

@@ -9,15 +9,21 @@
 #include "subsystems/LiftAndShuttlePositions.h"
 #include "Robot.h"
 
-MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget) : MoveLiftAndShuttleCommand(0, 0)
+MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget, bool useCurrentShuttlePosition)
+   : MoveLiftAndShuttleCommand(0, 0)
 {
   m_liftTarget = liftTarget;
+  m_bUseCurrentShuttlePosition = useCurrentShuttlePosition;
 }
 
 void MoveLiftCommand::Initialize()
 {
+  if (m_bUseCurrentShuttlePosition)
+  {
+    m_targetShuttlePosition = Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition();
+  }
   // if shuttle target is front -> set shuttle target postion to kShuttleFrontPosition
-  if (Robot::m_oi.m_shuttleTargetFront == true)
+  else if (Robot::m_oi.m_shuttleTargetFront == true)
   {
     m_targetShuttlePosition = kShuttleFrontPosition;
   }
@@ -53,6 +59,9 @@ void MoveLiftCommand::Initialize()
         m_targetLiftPosition = kLiftTopCargoPosition;
       else
         m_targetLiftPosition = kLiftTopHatchPosition;
+      break;
+    case RaiseHatchFromWall:
+      m_targetLiftPosition = kLiftRemoveHatchFromWallPosition;
       break;
   }
 }

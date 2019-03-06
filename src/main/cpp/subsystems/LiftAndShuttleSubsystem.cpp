@@ -122,6 +122,7 @@ void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
   MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_leftShuttle, m_pidConfigShuttle);
   MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_rightShuttle, m_pidConfigShuttle);
   frc::SmartDashboard::PutNumber("Shtl: Position", CurrentShuttlePosition());
+  frc::SmartDashboard::PutNumber("Shtl: Position Left", m_leftShuttle.GetSelectedSensorPosition(0));
   frc::SmartDashboard::PutNumber("Shtl: Velocity", m_rightShuttle.GetSelectedSensorVelocity());
 
   auto startShuttle = frc::SmartDashboard::GetBoolean("Shtl: Start", false);
@@ -293,7 +294,7 @@ void LiftAndShuttleSubsystem::MoveToTargetPosition(
 
   // Moving shuttle to next position
   // Only move the shuttle if the cargo arm is safe and not at current position
-  if (isShuttleArmSafe  && ! IsShuttleAtPosition(targetShuttlePosition))
+  if (isShuttleArmSafe)//  && ! IsShuttleAtPosition(targetShuttlePosition))
   {
     // determine direction of shuttle movement
     if (targetShuttlePosition > currentShuttlePosition)
@@ -363,7 +364,7 @@ void LiftAndShuttleSubsystem::MoveToTargetPosition(
     }
   }
 
-  if (!IsLiftAtPosition(targetLiftPosition))
+  // if (!IsLiftAtPosition(targetLiftPosition))
   {
     MoveLiftToPosition(targetLiftPosition);
   }
