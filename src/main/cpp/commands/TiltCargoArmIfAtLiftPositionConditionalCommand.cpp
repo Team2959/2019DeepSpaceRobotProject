@@ -10,10 +10,11 @@
 #include "subsystems/LiftAndShuttlePositions.h"
 #include "Robot.h"
 
-TiltCargoArmIfAtLiftPositionConditionalCommand::TiltCargoArmIfAtLiftPositionConditionalCommand() : ConditionalCommand(new TiltCargoArmCommand())
+TiltCargoArmIfAtLiftPositionConditionalCommand::TiltCargoArmIfAtLiftPositionConditionalCommand()
+   : ConditionalCommand(new TiltCargoArmCommand())
 { }
 
 bool TiltCargoArmIfAtLiftPositionConditionalCommand::Condition()
 {
-  return Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(kLiftCargoShipPosition);
+  return false;//Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(kLiftCargoShipPosition);
 }
