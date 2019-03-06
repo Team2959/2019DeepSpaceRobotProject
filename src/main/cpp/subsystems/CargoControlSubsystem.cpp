@@ -8,7 +8,7 @@
 #include "subsystems/CargoControlSubsystem.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-constexpr double kWheelPickupSpeed = 1;
+constexpr double kWheelPickupSpeed = 0.25;
 constexpr double kWheelDeliverSpeed = 1;
 
 CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsystem")

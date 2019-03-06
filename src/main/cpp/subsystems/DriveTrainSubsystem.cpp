@@ -26,7 +26,7 @@ DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
         /* Communicate w/navX-MXP via the MXP SPI Bus.                                       */
         /* Alternatively:  I2C::Port::kMXP, SerialPort::Port::kMXP or SerialPort::Port::kUSB */
         /* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details.   */
-        ahrs = new AHRS(SerialPort::Port::kUSB);
+        // ahrs = new AHRS(SerialPort::Port::kUSB);
     } catch (std::exception ex ) {
         std::string err_string = "Error instantiating navX-MXP:  ";
         err_string += ex.what();
