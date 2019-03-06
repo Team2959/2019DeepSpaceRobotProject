@@ -11,13 +11,16 @@
 
 
 ShuttleTargetCommand::ShuttleTargetCommand(bool front) {
-  // set the target shuttle direction based on input variable
-  Robot::m_oi.m_shuttleTargetFront = front;
-  frc::SmartDashboard::PutBoolean("ShuttleForward", front);
+  m_front = front;
 }
 
 // Called just before this Command runs the first time
-void ShuttleTargetCommand::Initialize() {}
+void ShuttleTargetCommand::Initialize() 
+{
+    // set the target shuttle direction based on input variable
+  Robot::m_oi.m_shuttleTargetFront = m_front;
+  frc::SmartDashboard::PutBoolean("ShuttleForward", m_front);
+}
 
 // Called repeatedly when this Command is scheduled to run
 void ShuttleTargetCommand::Execute() {}

@@ -9,7 +9,7 @@
 
 #include <frc/WPILib.h>
 #include "subsystems/LiftAndShuttlePositions.h"
-#include "commands/DeliverCommandGroup.h"
+#include "commands/DeliverConditionalCommand.h"
 #include "commands/ShuttleTargetCommand.h"
 #include "commands/MoveLiftCommand.h"
 #include "commands/ExtendCargoArmCommand.h"
@@ -36,7 +36,7 @@ OI::OI()
   frc::SmartDashboard::PutBoolean("ShuttleForward", m_shuttleTargetFront);
   
   // Driver Buttons
-  m_deliver.WhenPressed(new DeliverCommandGroup());
+  m_deliver.WhenPressed(new DeliverConditionalCommand());
   m_followLine.WhileHeld(new FollowLineCommand());
 
   // Co-Pilot Buttons

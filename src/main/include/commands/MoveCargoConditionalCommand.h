@@ -7,10 +7,12 @@
 
 #pragma once
 
-#include "commands/MoveLiftAndShuttleCommand.h"
+#include <frc/commands/ConditionalCommand.h>
 
-class MoveLiftCommand : public MoveLiftAndShuttleCommand {
+class MoveCargoConditionalCommand : public frc::ConditionalCommand {
  public:
-  MoveLiftCommand(double targetLiftPosition);
-  virtual void Initialize() override;
+  MoveCargoConditionalCommand();
+
+  protected:
+    virtual bool Condition() override;
 };

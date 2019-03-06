@@ -7,9 +7,11 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
+#include <frc/commands/ConditionalCommand.h>
 
-class DeliverCommandGroup : public frc::CommandGroup {
+class TiltCargoArmIfAtLiftPositionConditionalCommand : public frc::ConditionalCommand {
  public:
-  DeliverCommandGroup();
+  TiltCargoArmIfAtLiftPositionConditionalCommand();
+protected:
+  virtual bool Condition() override;
 };

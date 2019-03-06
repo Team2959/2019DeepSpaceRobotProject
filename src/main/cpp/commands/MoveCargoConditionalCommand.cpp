@@ -5,12 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "commands/MoveCargoConditionalCommand.h"
+#include "commands/MoveCargoBallCommand.h"
+#include "commands/DeliverBackCommandGroup.h"
+#include "Robot.h"
 
-#include "commands/MoveLiftAndShuttleCommand.h"
+MoveCargoConditionalCommand::MoveCargoConditionalCommand() : ConditionalCommand(
+  new MoveCargoBallCommand(true, true),
+  new DeliverBackCommandGroup()) {
+}
 
-class MoveLiftCommand : public MoveLiftAndShuttleCommand {
- public:
-  MoveLiftCommand(double targetLiftPosition);
-  virtual void Initialize() override;
-};
+bool MoveCargoConditionalCommand::Condition()
+{
+  return Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition()>=0;
+}

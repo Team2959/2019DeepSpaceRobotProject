@@ -5,12 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "commands/TiltCargoArmIfAtLiftPositionConditionalCommand.h"
+#include "commands/TiltCargoArmCommand.h"
+#include "subsystems/LiftAndShuttlePositions.h"
+#include "Robot.h"
 
-#include "commands/MoveLiftAndShuttleCommand.h"
+TiltCargoArmIfAtLiftPositionConditionalCommand::TiltCargoArmIfAtLiftPositionConditionalCommand() : ConditionalCommand(new TiltCargoArmCommand())
+{ }
 
-class MoveLiftCommand : public MoveLiftAndShuttleCommand {
- public:
-  MoveLiftCommand(double targetLiftPosition);
-  virtual void Initialize() override;
-};
+bool TiltCargoArmIfAtLiftPositionConditionalCommand::Condition()
+{
+  return Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(kLiftCargoShipPosition);
+}
