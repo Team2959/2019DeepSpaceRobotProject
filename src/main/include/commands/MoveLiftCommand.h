@@ -18,14 +18,16 @@ class MoveLiftCommand : public MoveLiftAndShuttleCommand
     Bottom,
     CargoShip,
     MiddleRocket,
-    TopRocket
+    TopRocket,
+    RaiseHatchFromWall
   };
 
  private:
   LiftTargetLevel m_liftTarget;
+  bool m_bUseCurrentShuttlePosition;
 
  public:
-  MoveLiftCommand(LiftTargetLevel liftTarget);
+  MoveLiftCommand(LiftTargetLevel liftTarget, bool useCurrentShuttlePosition = false);
 
   void Initialize() override;
 };

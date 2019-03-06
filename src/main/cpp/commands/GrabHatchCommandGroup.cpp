@@ -8,7 +8,7 @@
 #include "commands/GrabHatchCommandGroup.h"
 #include "commands/PrepForHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
-#include "commands/MoveLiftAndShuttleCommand.h"
+#include "commands/MoveLiftCommand.h"
 #include "Robot.h"
 #include "subsystems/LiftAndShuttlePositions.h"
 
@@ -16,7 +16,6 @@ GrabHatchCommandGroup::GrabHatchCommandGroup() {
   AddSequential(new PrepForHatchCommand());
   //     keep shuttle at current position,
   //     lift up + x from current position to get hatch out of brushes on wall));
-  AddSequential(new MoveLiftAndShuttleCommand(kLiftRemoveHatchFromWallPosition,
-    Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition()));
+  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::RaiseHatchFromWall, true));
   AddSequential(new RetractMechanismCommand());
 }
