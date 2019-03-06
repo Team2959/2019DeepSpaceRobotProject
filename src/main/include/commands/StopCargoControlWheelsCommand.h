@@ -10,8 +10,10 @@
 #include <frc/commands/TimedCommand.h>
 
 class StopCargoControlWheelsCommand : public frc::TimedCommand {
+ private:
+  double m_targetSpeed;
  public:
-  StopCargoControlWheelsCommand(double timeout = 0.1);
+  StopCargoControlWheelsCommand(double timeout = 0.1, double targetSpeed = 0);
   
   void Initialize() override;
   void Execute() override;

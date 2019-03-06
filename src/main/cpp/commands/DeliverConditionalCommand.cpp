@@ -8,17 +8,7 @@
 #include "commands/DeliverConditionalCommand.h"
 #include "commands/DeliverCargoCommandGroup.h"
 #include "commands/DeliverHatchCommandGroup.h"
-#include "commands/TiltCargoArmCommand.h"
-#include "commands/MoveCargoBallCommand.h"
-#include "commands/StopCargoControlWheelsCommand.h"
-#include "commands/AttachHatchCommand.h"
-#include "commands/ReleaseHatchCommand.h"
-#include "commands/RetractMechanismCommand.h"
-#include "commands/PrepForHatchCommand.h"
-#include <frc/commands/TimedCommand.h>
 #include "Robot.h"
-#include "subsystems/LiftAndShuttlePositions.h"
-#include "subsystems/HatchSubsystem.h"
 
 DeliverConditionalCommand::DeliverConditionalCommand() : ConditionalCommand(
   new DeliverCargoCommandGroup(),

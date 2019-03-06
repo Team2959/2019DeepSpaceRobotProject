@@ -28,7 +28,7 @@ DeliverCargoCommandGroup::DeliverCargoCommandGroup()
   // e.g. if Command1 requires chassis, and Command2 requires arm,
   // a CommandGroup containing them would require both the chassis and the
   // arm.
-    AddSequential(new TiltCargoArmIfAtLiftPositionConditionalCommand());
-    AddSequential(new MoveCargoConditionalCommand());
-    AddSequential(new StopCargoControlWheelsCommand());
+  AddSequential(new TiltCargoArmIfAtLiftPositionConditionalCommand());
+  AddSequential(new MoveCargoConditionalCommand());
+  AddSequential(new StopCargoControlWheelsCommand());
 }
