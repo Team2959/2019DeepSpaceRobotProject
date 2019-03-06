@@ -20,8 +20,6 @@ class CargoControlSubsystem : public frc::Subsystem {
   frc::DigitalInput m_cargoIn { kCargoInSwitch };
   double m_wheelPickupSpeed;
   double m_wheelDeliverSpeed;
-
-  void ChangeWheelsSpeed(double speed);
   
   void DashboardDebugInit();
   void DashboardDebugPeriodic();
@@ -35,5 +33,6 @@ class CargoControlSubsystem : public frc::Subsystem {
   bool CargoIn() const;
   
   void MoveCargoBall(bool bFront, bool bDeliver);
+  void ChangeWheelsSpeed(double speed);
   void StopWheels();
 };

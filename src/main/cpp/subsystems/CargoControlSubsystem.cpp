@@ -8,7 +8,7 @@
 #include "subsystems/CargoControlSubsystem.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-constexpr double kWheelPickupSpeed = 0.5;
+constexpr double kWheelPickupSpeed = 1;
 constexpr double kWheelDeliverSpeed = 1;
 
 CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsystem")
@@ -39,7 +39,7 @@ void CargoControlSubsystem::DashboardDebugInit()
   frc::SmartDashboard::PutData(this);
 
   frc::SmartDashboard::PutBoolean("Cargo Move", false);
-  frc::SmartDashboard::PutNumber("Cargo Pickup Speed", 0.5);
+  frc::SmartDashboard::PutNumber("Cargo Pickup Speed", 1);
   frc::SmartDashboard::PutNumber("Cargo Deliver Speed", 1);
 }
 
@@ -48,7 +48,7 @@ void CargoControlSubsystem::DashboardDebugPeriodic()
   auto start = frc::SmartDashboard::GetBoolean("Cargo Move", false);
   if (start && !CargoIn())
   {
-    m_wheelPickupSpeed = frc::SmartDashboard::GetNumber("Cargo Pickup Speed", 0.5);
+    m_wheelPickupSpeed = frc::SmartDashboard::GetNumber("Cargo Pickup Speed", 1);
     m_wheelDeliverSpeed = frc::SmartDashboard::GetNumber("Cargo Deliver Speed", 1);
     ChangeWheelsSpeed(m_wheelPickupSpeed);
   }

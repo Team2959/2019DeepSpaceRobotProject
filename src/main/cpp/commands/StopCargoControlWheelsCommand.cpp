@@ -8,12 +8,13 @@
 #include "commands/StopCargoControlWheelsCommand.h"
 #include "Robot.h"
 
-StopCargoControlWheelsCommand::StopCargoControlWheelsCommand(double timeout)
+StopCargoControlWheelsCommand::StopCargoControlWheelsCommand(double timeout, double targetSpeed)
     : TimedCommand(timeout)
 {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_cargoControlSubsystem);
+  m_targetSpeed = targetSpeed;
 }
 
 // Called just before this Command runs the first time
@@ -26,8 +27,8 @@ void StopCargoControlWheelsCommand::Execute() {}
 
 // Called once after isFinished returns true
 void StopCargoControlWheelsCommand::End()
- {
-    Robot::m_cargoControlSubsystem.StopWheels();
+{
+  Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(m_targetSpeed);
 }
 
 // Called when another command which requires one or more of the same

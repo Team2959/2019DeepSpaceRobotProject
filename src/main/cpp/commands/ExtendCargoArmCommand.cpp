@@ -22,6 +22,7 @@ ExtendCargoArmCommand::ExtendCargoArmCommand() {
 // Called just before this Command runs the first time
 void ExtendCargoArmCommand::Initialize()
 {
+  m_wheelsStarted = false;
   Robot::m_hatchSubsystem.RetractMechanism();
 }
 

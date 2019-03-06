@@ -12,7 +12,7 @@
 #include "commands/MoveCargoBallCommand.h"
 
 DeliverShipCargoCommandGroup::DeliverShipCargoCommandGroup() {
-  AddSequential(new MoveLiftAndShuttleCommand(kLiftFloorPosition, kShuttleMiddlePosition));
+  AddSequential(new MoveLiftAndShuttleCommand(kLiftFloorPosition, 5000));
   AddSequential(new TiltCargoArmCommand());
   AddSequential(new MoveCargoBallCommand(true, true));
 }

@@ -33,7 +33,7 @@ constexpr int kLeftCargoArmCanTalonSrxMotor = 13;
 constexpr int kRightCargoArmCanTalonSrxMotor = 14;
 
 // PWM motor addresses
-constexpr int kCargoArmWheelsPwmSparkMotor = 0;
+constexpr int kCargoArmWheelsPwmSparkMotor = 3;
 constexpr int kClimbWheelsPwmSparkMotor = 1;
 constexpr int kClimbEngagePwmSparkMotor = 2;
 
