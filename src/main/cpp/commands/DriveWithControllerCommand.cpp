@@ -15,14 +15,15 @@ DriveWithControllerCommand::DriveWithControllerCommand()
     // Use Requires() here to declare subsystem dependencies
     // eg. Requires(Robot::chassis.get());
     Requires(&Robot::m_driveTrainSubsystem);
+
+    jsc.SetDeadband(0.1);
+    jsc.SetExponent(3.0);
+    jsc.SetRange(0, Robot::m_driveTrainSubsystem.GetMaxSpeed());
 }
 
 // Called just before this Command runs the first time
 void DriveWithControllerCommand::Initialize() 
 {
-    jsc.SetDeadband(0.1);
-    jsc.SetExponent(3.0);
-    jsc.SetRange(0, Robot::m_driveTrainSubsystem.GetMaxSpeed());
 }
 
 // Called repeatedly when this Command is scheduled to run
