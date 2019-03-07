@@ -37,7 +37,7 @@ OI::OI()
   
   // Driver Buttons
   m_deliver.WhenPressed(new DeliverConditionalCommand());
-  m_followLine.WhileHeld(new FollowLineCommand());
+  // m_followLine.WhileHeld(new FollowLineCommand());
 
   // Co-Pilot Buttons
   m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
@@ -61,6 +61,6 @@ OI::OI()
   // Sensor Triggers
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(1.0, -1.0, -0.12));
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
-  //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
+  //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtFrontCommand());
   //m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
 }
