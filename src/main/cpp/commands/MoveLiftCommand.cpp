@@ -46,7 +46,7 @@ void MoveLiftCommand::Initialize()
         m_targetLiftPosition = kLiftBottomHatchPosition;
       break;
     case LiftTargetLevel::CargoShip:
-      m_targetLiftPosition = kLiftFloorPosition;
+      m_targetLiftPosition = kLiftCargoShipPosition;
       break;
     case LiftTargetLevel::MiddleRocket:
       if (cargoIn)
@@ -60,7 +60,7 @@ void MoveLiftCommand::Initialize()
       else
         m_targetLiftPosition = kLiftTopHatchPosition;
       break;
-    case RaiseHatchFromWall:
+    case LiftTargetLevel::RaiseHatchFromWall:
       m_targetLiftPosition = kLiftRemoveHatchFromWallPosition;
       break;
   }
