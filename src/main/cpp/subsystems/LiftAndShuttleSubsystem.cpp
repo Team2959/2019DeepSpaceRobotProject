@@ -28,6 +28,8 @@ constexpr double kLiftKP = 0.00012;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
 constexpr double kLiftMaxAcceleration = 9000;
+constexpr double kLiftFirstStopPosition = 40;
+constexpr double kLiftCloseToStop = 2;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
@@ -266,6 +268,10 @@ void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
   {
     arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", arbFF);
     frc::SmartDashboard::PutNumber("Lift: Target", position);
+  }
+
+  if (position > kLiftFirstStopPosition && CurrentLiftPosition() < kLiftFirstStopPosition - kLiftCloseToStop) {
+    position = kLiftFirstStopPosition;
   }
 
   m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
