@@ -13,8 +13,6 @@
 #include "commands/MoveCargoBallCommand.h"
 
 ExtendCargoArmCommand::ExtendCargoArmCommand() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_cargoArmSubsystem);
   Requires(&Robot::m_hatchSubsystem);
 }
@@ -35,7 +33,8 @@ void ExtendCargoArmCommand::Execute()
     bool atFront = Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition);
 
     // try to extend arm
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition, atFront);
+    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition,
+      Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition));
 
     // start wheels, once at front
     if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false && m_wheelsStarted == false)

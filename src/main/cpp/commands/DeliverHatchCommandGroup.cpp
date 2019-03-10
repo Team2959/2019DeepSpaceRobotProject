@@ -10,27 +10,21 @@
 #include "commands/ReleaseHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
 #include <frc/commands/TimedCommand.h>
+#include "commands/MoveLiftCommand.h"
+#include "commands/KeepPinsOutCommand.h"
 
-DeliverHatchCommandGroup::DeliverHatchCommandGroup() {
-  // Add Commands here:
-  // e.g. AddSequential(new Command1());
-  //      AddSequential(new Command2());
-  // these will run in order.
-
-  // To run multiple commands at the same time,
-  // use AddParallel()
-  // e.g. AddParallel(new Command1());
-  //      AddSequential(new Command2());
-  // Command1 and Command2 will run in parallel.
-
-  // A command group will require all of the subsystems that each member
-  // would require.
-  // e.g. if Command1 requires chassis, and Command2 requires arm,
-  // a CommandGroup containing them would require both the chassis and the
-  // arm.
+DeliverHatchCommandGroup::DeliverHatchCommandGroup()
+{
   AddSequential(new AttachHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
   AddSequential(new ReleaseHatchCommand());
+  AddSequential(new frc::TimedCommand(0.25));
+  AddSequential(new AttachHatchCommand());
+  AddSequential(new frc::TimedCommand(0.25));
+  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor, true, true));
+  AddSequential(new ReleaseHatchCommand());
+  AddSequential(new frc::TimedCommand(0.25));
+  AddSequential(new KeepPinsOutCommand());
   AddSequential(new frc::TimedCommand(0.25));
   AddSequential(new RetractMechanismCommand());
 }

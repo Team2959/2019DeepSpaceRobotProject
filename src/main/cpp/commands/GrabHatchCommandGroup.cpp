@@ -9,15 +9,13 @@
 #include "commands/PrepForHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
 #include "commands/MoveLiftCommand.h"
-#include "Robot.h"
-#include "subsystems/LiftAndShuttlePositions.h"
 #include <frc/commands/TimedCommand.h>
 
-GrabHatchCommandGroup::GrabHatchCommandGroup() {
+GrabHatchCommandGroup::GrabHatchCommandGroup()
+{
   AddSequential(new PrepForHatchCommand());
-  //     keep shuttle at current position,
+  AddSequential(new frc::TimedCommand(0.25));
   //     lift up + x from current position to get hatch out of brushes on wall));
-  AddSequential(new frc::TimedCommand(0.5));
   AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::RaiseHatchFromWall, true));
   AddSequential(new RetractMechanismCommand());
 }

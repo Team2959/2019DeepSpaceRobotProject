@@ -10,8 +10,6 @@
 
 MoveCargoBallCommand::MoveCargoBallCommand(bool bFront, bool bDeliver)
 {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_cargoControlSubsystem);
 
   m_bFront = bFront;

@@ -8,12 +8,12 @@
 #include "commands/StopCargoControlWheelsCommand.h"
 #include "Robot.h"
 
-StopCargoControlWheelsCommand::StopCargoControlWheelsCommand(double timeout, double targetSpeedSwitch, double targetSpeedEnd)
+StopCargoControlWheelsCommand::StopCargoControlWheelsCommand(
+  double timeout, double targetSpeedSwitch, double targetSpeedEnd)
     : TimedCommand(timeout)
 {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_cargoControlSubsystem);
+  
   m_targetSpeedSwitch = targetSpeedSwitch;
   m_targetSpeedEnd = targetSpeedEnd;
 }

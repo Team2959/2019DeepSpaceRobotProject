@@ -12,6 +12,7 @@
 class ShuttleTargetCommand : public frc::Command {
  private:
   bool m_bFront = false;
+
  public:
   ShuttleTargetCommand(bool front = true);
   void Initialize() override;
@@ -19,7 +20,4 @@ class ShuttleTargetCommand : public frc::Command {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-
-private:
-  bool m_front;
 };
