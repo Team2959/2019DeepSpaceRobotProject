@@ -57,8 +57,7 @@ public:
     double GetMaxSpeed();
     double GetMaxAccel();
 
-    // AHRS *ahrs;
-    // double rotateToAngleRate;
+     AHRS *ahrs;
 
     void DisabledWatchDog();
     
