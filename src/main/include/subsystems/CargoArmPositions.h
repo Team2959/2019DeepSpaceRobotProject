@@ -1,7 +1,7 @@
 #pragma once
 
 // Define Cargo Arm positions
-constexpr double kArmUpPosition = 0;
-constexpr double kArmFrontPosition = 12500;
-constexpr double kArmTiltForwardPosition = 3500;
-constexpr double kArmTiltBackwardPosition = -kArmTiltForwardPosition;
+constexpr double kArmTiltBackwardPosition = 0;
+constexpr double kArmUpPosition = 3500;
+constexpr double kArmTiltForwardPosition = 7000;
+constexpr double kArmExtendPosition = 16000;
