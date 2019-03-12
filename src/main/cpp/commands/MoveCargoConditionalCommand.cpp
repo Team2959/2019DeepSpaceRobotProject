@@ -12,10 +12,11 @@
 
 MoveCargoConditionalCommand::MoveCargoConditionalCommand() : ConditionalCommand(
   new MoveCargoBallCommand(true, true),
-  new DeliverBackCommandGroup()) {
+  new DeliverBackCommandGroup())
+{
 }
 
 bool MoveCargoConditionalCommand::Condition()
 {
-  return Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition()>=0;
+  return Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition() >= 0;
 }

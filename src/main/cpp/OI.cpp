@@ -58,11 +58,12 @@ OI::OI()
 
   m_hatchFromLoadingStation.WhenPressed(new GrabHatchCommandGroup());
 
-  m_climb.WhenPressed(new ClimbCommandGroup());
+  // m_climb.WhenPressed(new ClimbCommandGroup());
+  m_climb.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::GrabHatchFromWall));
 
   // Sensor Triggers
-  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(1.0, -0.05));
+  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(1.0, -1.0, -0.2));
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
-  //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
+  //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtFrontCommand());
   //m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
 }

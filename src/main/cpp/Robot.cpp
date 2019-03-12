@@ -129,6 +129,7 @@ void Robot::DisabledPeriodic()
 void Robot::AutonomousInit() {
   m_cargoArmSubsystem.MoveCargoArmToPosition(0, false);
   m_liftAndShuttleSubsystem.MoveToTargetPosition(0, 0, false);
+  m_cargoControlSubsystem.ChangeWheelsSpeed(-0.1);
   
   // std::string autoSelected = frc::SmartDashboard::GetString(
   //     "Auto Selector", "Default");

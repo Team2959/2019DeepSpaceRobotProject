@@ -14,8 +14,8 @@
 
 // Shuttle constants
 constexpr double kShuttleCloseEnoughToPosition = 500;
-constexpr double kShuttleSafeFrontPosition = 5000;
-constexpr double kShuttleSafeRearPosition = -3700;
+constexpr double kShuttleSafeFrontPosition = 6000;
+constexpr double kShuttleSafeRearPosition = -4000;
 constexpr double kShuttleKP = 0.37;
 constexpr double kShuttleKFf = 0.2046;
 constexpr double kShuttleCruiseVelocity = 3000;
@@ -28,6 +28,8 @@ constexpr double kLiftKP = 0.00012;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
 constexpr double kLiftMaxAcceleration = 9000;
+constexpr double kLiftFirstStopPosition = 40;
+constexpr double kLiftCloseToStop = 2;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
@@ -41,10 +43,10 @@ LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSu
   MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
 
   m_leftShuttle.ConfigMotionCruiseVelocity(kShuttleCruiseVelocity, 10);
-  m_leftShuttle.ConfigMotionAcceleration(kShuttleAcceleration,10);
+  m_leftShuttle.ConfigMotionAcceleration(kShuttleAcceleration, 10);
 
   m_rightShuttle.ConfigMotionCruiseVelocity(kShuttleCruiseVelocity, 10);
-  m_rightShuttle.ConfigMotionAcceleration(kShuttleAcceleration,10);
+  m_rightShuttle.ConfigMotionAcceleration(kShuttleAcceleration, 10);
 }
 
 void LiftAndShuttleSubsystem::OnRobotInit()
@@ -83,6 +85,7 @@ void LiftAndShuttleSubsystem::ConfigureLiftPid(rev::CANPIDController & pidConfig
   pidConfig.SetIZone(0);
   pidConfig.SetFF(0);
   pidConfig.SetOutputRange(-1, 1);
+  pidConfig.SetP(kLiftKP);
 
   pidConfig.SetSmartMotionMaxVelocity(kLiftMaxVelocity);
   pidConfig.SetSmartMotionMinOutputVelocity(0);
@@ -297,7 +300,7 @@ void LiftAndShuttleSubsystem::MoveToTargetPosition(
   if (isShuttleArmSafe)//  && ! IsShuttleAtPosition(targetShuttlePosition))
   {
     // determine direction of shuttle movement
-    if (targetShuttlePosition > currentShuttlePosition)
+    if (targetShuttlePosition > currentShuttlePosition || targetShuttlePosition >= 0)
     {
       // needs to move towards front
 

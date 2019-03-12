@@ -30,7 +30,6 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   // Lift methods
   void ConfigureLiftPid(rev::CANPIDController & pidConfig);
   bool IsLiftSafeForShuttleMoveThroughMiddle();
-  double CurrentLiftPosition();
   void MoveLiftToPosition(double position);
   void LiftStopAtCurrentPosition();
  
@@ -67,6 +66,7 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   bool IsLiftAtBottom() const;
   bool IsLiftAtPosition(double targetPosition);
   void LiftBottomReset();
+  double CurrentLiftPosition();
 
   // Movement Control Interface
   bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);

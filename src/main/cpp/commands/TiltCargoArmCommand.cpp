@@ -12,8 +12,6 @@
 #include "Robot.h"
 
 TiltCargoArmCommand::TiltCargoArmCommand() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
     Requires(&Robot::m_cargoArmSubsystem);
 }
 

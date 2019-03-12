@@ -11,7 +11,7 @@
 #include "Robot.h"
 
 TiltCargoArmIfAtLiftPositionConditionalCommand::TiltCargoArmIfAtLiftPositionConditionalCommand()
-   : ConditionalCommand(new TiltCargoArmCommand())
+ : ConditionalCommand(new TiltCargoArmCommand())
 { }
 
 bool TiltCargoArmIfAtLiftPositionConditionalCommand::Condition()

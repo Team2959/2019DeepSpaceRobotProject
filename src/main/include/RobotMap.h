@@ -53,7 +53,6 @@ constexpr int kWhiteTapeSwitch1 = 4;
 constexpr int kWhiteTapeSwitch2 = 7;
 constexpr int kWhiteTapeSwitch3 = 8;
 
-
 // Operator input USB ports
 constexpr int kLeftDriverUSBController = 0;
 constexpr int kRighttDriverUSBController = 1;

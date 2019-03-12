@@ -9,11 +9,14 @@
 #include "subsystems/LiftAndShuttlePositions.h"
 #include "Robot.h"
 
-MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget, bool useCurrentShuttlePosition)
+MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget,
+       bool useCurrentShuttlePosition,
+       bool useCurrentLiftPosition)
    : MoveLiftAndShuttleCommand(0, 0)
 {
   m_liftTarget = liftTarget;
   m_bUseCurrentShuttlePosition = useCurrentShuttlePosition;
+  m_bUseCurrentLiftPosition = useCurrentLiftPosition;
 }
 
 void MoveLiftCommand::Initialize()
@@ -33,6 +36,14 @@ void MoveLiftCommand::Initialize()
     m_targetShuttlePosition = kShuttleRearPosition;
   }
 
+  if (m_bUseCurrentLiftPosition)
+  {
+    // drop set number of rotations from current position when delivering hatch
+    m_targetLiftPosition = Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition();
+    m_targetLiftPosition -= 3;
+    return;
+  }
+
   auto cargoIn = Robot::m_cargoControlSubsystem.CargoIn();
   switch (m_liftTarget)
   {
@@ -46,7 +57,7 @@ void MoveLiftCommand::Initialize()
         m_targetLiftPosition = kLiftBottomHatchPosition;
       break;
     case LiftTargetLevel::CargoShip:
-      m_targetLiftPosition = kLiftFloorPosition;
+      m_targetLiftPosition = kLiftCargoShipPosition;
       break;
     case LiftTargetLevel::MiddleRocket:
       if (cargoIn)
@@ -60,8 +71,11 @@ void MoveLiftCommand::Initialize()
       else
         m_targetLiftPosition = kLiftTopHatchPosition;
       break;
-    case RaiseHatchFromWall:
+    case LiftTargetLevel::RaiseHatchFromWall:
       m_targetLiftPosition = kLiftRemoveHatchFromWallPosition;
+      break;
+    case LiftTargetLevel::GrabHatchFromWall:
+      m_targetLiftPosition = kLiftGrabHatchFromWallPosition;
       break;
   }
 }

@@ -30,10 +30,8 @@ void HatchSubsystem::OnRobotPeriodic(bool updateDebugInfo)
   }
 }
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
 void HatchSubsystem::PrepForHatch(){
-  // m_attach.Set(false);
+  m_attach.Set(false);
   m_release.Set(false);
   m_safety.Set(true);
 }
@@ -41,17 +39,29 @@ void HatchSubsystem::PrepForHatch(){
 void HatchSubsystem::AttachHatch(){
   m_attach.Set(true);
   m_release.Set(false);
-  m_safety.Set(false);
+  m_safety.Set(true);
 }
 
 void HatchSubsystem::ReleaseHatch(){
   m_attach.Set(true);
   m_release.Set(true);
-  m_safety.Set(false);
+  m_safety.Set(true);
 }
 
 void HatchSubsystem::RetractMechanism(){
   m_attach.Set(false);
   m_release.Set(false);
+  m_safety.Set(false);
+}
+
+void HatchSubsystem::SafetyExtend(){
+  m_attach.Set(false);
+  m_release.Set(false);
+  m_safety.Set(true);
+}
+
+void HatchSubsystem::KeepPinsOut(){
+  m_attach.Set(false);
+  m_release.Set(true);
   m_safety.Set(false);
 }

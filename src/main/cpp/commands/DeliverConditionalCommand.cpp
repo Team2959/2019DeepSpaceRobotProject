@@ -13,7 +13,8 @@
 DeliverConditionalCommand::DeliverConditionalCommand() : ConditionalCommand(
   new DeliverCargoCommandGroup(),
   new DeliverHatchCommandGroup())
-  { }
+{
+}
 
 bool DeliverConditionalCommand::Condition()
 {

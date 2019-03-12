@@ -10,8 +10,6 @@
 #include <frc/commands/Command.h>
 #include "subsystems/LiftAndShuttleSubsystem.h"
 
-
-
 class CargoShuttleStopAtBackCommand : public frc::Command {
  public:
   CargoShuttleStopAtBackCommand();

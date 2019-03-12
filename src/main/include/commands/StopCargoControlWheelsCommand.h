@@ -11,9 +11,13 @@
 
 class StopCargoControlWheelsCommand : public frc::TimedCommand {
  private:
-  double m_targetSpeed;
+  double m_targetSpeedEnd;
+  double m_targetSpeedSwitch;
+
  public:
-  StopCargoControlWheelsCommand(double timeout = 0.1, double targetSpeed = 0);
+  StopCargoControlWheelsCommand(double timeout = 0.1,
+    double targetSpeedSwitch = 0,
+    double targetSpeedEnd = 0);
   
   void Initialize() override;
   void Execute() override;

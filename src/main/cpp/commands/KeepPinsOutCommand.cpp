@@ -5,42 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/CargoArmUpCommand.h"
+#include "commands/KeepPinsOutCommand.h"
 #include "Robot.h"
-#include "commands/StopCargoControlWheelsCommand.h"
-#include "subsystems/CargoArmPositions.h"
 
-CargoArmUpCommand::CargoArmUpCommand() {
-  Requires(&Robot::m_cargoArmSubsystem);
-  Requires(&Robot::m_cargoControlSubsystem);
+KeepPinsOutCommand::KeepPinsOutCommand() {
+  Requires(&Robot::m_hatchSubsystem);
 }
 
 // Called just before this Command runs the first time
-void CargoArmUpCommand::Initialize()
-{
-  Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(-0.3);
-  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmUpPosition, true);
+void KeepPinsOutCommand::Initialize() {
+  Robot::m_hatchSubsystem.KeepPinsOut();
 }
-
 // Called repeatedly when this Command is scheduled to run
-void CargoArmUpCommand::Execute() {}
+void KeepPinsOutCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool CargoArmUpCommand::IsFinished()
-{
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmUpPosition);
-}
+bool KeepPinsOutCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void CargoArmUpCommand::End()
-{
-  Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(-0.2);
-}
+void KeepPinsOutCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void CargoArmUpCommand::Interrupted()
-{
-  Robot::m_cargoArmSubsystem.StopAtCurrentPosition();
-  End();
-}
+void KeepPinsOutCommand::Interrupted() {}

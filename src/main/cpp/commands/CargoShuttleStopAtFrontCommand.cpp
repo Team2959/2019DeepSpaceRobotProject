@@ -10,7 +10,6 @@
 #include "Robot.h"
 
 CargoShuttleStopAtFrontCommand::CargoShuttleStopAtFrontCommand() {
-  // Use Requires() here to declare subsystem dependencies
  Requires(&Robot::m_liftAndShuttleSubsystem);
 }
 
