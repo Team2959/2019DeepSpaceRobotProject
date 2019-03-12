@@ -103,7 +103,7 @@ void Robot::DisabledPeriodic()
     {
       if (frc::SmartDashboard::GetBoolean("ZeroMotors", false))
       {
-        m_liftAndShuttleSubsystem.StopAndZero();
+        m_liftAndShuttleSubsystem.LiftBottomReset();
         m_cargoArmSubsystem.StopAndZero();
       }
       m_debugDrive = frc::SmartDashboard::GetBoolean("Debug Drive", false);
@@ -127,9 +127,9 @@ void Robot::DisabledPeriodic()
  * the if-else structure below with additional strings & commands.
  */
 void Robot::AutonomousInit() {
-  m_cargoArmSubsystem.MoveCargoArmToPosition(0, false);
-  m_liftAndShuttleSubsystem.MoveToTargetPosition(0, 0, false);
-  m_cargoControlSubsystem.ChangeWheelsSpeed(-0.1);
+  m_cargoArmSubsystem.MoveCargoArmToPosition(0);
+  m_liftAndShuttleSubsystem.MoveLiftToPosition(0);
+  m_cargoControlSubsystem.ChangeWheelsSpeed(-0.2);
   
   // std::string autoSelected = frc::SmartDashboard::GetString(
   //     "Auto Selector", "Default");

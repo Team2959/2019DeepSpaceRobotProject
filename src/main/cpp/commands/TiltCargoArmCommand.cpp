@@ -21,32 +21,14 @@ void TiltCargoArmCommand::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void TiltCargoArmCommand::Execute()
 {
-  if (Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition) == true)
-  {
-    // try to tilt arm forward
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmTiltForwardPosition, true);
-  }
-  else if (Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleRearPosition) == true)
-  {
-    // try to tilt arm backwards
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmTiltBackwardPosition, true);
-  }
+  // try to tilt arm forward
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmTiltForwardPosition);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool TiltCargoArmCommand::IsFinished()
 {
-  if (Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition) == true &&
-      Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmTiltForwardPosition))
-  {
-    return true;
-  }
-  else if (Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleRearPosition) == true &&
-      Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmTiltBackwardPosition))
-  {
-    return true;
-  }
-  return false;
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmTiltForwardPosition);
 }
 
 // Called once after isFinished returns true

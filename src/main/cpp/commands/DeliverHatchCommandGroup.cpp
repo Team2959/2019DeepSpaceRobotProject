@@ -21,7 +21,7 @@ DeliverHatchCommandGroup::DeliverHatchCommandGroup()
   AddSequential(new frc::TimedCommand(0.25));
   AddSequential(new AttachHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
-  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor, true, true));
+  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor, true));
   AddSequential(new ReleaseHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
   AddSequential(new KeepPinsOutCommand());

@@ -10,32 +10,15 @@
 #include "Robot.h"
 
 MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget,
-       bool useCurrentShuttlePosition,
        bool useCurrentLiftPosition)
-   : MoveLiftAndShuttleCommand(0, 0)
+   : MoveLiftAndShuttleCommand(0)
 {
   m_liftTarget = liftTarget;
-  m_bUseCurrentShuttlePosition = useCurrentShuttlePosition;
   m_bUseCurrentLiftPosition = useCurrentLiftPosition;
 }
 
 void MoveLiftCommand::Initialize()
 {
-  if (m_bUseCurrentShuttlePosition)
-  {
-    m_targetShuttlePosition = Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition();
-  }
-  // if shuttle target is front -> set shuttle target postion to kShuttleFrontPosition
-  else if (Robot::m_oi.m_shuttleTargetFront == true)
-  {
-    m_targetShuttlePosition = kShuttleFrontPosition;
-  }
-  // else shuttle is rear -> set shuttle target postion to kShuttleRearPosition
-  else
-  {
-    m_targetShuttlePosition = kShuttleRearPosition;
-  }
-
   if (m_bUseCurrentLiftPosition)
   {
     // drop set number of rotations from current position when delivering hatch

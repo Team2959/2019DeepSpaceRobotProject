@@ -10,15 +10,12 @@
 #include <frc/WPILib.h>
 #include "subsystems/LiftAndShuttlePositions.h"
 #include "commands/DeliverConditionalCommand.h"
-#include "commands/ShuttleTargetCommand.h"
 #include "commands/MoveLiftCommand.h"
 #include "commands/ExtendCargoArmCommand.h"
 #include "commands/CargoArmUpCommand.h"
 #include "commands/EjectCargoCommandGroup.h"
 #include "commands/GrabHatchCommandGroup.h"
 #include "commands/LiftLimitSwitchBottomCommand.h"
-#include "commands/CargoShuttleStopAtBackCommand.h"
-#include "commands/CargoShuttleStopAtFrontCommand.h"
 #include "commands/ClimbCommandGroup.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 
@@ -31,17 +28,14 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 OI::OI()
-{
-  m_shuttleTargetFront = true;
-  frc::SmartDashboard::PutBoolean("ShuttleForward", m_shuttleTargetFront);
-  
+{ 
   // Driver Buttons
   m_deliver.WhenPressed(new DeliverConditionalCommand());
   // m_followLine.WhileHeld(new FollowLineCommand());
 
   // Co-Pilot Buttons
-  m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
-  m_shuttleRear.WhenPressed(new ShuttleTargetCommand(false));
+  // m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
+  // m_shuttleRear.WhenPressed(new ShuttleTargetCommand(false));
 
   m_liftFloor.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
   m_liftBottom.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Bottom));
@@ -62,6 +56,4 @@ OI::OI()
   // Sensor Triggers
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(1.0, -1.0, -0.2));
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
-  //m_shuttleFrontSwitch.WhenActive(new CargoShuttleStopAtFrontCommand());
-  //m_shuttleBackSwitch.WhenActive(new CargoShuttleStopAtBackCommand());
 }

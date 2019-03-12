@@ -16,6 +16,6 @@ GrabHatchCommandGroup::GrabHatchCommandGroup()
   AddSequential(new PrepForHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
   //     lift up + x from current position to get hatch out of brushes on wall));
-  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::RaiseHatchFromWall, true));
+  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::RaiseHatchFromWall));
   AddSequential(new RetractMechanismCommand());
 }

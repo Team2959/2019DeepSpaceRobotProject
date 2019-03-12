@@ -12,8 +12,6 @@
 #include "RobotMap.h"
 #include "triggers/CargoInTrigger.h"
 #include "triggers/LiftBottomSwitch.h"
-#include "triggers/ShuttleFrontLimitTrigger.h"
-#include "triggers/ShuttleRearLimitTrigger.h"
 
 class OI
 {
@@ -25,8 +23,6 @@ public:
   frc::Joystick m_rightDriverJoystick { kRighttDriverUSBController };
   frc::Joystick m_coPilotJoystick { kCoPilotUSBController };
 
-  bool m_shuttleTargetFront;
-
 private:
   // Driver buttons
   //Right
@@ -34,8 +30,8 @@ private:
   frc::JoystickButton m_followLine { &m_rightDriverJoystick, 2};
 
   // Co Pilot Buttons
-  frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 1};
-  frc::JoystickButton m_shuttleRear { &m_coPilotJoystick, 2};
+  // frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 1};
+  // frc::JoystickButton m_shuttleRear { &m_coPilotJoystick, 2};
 
   frc::JoystickButton m_liftFloor { &m_coPilotJoystick, 3};
   frc::JoystickButton m_liftBottom { &m_coPilotJoystick, 4};
@@ -55,6 +51,4 @@ private:
   // triggers from robot digital inputs
   CargoInTrigger m_cargoIn;
   LiftBottomSwitch m_liftLimitSwitch;
-  ShuttleFrontLimitTrigger m_shuttleFrontSwitch;
-  ShuttleRearLimitTrigger m_shuttleBackSwitch;
 };

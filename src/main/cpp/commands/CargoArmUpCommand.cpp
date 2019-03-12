@@ -19,7 +19,7 @@ CargoArmUpCommand::CargoArmUpCommand() {
 void CargoArmUpCommand::Initialize()
 {
   Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(-0.3);
-  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmUpPosition, true);
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmUpPosition);
 }
 
 // Called repeatedly when this Command is scheduled to run
