@@ -64,7 +64,7 @@ void CargoArmSubsystem::DashboardDebugPeriodic()
   if (start)
   {
     auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", 0);
-    targetPosition = std::min(targetPosition, kArmFrontPosition + kCloseEnoughToPosition);
+    targetPosition = std::min(targetPosition, kArmExtendPosition + kCloseEnoughToPosition);
     targetPosition = std::max(targetPosition, kArmTiltBackwardPosition - kCloseEnoughToPosition);
     MoveCargoArmToPosition(targetPosition);
   }
