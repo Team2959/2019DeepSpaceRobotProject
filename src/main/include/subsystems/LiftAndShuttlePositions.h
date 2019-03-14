@@ -12,3 +12,4 @@ constexpr double kLiftTopCargoPosition = 70;         // deliver cargo to top roc
 constexpr double kLiftTopHatchPosition = 79;         // deliver hatch to top rocket level
 constexpr double kLiftGrabHatchFromWallPosition = 10;    // position for lifting hatch out of brushes from wall
 constexpr double kLiftRemoveHatchFromWallPosition = kLiftGrabHatchFromWallPosition + 10;    // position for lifting hatch out of brushes from wall
+constexpr double kLiftCargoShipHatchPosition = kLiftBottomHatchPosition + 3; // deliver hatch to cargo ship
