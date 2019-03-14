@@ -27,6 +27,6 @@ class HatchSubsystem : public frc::Subsystem {
   void AttachHatch();
   void ReleaseHatch();
   void RetractMechanism();
-  void SafetyExtend();
   void KeepPinsOut();
+  void AttachHatchToCargoShip();
 };

@@ -5,18 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DeliverConditionalCommand.h"
-#include "commands/DeliverCargoCommandGroup.h"
-#include "commands/DeliverHatchToRocketCommandGroup.h"
-#include "Robot.h"
+#pragma once
 
-DeliverConditionalCommand::DeliverConditionalCommand() : ConditionalCommand(
-  new DeliverCargoCommandGroup(),
-  new DeliverHatchToRocketCommandGroup())
-{
-}
+#include <frc/commands/Command.h>
 
-bool DeliverConditionalCommand::Condition()
-{
-  return Robot::m_cargoControlSubsystem.CargoIn();
-}
+class AttachHatchToCargoShipCommand : public frc::Command {
+ public:
+  AttachHatchToCargoShipCommand();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+};
