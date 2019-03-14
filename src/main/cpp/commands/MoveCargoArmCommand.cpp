@@ -19,6 +19,10 @@ MoveCargoArmCommand::MoveCargoArmCommand(double targetCargoArmPosition) {
 // Called just before this Command runs the first time
 void MoveCargoArmCommand::Initialize()
 {
+  if(Robot::m_cargoControlSubsystem.CargoIn() == true)
+  {
+      Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(-0.3);
+  }
   Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(m_targetCargoArmPosition);
 }
 
@@ -34,7 +38,10 @@ bool MoveCargoArmCommand::IsFinished()
 // Called once after isFinished returns true
 void MoveCargoArmCommand::End()
 {
-  Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(-0.2);
+  if(Robot::m_cargoControlSubsystem.CargoIn() == true)
+  {
+      Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(-0.2);
+  }
 }
 
 // Called when another command which requires one or more of the same
