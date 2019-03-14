@@ -19,7 +19,7 @@
 const double kDriveTrainWheelBase   = 1.5;   // ft
 const double kDriveTrainGearRatio   = 6.11;  // unitless
 const double kDriveTrainWheelSize   = 1/3;   // ft (wheel diameter)
-const double kDriveTrainTypicalTilt = 1.0609 // degrees
+const double kDriveTrainTypicalTilt = 1.0609; // degrees
 
 class DriveTrainSubsystem : public frc::Subsystem
 {

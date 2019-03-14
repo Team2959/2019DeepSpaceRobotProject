@@ -18,6 +18,8 @@
 #include "commands/LiftLimitSwitchBottomCommand.h"
 #include "commands/ClimbCommandGroup.h"
 #include "commands/StopCargoControlWheelsCommand.h"
+#include "commands/TiltCargoArmBackCommand.h"
+
 
 #include "commands/AttachHatchCommand.h"
 #include "commands/ReleaseHatchCommand.h"
@@ -44,7 +46,8 @@ OI::OI()
   m_liftTopRocket.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::TopRocket));
 
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
-  m_cargoArmUp.WhenPressed(new CargoArmUpCommand());
+  m_cargoArmBack.WhenPressed(new TiltCargoArmBackCommand());
+  //m_cargoArmUp.WhenPressed(new CargoArmUpCommand());
 
   m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
 
