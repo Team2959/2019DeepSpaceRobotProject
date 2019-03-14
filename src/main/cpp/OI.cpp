@@ -9,16 +9,17 @@
 
 #include <frc/WPILib.h>
 #include "subsystems/LiftAndShuttlePositions.h"
+#include "subsystems/CargoArmPositions.h"
 #include "commands/DeliverConditionalCommand.h"
 #include "commands/MoveLiftCommand.h"
 #include "commands/ExtendCargoArmCommand.h"
-#include "commands/CargoArmUpCommand.h"
+#include "commands/MoveCargoArmCommand.h"
 #include "commands/EjectCargoCommandGroup.h"
 #include "commands/GrabHatchCommandGroup.h"
 #include "commands/LiftLimitSwitchBottomCommand.h"
 #include "commands/ClimbCommandGroup.h"
 #include "commands/StopCargoControlWheelsCommand.h"
-#include "commands/TiltCargoArmBackCommand.h"
+
 
 
 #include "commands/AttachHatchCommand.h"
@@ -46,8 +47,7 @@ OI::OI()
   m_liftTopRocket.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::TopRocket));
 
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
-  m_cargoArmBack.WhenPressed(new TiltCargoArmBackCommand());
-  //m_cargoArmUp.WhenPressed(new CargoArmUpCommand());
+  m_MoveCargoArm.WhenPressed(new MoveCargoArmCommand(kArmTiltBackwardPosition));
 
   m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
 

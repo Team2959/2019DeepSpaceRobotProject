@@ -9,9 +9,13 @@
 
 #include <frc/commands/Command.h>
 
-class CargoArmUpCommand : public frc::Command {
+class MoveCargoArmCommand : public frc::Command {
+
+  protected:
+  double m_targetCargoArmPosition;
+
  public:
-  CargoArmUpCommand();
+  MoveCargoArmCommand( double targetCargoArmPosition);
   
   void Initialize() override;
   void Execute() override;

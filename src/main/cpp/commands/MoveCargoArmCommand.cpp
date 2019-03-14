@@ -5,41 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/CargoArmUpCommand.h"
+#include "commands/MoveCargoArmCommand.h"
 #include "Robot.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 #include "subsystems/CargoArmPositions.h"
 
-CargoArmUpCommand::CargoArmUpCommand() {
+MoveCargoArmCommand::MoveCargoArmCommand(double targetCargoArmPosition) {
   Requires(&Robot::m_cargoArmSubsystem);
   Requires(&Robot::m_cargoControlSubsystem);
+  m_targetCargoArmPosition = targetCargoArmPosition;
 }
 
 // Called just before this Command runs the first time
-void CargoArmUpCommand::Initialize()
+void MoveCargoArmCommand::Initialize()
 {
-  Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(-0.3);
-  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmUpPosition);
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(m_targetCargoArmPosition);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void CargoArmUpCommand::Execute() {}
+void MoveCargoArmCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool CargoArmUpCommand::IsFinished()
+bool MoveCargoArmCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmUpPosition);
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition(m_targetCargoArmPosition);
 }
 
 // Called once after isFinished returns true
-void CargoArmUpCommand::End()
+void MoveCargoArmCommand::End()
 {
   Robot::m_cargoControlSubsystem.ChangeWheelsSpeed(-0.2);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void CargoArmUpCommand::Interrupted()
+void MoveCargoArmCommand::Interrupted()
 {
   Robot::m_cargoArmSubsystem.StopAtCurrentPosition();
   End();
