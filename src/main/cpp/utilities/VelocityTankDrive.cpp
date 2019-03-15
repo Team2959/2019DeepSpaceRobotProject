@@ -31,8 +31,8 @@ void VelocityTankDrive::TankDrive(double left, double right)
     // Set the left and right side speeds
     rev::CANError er = m_rightPID.SetReference(right, rev::ControlType::kVelocity);
     rev::CANError er2 = m_right2PID.SetReference(right, rev::ControlType::kVelocity);
-    rev::CANError el = m_leftPID.SetReference(left, rev::ControlType::kVelocity);
-    rev::CANError el2 = m_left2PID.SetReference(left, rev::ControlType::kVelocity);
+    rev::CANError el = m_leftPID.SetReference(-left, rev::ControlType::kVelocity);
+    rev::CANError el2 = m_left2PID.SetReference(-left, rev::ControlType::kVelocity);
 
     m_rightSetpoint = right;
     m_leftSetpoint  = left;
