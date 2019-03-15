@@ -5,18 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DeliverConditionalCommand.h"
-#include "commands/DeliverCargoCommandGroup.h"
 #include "commands/DeliverHatchConditionalCommand.h"
+#include "commands/DeliverHatchToCargoShipCommandGroup.h"
+#include "commands/DeliverHatchToRocketCommandGroup.h"
 #include "Robot.h"
+#include "subsystems/LiftAndShuttlePositions.h"
 
-DeliverConditionalCommand::DeliverConditionalCommand() : ConditionalCommand(
-  new DeliverCargoCommandGroup(),
-  new DeliverHatchConditionalCommand())
+DeliverHatchConditionalCommand::DeliverHatchConditionalCommand() : ConditionalCommand(
+  new DeliverHatchToCargoShipCommandGroup(),
+  new DeliverHatchToRocketCommandGroup())
 {
 }
 
-bool DeliverConditionalCommand::Condition()
+bool DeliverHatchConditionalCommand::Condition()
 {
-  return Robot::m_cargoControlSubsystem.CargoIn();
+  return Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(kLiftCargoShipPosition);
 }
