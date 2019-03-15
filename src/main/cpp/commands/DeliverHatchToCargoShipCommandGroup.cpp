@@ -5,26 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DeliverHatchCommandGroup.h"
-#include "commands/AttachHatchCommand.h"
-#include "commands/ReleaseHatchCommand.h"
+#include "commands/DeliverHatchToCargoShipCommandGroup.h"
+#include "commands/PrepForHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
 #include <frc/commands/TimedCommand.h>
-#include "commands/MoveLiftCommand.h"
+#include "commands/MoveLiftDownForHatchCommand.h"
 #include "commands/KeepPinsOutCommand.h"
+#include "commands/AttachHatchToCargoShipCommand.h"
 
-DeliverHatchCommandGroup::DeliverHatchCommandGroup()
+DeliverHatchToCargoShipCommandGroup::DeliverHatchToCargoShipCommandGroup()
 {
-  AddSequential(new AttachHatchCommand());
+  // Extend Safety
+  AddSequential(new PrepForHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
-  AddSequential(new ReleaseHatchCommand());
+  // Extend Pins
+  AddSequential(new AttachHatchToCargoShipCommand());
   AddSequential(new frc::TimedCommand(0.25));
-  AddSequential(new AttachHatchCommand());
+  // Retract Pins
+  AddSequential(new PrepForHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
-  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor, true, true));
-  AddSequential(new ReleaseHatchCommand());
+  // drop relative to current height
+  AddSequential(new MoveLiftDownForHatchCommand());
+  // Extend Pins
+  AddSequential(new AttachHatchToCargoShipCommand());
   AddSequential(new frc::TimedCommand(0.25));
+  // Retract Safety
   AddSequential(new KeepPinsOutCommand());
   AddSequential(new frc::TimedCommand(0.25));
+  // Retract Everything
   AddSequential(new RetractMechanismCommand());
 }

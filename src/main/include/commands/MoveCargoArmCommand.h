@@ -8,11 +8,15 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include "subsystems/LiftAndShuttleSubsystem.h"
 
-class CargoShuttleStopAtBackCommand : public frc::Command {
+class MoveCargoArmCommand : public frc::Command {
+
+  protected:
+  double m_targetCargoArmPosition;
+
  public:
-  CargoShuttleStopAtBackCommand();
+  MoveCargoArmCommand( double targetCargoArmPosition);
+  
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

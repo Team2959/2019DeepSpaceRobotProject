@@ -5,12 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "triggers/ShuttleRearLimitTrigger.h"
-#include "Robot.h"
 
-ShuttleRearLimitTrigger::ShuttleRearLimitTrigger() {}
+#pragma once
 
-bool ShuttleRearLimitTrigger::Get()
- { 
-    return Robot::m_liftAndShuttleSubsystem.IsAtShuttleRearLimit();
- }
+#include <frc/commands/ConditionalCommand.h>
+
+class DeliverHatchConditionalCommand : public frc::ConditionalCommand {
+ public:
+  DeliverHatchConditionalCommand();
+
+  protected:
+    virtual bool Condition() override;
+};
+

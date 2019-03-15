@@ -12,7 +12,6 @@
 #include <algorithm>
 
 constexpr double kCloseEnoughToPosition = 500;
-constexpr double kArmIsClearOfShuttle = 8500;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 {
@@ -35,7 +34,7 @@ CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 
 void CargoArmSubsystem::OnRobotInit()
 {
-  MoveCargoArmToPosition(0, false);
+  MoveCargoArmToPosition(0);
 
   DashboardDebugInit();
 }
@@ -64,10 +63,10 @@ void CargoArmSubsystem::DashboardDebugPeriodic()
   auto start = frc::SmartDashboard::GetBoolean("Arm: Start", false);
   if (start)
   {
-    auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", m_lastTargetPosition);
-    targetPosition = std::min(targetPosition, kArmFrontPosition + kCloseEnoughToPosition);
+    auto targetPosition = frc::SmartDashboard::GetNumber("Arm: Go To Position", 0);
+    targetPosition = std::min(targetPosition, kArmExtendPosition + kCloseEnoughToPosition);
     targetPosition = std::max(targetPosition, kArmTiltBackwardPosition - kCloseEnoughToPosition);
-    MoveCargoArmToPosition(targetPosition, true);
+    MoveCargoArmToPosition(targetPosition);
   }
 }
 
@@ -82,41 +81,22 @@ bool CargoArmSubsystem::IsArmAtPosition(double targetPosition)
   return fabs(CurrentArmPosition() - targetPosition) < kCloseEnoughToPosition;
 }
 
-bool CargoArmSubsystem::IsArmAboveCargoShuttle()
+void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition)
 {
-  return fabs(CurrentArmPosition()) < kArmIsClearOfShuttle;
-}
+  m_left.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, targetPosition);
 
-void CargoArmSubsystem::MoveCargoArmToPosition(double targetPosition, bool isShuttleClearForFullExtension)
-{
-  auto position = targetPosition;
-  if (fabs(targetPosition) > kArmIsClearOfShuttle && !isShuttleClearForFullExtension)
-  {
-    position = kArmIsClearOfShuttle;
-    if (targetPosition < 0)
-    {
-      position *= -1;
-    }
-  }
-
-  // if (fabs(position - m_lastTargetPosition) > kCloseEnoughToPosition)
-  {
-    m_lastTargetPosition = position;
-    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
-
-    if (m_updateDebugInfo)
-      frc::SmartDashboard::PutNumber("Arm: Target", position);
-  }
+  if (m_updateDebugInfo)
+    frc::SmartDashboard::PutNumber("Arm: Target", targetPosition);
 }
 
 void CargoArmSubsystem::StopAtCurrentPosition()
 {
-  MoveCargoArmToPosition(CurrentArmPosition(), true);
+  MoveCargoArmToPosition(CurrentArmPosition());
 }
 
 void CargoArmSubsystem::StopAndZero()
 {
   m_left.StopMotor();
   m_left.SetSelectedSensorPosition(0,0,0);
-  MoveCargoArmToPosition(0, false);
+  MoveCargoArmToPosition(0);
 }

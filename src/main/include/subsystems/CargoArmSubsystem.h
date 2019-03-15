@@ -19,8 +19,6 @@ class CargoArmSubsystem : public frc::Subsystem {
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightCargoArmCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfig;
 
-  double m_lastTargetPosition;
-
   double CurrentArmPosition();
 
   void DashboardDebugInit();
@@ -34,9 +32,8 @@ class CargoArmSubsystem : public frc::Subsystem {
   void OnRobotPeriodic(bool updateDebugInfo);
 
   bool IsArmAtPosition(double targetPosition);
-  bool IsArmAboveCargoShuttle();
 
-  void MoveCargoArmToPosition(double targetPosition, bool isShuttleClearForFullExtension);
+  void MoveCargoArmToPosition(double targetPosition);
 
   void StopAtCurrentPosition();
 

@@ -9,7 +9,6 @@
 
 #include <frc/commands/Subsystem.h>
 #include <rev/CANSparkMax.h>
-#include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 #include "RobotMap.h"
 #include <frc/DigitalInput.h>
 
@@ -29,22 +28,7 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
 
   // Lift methods
   void ConfigureLiftPid(rev::CANPIDController & pidConfig);
-  bool IsLiftSafeForShuttleMoveThroughMiddle();
-  void MoveLiftToPosition(double position);
-  void LiftStopAtCurrentPosition();
- 
-  // Shuttle control
-  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_leftShuttle { kLeftCargoShuttleCanTalonSrxMotor };
-  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_rightShuttle { kRightCargoShuttleCanTalonSrxMotor };
-  ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfigShuttle;
-  frc::DigitalInput m_shuttleBackSwitch{kCargoShuttleBackSwitchTrigger};
-  frc::DigitalInput m_shuttleFrontSwitch{kCargoShuttleFrontSwitchTrigger};
-
-  // Shuttle methods
-  void MoveShuttleToPosition(double position);
-  void ShuttleStopAtCurrentPosition();
-  void StopShuttleAndSetPosition(double position);
-
+  
   // Smart Dashboard debug/info
   void DashboardDebugInit();
   void DashboardDebugPeriodic();
@@ -56,21 +40,12 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void OnRobotInit();
   void OnRobotPeriodic(bool updateDebugInfo);
 
-  bool IsAtShuttleRearLimit() const;
-  bool IsAtShuttleFrontLimit() const;
-  bool IsShuttleAtPosition(double targetPosition);
-  double CurrentShuttlePosition();
-  void CargoShuttleFrontStop();
-  void CargoShuttleBackStop();
-
   bool IsLiftAtBottom() const;
   bool IsLiftAtPosition(double targetPosition);
-  void LiftBottomReset();
   double CurrentLiftPosition();
 
   // Movement Control Interface
-  bool IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition);
-  void MoveToTargetPosition(double targetShuttlePosition, double targetLiftPosition, bool isShuttleArmSafe);
+  void MoveLiftToPosition(double position);
   void StopAtCurrentPosition();
-  void StopAndZero();
+  void LiftBottomReset();
 };

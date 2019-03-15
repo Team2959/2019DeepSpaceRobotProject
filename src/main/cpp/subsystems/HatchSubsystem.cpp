@@ -54,14 +54,14 @@ void HatchSubsystem::RetractMechanism(){
   m_safety.Set(false);
 }
 
-void HatchSubsystem::SafetyExtend(){
-  m_attach.Set(false);
-  m_release.Set(false);
-  m_safety.Set(true);
-}
-
 void HatchSubsystem::KeepPinsOut(){
   m_attach.Set(false);
   m_release.Set(true);
   m_safety.Set(false);
+}
+
+void HatchSubsystem::AttachHatchToCargoShip(){
+  m_attach.Set(false);
+  m_release.Set(true);
+  m_safety.Set(true);
 }

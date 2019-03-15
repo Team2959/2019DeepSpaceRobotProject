@@ -1,9 +1,6 @@
 #pragma once
 
 // Define Lift and Shuttle Positions to be used outside subsystem
-constexpr double kShuttleMiddlePosition = 0;
-constexpr double kShuttleFrontPosition = 11500;
-constexpr double kShuttleRearPosition = -5250; // -3700 is for cable track tripping switch, -5200 is for near hard stop
 
 constexpr double kLiftFloorPosition = 0;    // cargo pickup from floor
 constexpr double kLiftBottomCargoPosition = 0;   // deliver cargo to bottom level
@@ -15,3 +12,4 @@ constexpr double kLiftTopCargoPosition = 70;         // deliver cargo to top roc
 constexpr double kLiftTopHatchPosition = 79;         // deliver hatch to top rocket level
 constexpr double kLiftGrabHatchFromWallPosition = 10;    // position for lifting hatch out of brushes from wall
 constexpr double kLiftRemoveHatchFromWallPosition = kLiftGrabHatchFromWallPosition + 10;    // position for lifting hatch out of brushes from wall
+constexpr double kLiftCargoShipHatchPosition = kLiftBottomHatchPosition + 3; // deliver hatch to cargo ship

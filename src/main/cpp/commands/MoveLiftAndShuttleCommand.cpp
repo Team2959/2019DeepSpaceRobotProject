@@ -9,14 +9,11 @@
 #include "Robot.h"
 #include "subsystems/LiftAndShuttlePositions.h"
 
-MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition)
+MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition)
 {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_liftAndShuttleSubsystem);
 
   m_targetLiftPosition = targetLiftPosition;
-  m_targetShuttlePosition = targetShuttlePosition;
 }
 
 // Called just before this Command runs the first time
@@ -25,17 +22,14 @@ void MoveLiftAndShuttleCommand::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void MoveLiftAndShuttleCommand::Execute()
 {
-  // tell the LiftAndShuttleSubsystem the target Shuttle and Lift Positions.
-  Robot::m_liftAndShuttleSubsystem.MoveToTargetPosition(
-    m_targetShuttlePosition, m_targetLiftPosition,
-    Robot::m_cargoArmSubsystem.IsArmAboveCargoShuttle());
+  // tell the LiftAndShuttleSubsystem the target Lift Positions.
+  Robot::m_liftAndShuttleSubsystem.MoveLiftToPosition(m_targetLiftPosition);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool MoveLiftAndShuttleCommand::IsFinished()
 {
-   return Robot::m_liftAndShuttleSubsystem.IsAtTargetPosition(
-     m_targetShuttlePosition, m_targetLiftPosition);
+   return Robot::m_liftAndShuttleSubsystem.IsLiftAtPosition(m_targetLiftPosition);
 }
 
 // Called once after isFinished returns true

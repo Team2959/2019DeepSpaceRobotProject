@@ -21,14 +21,14 @@ void CargoControlSubsystem::OnRobotInit()
 {
   StopWheels();
   
-  frc::SmartDashboard::PutBoolean("Cargo 1", false);
+  frc::SmartDashboard::PutBoolean("Cargo", false);
 
   DashboardDebugInit();
 }
 
 void CargoControlSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
-  frc::SmartDashboard::PutBoolean("Cargo 1", !m_cargoIn.Get());
+  frc::SmartDashboard::PutBoolean("Cargo", !m_cargoIn.Get());
 
   if (updateDebugInfo)
     DashboardDebugPeriodic();

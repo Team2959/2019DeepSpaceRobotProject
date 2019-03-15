@@ -25,13 +25,9 @@ class MoveLiftCommand : public MoveLiftAndShuttleCommand
 
  private:
   LiftTargetLevel m_liftTarget;
-  bool m_bUseCurrentShuttlePosition;
-  bool m_bUseCurrentLiftPosition;
 
  public:
-  MoveLiftCommand(LiftTargetLevel liftTarget,
-   bool useCurrentShuttlePosition = false,
-   bool useCurrentLiftPosition = false);
+  MoveLiftCommand(LiftTargetLevel liftTarget);
 
   void Initialize() override;
 };

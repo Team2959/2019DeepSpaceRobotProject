@@ -9,9 +9,9 @@
 
 #include <frc/commands/Command.h>
 
-class OpenCargoControlForBackCommand : public frc::Command {
+class AttachHatchToCargoShipCommand : public frc::Command {
  public:
-  OpenCargoControlForBackCommand();
+  AttachHatchToCargoShipCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

@@ -27,29 +27,22 @@ void ExtendCargoArmCommand::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void ExtendCargoArmCommand::Execute() 
 {
-  // keep feeding the target position, in case we could only go part way
-  if (Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition() >= 0)
+  // try to extend arm
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmExtendPosition);
+
+  // start wheels
+  if (Robot::m_cargoControlSubsystem.CargoIn() == false && m_wheelsStarted == false)
   {
-    bool atFront = Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition);
-
-    // try to extend arm
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition,
-      Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition));
-
-    // start wheels, once at front
-    if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false && m_wheelsStarted == false)
-    {
-      auto ptr = new MoveCargoBallCommand(false, false);
-      ptr->Start();
-      m_wheelsStarted = true;
-    }
+    auto ptr = new MoveCargoBallCommand(false, false);
+    ptr->Start();
+    m_wheelsStarted = true;
   }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendCargoArmCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmFrontPosition);
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmExtendPosition);
 }
 
 // Called once after isFinished returns true

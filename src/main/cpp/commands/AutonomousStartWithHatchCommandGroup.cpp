@@ -5,14 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DeliverShipCargoCommandGroup.h"
+#include "commands/AutonomousStartWithHatchCommandGroup.h"
 #include "commands/MoveLiftAndShuttleCommand.h"
+#include "commands/PrepForHatchCommand.h"
 #include "subsystems/LiftAndShuttlePositions.h"
-#include "commands/TiltCargoArmCommand.h"
-#include "commands/MoveCargoBallCommand.h"
+#include "commands/RetractMechanismCommand.h"
+#include <frc/commands/TimedCommand.h>
 
-DeliverShipCargoCommandGroup::DeliverShipCargoCommandGroup() {
-  AddSequential(new MoveLiftAndShuttleCommand(kLiftFloorPosition, 5000));
-  AddSequential(new TiltCargoArmCommand());
-  AddSequential(new MoveCargoBallCommand(true, true));
+AutonomousStartWithHatchCommandGroup::AutonomousStartWithHatchCommandGroup()
+{
+  AddSequential(new PrepForHatchCommand());
+  AddSequential(new frc::TimedCommand(0.25));
+  AddSequential(new MoveLiftAndShuttleCommand(kLiftCargoShipHatchPosition));
+  AddSequential(new RetractMechanismCommand());
 }

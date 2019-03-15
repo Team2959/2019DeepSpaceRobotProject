@@ -6,13 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/DeliverCargoCommandGroup.h"
-#include "commands/MoveCargoConditionalCommand.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 #include "commands/TiltCargoArmIfAtLiftPositionConditionalCommand.h"
+#include "commands/MoveCargoBallCommand.h"
 
 DeliverCargoCommandGroup::DeliverCargoCommandGroup() 
 {
   AddSequential(new TiltCargoArmIfAtLiftPositionConditionalCommand());
-  AddSequential(new MoveCargoConditionalCommand());
+  AddSequential(new MoveCargoBallCommand(true, true));
   AddSequential(new StopCargoControlWheelsCommand());
 }

@@ -16,17 +16,19 @@
 #include "frc/WPILib.h"
 
 
-const double kDriveTrainWheelBase = 1.5;  // ft
-const double kDriveTrainGearRatio = 6.11; // unitless
-const double kDriveTrainWheelSize = 1/3;  // ft (wheel diameter)
+const double kDriveTrainWheelBase   = 1.5;   // ft
+const double kDriveTrainGearRatio   = 6.11;  // unitless
+const double kDriveTrainWheelSize   = 1/3;   // ft (wheel diameter)
+const double kDriveTrainTypicalTilt = 1.0609; // degrees
 
 class DriveTrainSubsystem : public frc::Subsystem
 {
 private:
-    const double kMotorMaxSpeed     = 3400; // 5676.0;  // RPM
-    const double kDriveSafetyFactor = 0.90;    // Multiplier for establishing reliable limits
-    const double kRobotMaxAccel     = 2207.07; // RPM / s
-    const double kDriveMaxCurrent   = 80.0;    // Amps
+    const double kMotorMaxSpeed      = 3400; // 5676.0;  // RPM
+    const double kDriveSafetyFactor  = 0.90;    // Multiplier for establishing reliable limits
+    const double kRobotMaxAccel      = 2207.07; // RPM / s
+    const double kDriveMaxCurrent    = 80.0;    // Amps
+    const double kDriveTiltThreshold = kDriveTrainTypicalTilt * 2; // degrees
 
     // It's desirable that everything possible under private except
     // for methods that implement subsystem capabilities
@@ -36,6 +38,8 @@ private:
     rev::CANSparkMax m_leftFollower  {kLeft2CanSparkMaxMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
 
     VelocityTankDrive m_tankDrive { m_leftPrimary, m_leftFollower, m_rightPrimary, m_rightFollower };
+
+    AHRS *ahrs;
     
     // Smart Dashboard debug/info
     void DashboardDebugInit();
@@ -56,9 +60,9 @@ public:
 
     double GetMaxSpeed();
     double GetMaxAccel();
-
-    // AHRS *ahrs;
-    // double rotateToAngleRate;
+    double GetHeading();
+    double GetPitch();
+    bool IsBeyondTypicalPitch();
 
     void DisabledWatchDog();
     

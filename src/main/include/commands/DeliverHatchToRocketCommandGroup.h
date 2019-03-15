@@ -7,10 +7,9 @@
 
 #pragma once
 
-#include <frc/buttons/Trigger.h>
+#include <frc/commands/CommandGroup.h>
 
-class ShuttleFrontLimitTrigger : public frc::Trigger {
+class DeliverHatchToRocketCommandGroup : public frc::CommandGroup {
  public:
-  ShuttleFrontLimitTrigger();
-  bool Get() override;
+  DeliverHatchToRocketCommandGroup();
 };
