@@ -35,26 +35,23 @@ void MoveLiftAndShuttleCommand::Execute()
   //if robot has cargo
   if (Robot::m_cargoControlSubsystem.CargoIn())
   {
-    //If arm is moving up and haven't moved arm up, do so
-     if(m_targetLiftPosition >= kLiftBottomCargoPosition && m_moveCargoArmUp == false)
-      {
-          auto ptr = new MoveCargoArmCommand(kArmUpPosition);
-             ptr->Start();
-             m_moveCargoArmUp = true;
+    // since we are moving the lift, get the cargo ready to deliver from up position
+    if (m_moveCargoArmUp == false)
+    {
+      auto ptr = new MoveCargoArmCommand(kArmUpPosition);
+      ptr->Start();
+      m_moveCargoArmUp = true;
+    }
 
-          //if moving to cargo ship
-          if (m_targetLiftPosition <= kLiftCargoShipPosition + 1e-5 && m_targetLiftPosition >= kLiftCargoShipPosition - 1e-5 )
-          {
-            //if within 3 rotations and haven't tilted arm, tilt arm
-              if( Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition() >= m_targetLiftPosition - 3 &&
-                m_tiltCargoArm == false )
-              {
-                auto ptr = new MoveCargoArmCommand(kArmTiltForwardPosition);
-                 ptr->Start();
-                 m_tiltCargoArm = true;
-              }
-          }
-       }     
+    //If arm is moving up and haven't moved arm up, do so
+    if (m_tiltCargoArm == false &&
+       fabs(m_targetLiftPosition - kLiftCargoShipPosition) < 0.001 &&
+       Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition() >= kLiftCargoShipPosition - 3)
+    {
+      auto ptr = new MoveCargoArmCommand(kArmTiltForwardPosition);
+      ptr->Start();
+      m_tiltCargoArm = true;
+    }
   }
 }
 
