@@ -9,25 +9,10 @@
 
 #include "commands/MoveLiftAndShuttleCommand.h"
 
-class MoveLiftCommand : public MoveLiftAndShuttleCommand
+class MoveLiftDownForHatchCommand : public MoveLiftAndShuttleCommand
 {
  public:
-  enum LiftTargetLevel
-  {
-    Floor,
-    Bottom,
-    CargoShip,
-    MiddleRocket,
-    TopRocket,
-    RaiseHatchFromWall,
-    GrabHatchFromWall
-  };
-
- private:
-  LiftTargetLevel m_liftTarget;
-
- public:
-  MoveLiftCommand(LiftTargetLevel liftTarget);
+  MoveLiftDownForHatchCommand();
 
   void Initialize() override;
 };

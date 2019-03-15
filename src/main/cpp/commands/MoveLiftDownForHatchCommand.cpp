@@ -5,29 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "commands/MoveLiftDownForHatchCommand.h"
+#include "subsystems/LiftAndShuttlePositions.h"
+#include "Robot.h"
 
-#include "commands/MoveLiftAndShuttleCommand.h"
-
-class MoveLiftCommand : public MoveLiftAndShuttleCommand
+MoveLiftDownForHatchCommand::MoveLiftDownForHatchCommand()
+   : MoveLiftAndShuttleCommand(0)
 {
- public:
-  enum LiftTargetLevel
-  {
-    Floor,
-    Bottom,
-    CargoShip,
-    MiddleRocket,
-    TopRocket,
-    RaiseHatchFromWall,
-    GrabHatchFromWall
-  };
+}
 
- private:
-  LiftTargetLevel m_liftTarget;
-
- public:
-  MoveLiftCommand(LiftTargetLevel liftTarget);
-
-  void Initialize() override;
-};
+void MoveLiftDownForHatchCommand::Initialize()
+{
+  // drop set number of rotations from current position when delivering hatch
+  m_targetLiftPosition = Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition();
+  m_targetLiftPosition -= 3;
+}

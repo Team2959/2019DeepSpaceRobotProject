@@ -10,7 +10,7 @@
 #include "commands/ReleaseHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
 #include <frc/commands/TimedCommand.h>
-#include "commands/MoveLiftCommand.h"
+#include "commands/MoveLiftDownForHatchCommand.h"
 #include "commands/KeepPinsOutCommand.h"
 
 DeliverHatchToRocketCommandGroup::DeliverHatchToRocketCommandGroup()
@@ -24,8 +24,8 @@ DeliverHatchToRocketCommandGroup::DeliverHatchToRocketCommandGroup()
   // retract pins
   AddSequential(new AttachHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
-  // drop relative to current height and ignore first parameter
-  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor, true));
+  // drop relative to current height
+  AddSequential(new MoveLiftDownForHatchCommand());
   // extend pins
   AddSequential(new ReleaseHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));

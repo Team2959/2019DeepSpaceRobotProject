@@ -9,7 +9,7 @@
 #include "commands/PrepForHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
 #include <frc/commands/TimedCommand.h>
-#include "commands/MoveLiftCommand.h"
+#include "commands/MoveLiftDownForHatchCommand.h"
 #include "commands/KeepPinsOutCommand.h"
 #include "commands/AttachHatchToCargoShipCommand.h"
 
@@ -24,8 +24,8 @@ DeliverHatchToCargoShipCommandGroup::DeliverHatchToCargoShipCommandGroup()
   // Retract Pins
   AddSequential(new PrepForHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
-  // drop relative to current height and ignore first parameter
-  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor, true));
+  // drop relative to current height
+  AddSequential(new MoveLiftDownForHatchCommand());
   // Extend Pins
   AddSequential(new AttachHatchToCargoShipCommand());
   AddSequential(new frc::TimedCommand(0.25));

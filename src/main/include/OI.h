@@ -40,7 +40,7 @@ private:
   frc::JoystickButton m_liftTopRocket { &m_coPilotJoystick, 7};
 
   frc::JoystickButton m_cargoArmExtend { &m_coPilotJoystick, 8};
-  frc::JoystickButton m_MoveCargoArm {&m_coPilotJoystick, 9};
+  frc::JoystickButton m_cargoArmBack {&m_coPilotJoystick, 9};
 
   frc::JoystickButton m_ejectCargo {&m_coPilotJoystick, 10};
 
