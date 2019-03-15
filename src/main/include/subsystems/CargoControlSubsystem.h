@@ -12,6 +12,9 @@
 #include <frc/DigitalInput.h>
 #include "RobotMap.h"
 
+constexpr double kHoldCargoSpeed = -0.2;
+constexpr double kHoldCargoWhileMovingSpeed = -0.3;
+
 class CargoControlSubsystem : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except

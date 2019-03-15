@@ -124,7 +124,7 @@ void Robot::AutonomousInit() {
   m_cargoArmSubsystem.MoveCargoArmToPosition(0);
   m_liftAndShuttleSubsystem.MoveLiftToPosition(0);
   if (m_cargoControlSubsystem.CargoIn())
-    m_cargoControlSubsystem.ChangeWheelsSpeed(-0.2);
+    m_cargoControlSubsystem.ChangeWheelsSpeed(kHoldCargoSpeed);
   
   // std::string autoSelected = frc::SmartDashboard::GetString(
   //     "Auto Selector", "Default");

@@ -6,12 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/TiltCargoArmIfAtLiftPositionConditionalCommand.h"
-#include "commands/TiltCargoArmCommand.h"
+#include "commands/MoveCargoArmCommand.h"
 #include "subsystems/LiftAndShuttlePositions.h"
+#include "subsystems/CargoArmPositions.h"
 #include "Robot.h"
 
 TiltCargoArmIfAtLiftPositionConditionalCommand::TiltCargoArmIfAtLiftPositionConditionalCommand()
- : ConditionalCommand(new TiltCargoArmCommand())
+ : ConditionalCommand(new MoveCargoArmCommand(kArmTiltForwardPosition))
 { }
 
 bool TiltCargoArmIfAtLiftPositionConditionalCommand::Condition()
