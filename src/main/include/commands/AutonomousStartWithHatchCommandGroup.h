@@ -5,18 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DeliverConditionalCommand.h"
-#include "commands/DeliverCargoCommandGroup.h"
-#include "commands/DeliverHatchConditionalCommand.h"
-#include "Robot.h"
+#pragma once
 
-DeliverConditionalCommand::DeliverConditionalCommand() : ConditionalCommand(
-  new DeliverCargoCommandGroup(),
-  new DeliverHatchConditionalCommand())
-{
-}
+#include <frc/commands/CommandGroup.h>
 
-bool DeliverConditionalCommand::Condition()
-{
-  return Robot::m_cargoControlSubsystem.CargoIn();
-}
+class AutonomousStartWithHatchCommandGroup : public frc::CommandGroup {
+ public:
+  AutonomousStartWithHatchCommandGroup();
+};

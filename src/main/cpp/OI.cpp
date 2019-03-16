@@ -20,15 +20,13 @@
 #include "commands/ClimbCommandGroup.h"
 #include "commands/StopCargoControlWheelsCommand.h"
 
-
-
 #include "commands/AttachHatchCommand.h"
 #include "commands/ReleaseHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
 #include "commands/PrepForHatchCommand.h"
 
 #include "commands/FollowLineCommand.h"
-#include <frc/smartdashboard/SmartDashboard.h>
+#include "subsystems/CargoControlSubsystem.h"
 
 OI::OI()
 { 
@@ -47,16 +45,16 @@ OI::OI()
   m_liftTopRocket.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::TopRocket));
 
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
-  m_MoveCargoArm.WhenPressed(new MoveCargoArmCommand(kArmTiltBackwardPosition));
+  m_cargoArmBack.WhenPressed(new MoveCargoArmCommand(kArmTiltBackwardPosition));
 
   m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
 
   m_hatchFromLoadingStation.WhenPressed(new GrabHatchCommandGroup());
+  m_liftHatchPickup.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::GrabHatchFromWall));
 
   // m_climb.WhenPressed(new ClimbCommandGroup());
-  m_climb.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::GrabHatchFromWall));
 
   // Sensor Triggers
-  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(1.0, -1.0, -0.2));
+  m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(1.0, -1.0, kHoldCargoSpeed));
   m_liftLimitSwitch.WhenActive(new LiftLimitSwitchBottomCommand());
 }

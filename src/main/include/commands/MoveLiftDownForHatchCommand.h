@@ -5,18 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DeliverConditionalCommand.h"
-#include "commands/DeliverCargoCommandGroup.h"
-#include "commands/DeliverHatchConditionalCommand.h"
-#include "Robot.h"
+#pragma once
 
-DeliverConditionalCommand::DeliverConditionalCommand() : ConditionalCommand(
-  new DeliverCargoCommandGroup(),
-  new DeliverHatchConditionalCommand())
-{
-}
+#include "commands/MoveLiftAndShuttleCommand.h"
 
-bool DeliverConditionalCommand::Condition()
+class MoveLiftDownForHatchCommand : public MoveLiftAndShuttleCommand
 {
-  return Robot::m_cargoControlSubsystem.CargoIn();
-}
+ public:
+  MoveLiftDownForHatchCommand();
+
+  void Initialize() override;
+};

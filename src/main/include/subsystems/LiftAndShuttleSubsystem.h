@@ -28,7 +28,6 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
 
   // Lift methods
   void ConfigureLiftPid(rev::CANPIDController & pidConfig);
-  bool IsLiftSafeForShuttleMoveThroughMiddle();
   
   // Smart Dashboard debug/info
   void DashboardDebugInit();

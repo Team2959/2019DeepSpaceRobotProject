@@ -5,39 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/CargoArmSubsystem.h"
-#include "subsystems/CargoArmPositions.h"
-#include "subsystems/LiftAndShuttlePositions.h"
-#include "commands/TiltCargoArmCommand.h"
+#include "commands/AttachHatchToCargoShipCommand.h"
 #include "Robot.h"
 
-TiltCargoArmCommand::TiltCargoArmCommand() {
-    Requires(&Robot::m_cargoArmSubsystem);
+AttachHatchToCargoShipCommand::AttachHatchToCargoShipCommand() {
+  // Use Requires() here to declare subsystem dependencies
+  // eg. Requires(Robot::chassis.get());
+    Requires(&Robot::m_hatchSubsystem);
 }
 
 // Called just before this Command runs the first time
-void TiltCargoArmCommand::Initialize() {}
+void AttachHatchToCargoShipCommand::Initialize() {
+  Robot::m_hatchSubsystem.AttachHatchToCargoShip();
+}
 
 // Called repeatedly when this Command is scheduled to run
-void TiltCargoArmCommand::Execute()
-{
-  // try to tilt arm forward
-  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmTiltForwardPosition);
-}
+void AttachHatchToCargoShipCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool TiltCargoArmCommand::IsFinished()
-{
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmTiltForwardPosition);
-}
+bool AttachHatchToCargoShipCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void TiltCargoArmCommand::End() {
-}
+void AttachHatchToCargoShipCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void TiltCargoArmCommand::Interrupted()
-{
-  Robot::m_cargoArmSubsystem.StopAtCurrentPosition();
-}
+void AttachHatchToCargoShipCommand::Interrupted() {}

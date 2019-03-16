@@ -20,6 +20,7 @@ HatchSubsystem Robot::m_hatchSubsystem;
 CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
 LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsystem;
+ClimbSubsystem Robot::m_climbSubsystem;
 // create instance of OI
 OI Robot::m_oi;
 
@@ -42,7 +43,6 @@ void Robot::RobotInit() {
   m_debugCargoControl = false;
   m_debugHatch = false;
 
-  frc::SmartDashboard::PutBoolean("ZeroMotors", false);
   frc::SmartDashboard::PutBoolean("Debug Drive", m_debugDrive);
   frc::SmartDashboard::PutBoolean("Debug Lift", m_debugLiftAndShuttle);
   frc::SmartDashboard::PutBoolean("Debug Cargo Arm", m_debugCargoArm);
@@ -101,11 +101,6 @@ void Robot::DisabledPeriodic()
     m_driveTrainSubsystem.DisabledWatchDog();
     if (m_periodic == 9)
     {
-      if (frc::SmartDashboard::GetBoolean("ZeroMotors", false))
-      {
-        m_liftAndShuttleSubsystem.LiftBottomReset();
-        m_cargoArmSubsystem.StopAndZero();
-      }
       m_debugDrive = frc::SmartDashboard::GetBoolean("Debug Drive", false);
       m_debugLiftAndShuttle = frc::SmartDashboard::GetBoolean("Debug Lift", false);
       m_debugCargoArm = frc::SmartDashboard::GetBoolean("Debug Cargo Arm", false);
@@ -129,7 +124,8 @@ void Robot::DisabledPeriodic()
 void Robot::AutonomousInit() {
   m_cargoArmSubsystem.MoveCargoArmToPosition(0);
   m_liftAndShuttleSubsystem.MoveLiftToPosition(0);
-  m_cargoControlSubsystem.ChangeWheelsSpeed(-0.2);
+  if (m_cargoControlSubsystem.CargoIn())
+    m_cargoControlSubsystem.ChangeWheelsSpeed(kHoldCargoSpeed);
   
   // std::string autoSelected = frc::SmartDashboard::GetString(
   //     "Auto Selector", "Default");

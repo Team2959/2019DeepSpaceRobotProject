@@ -8,25 +8,18 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
-#include <frc/Solenoid.h>
+#include <frc/DoubleSolenoid.h>
 #include "RobotMap.h"
 
-class HatchSubsystem : public frc::Subsystem {
+class ClimbSubsystem : public frc::Subsystem {
  private:
-  frc::Solenoid m_attach  {kHatchAttachSolenoid};
-  frc::Solenoid m_release {kHatchReleaseSolenoid};
-  frc::Solenoid m_safety  {kHatchSafetySolenoid};
+  // It's desirable that everything possible under private except
+  // for methods that implement subsystem capabilities
+  frc::DoubleSolenoid m_shifter {kFirstLiftShifterSolenoid, kSecondLiftShifterSolenoid};
 
  public:
-  HatchSubsystem();
-
-  void OnRobotInit();
-  void OnRobotPeriodic(bool updateDebugInfo);
-
-  void PrepForHatch();
-  void AttachHatch();
-  void ReleaseHatch();
-  void RetractMechanism();
-  void KeepPinsOut();
-  void AttachHatchToCargoShip();
+  ClimbSubsystem();
+  void InitDefaultCommand() override;
+  void HighClimbPosition();
+  void LowClimbPosition();
 };

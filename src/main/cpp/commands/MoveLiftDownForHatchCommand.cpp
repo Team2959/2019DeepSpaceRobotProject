@@ -5,11 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "commands/MoveLiftDownForHatchCommand.h"
+#include "subsystems/LiftAndShuttlePositions.h"
+#include "Robot.h"
 
-#include <frc/commands/CommandGroup.h>
+MoveLiftDownForHatchCommand::MoveLiftDownForHatchCommand()
+   : MoveLiftAndShuttleCommand(0)
+{
+}
 
-class DeliverHatchCommandGroup : public frc::CommandGroup {
- public:
-  DeliverHatchCommandGroup();
-};
+void MoveLiftDownForHatchCommand::Initialize()
+{
+  // drop set number of rotations from current position when delivering hatch
+  m_targetLiftPosition = Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition();
+  m_targetLiftPosition -= 3;
+}

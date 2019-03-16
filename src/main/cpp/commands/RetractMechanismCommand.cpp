@@ -16,7 +16,7 @@ RetractMechanismCommand::RetractMechanismCommand(double timeout)
 
 // Called just before this Command runs the first time
 void RetractMechanismCommand::Initialize() {
-  Robot::m_hatchSubsystem.SafetyExtend();
+  Robot::m_hatchSubsystem.PrepForHatch();
 }
 
 // Called repeatedly when this Command is scheduled to run

@@ -42,7 +42,9 @@ constexpr int kHatchAttachSolenoid = 0;
 constexpr int kHatchReleaseSolenoid = 1;
 constexpr int kHatchSafetySolenoid = 2;
 constexpr int kCargoArmExtendSolenoid = 3;
+
 constexpr int kTallClimbEngageSolenoid = 4;
+
 
 // Digital IO addresses
 constexpr int kLiftBottomSwitch = 0;

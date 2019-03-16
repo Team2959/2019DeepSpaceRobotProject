@@ -14,7 +14,6 @@
 
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.1;
-constexpr double kLiftMaxSafeHeight = 2;
 constexpr double kLiftKP = 0.00012;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
@@ -138,11 +137,6 @@ bool LiftAndShuttleSubsystem::IsLiftAtPosition(double targetPosition)
 {
   // actually check position is near target position
   return fabs(CurrentLiftPosition() - targetPosition) < kLiftCloseEnoughToPosition;
-}
-
-bool LiftAndShuttleSubsystem::IsLiftSafeForShuttleMoveThroughMiddle()
-{
-  return CurrentLiftPosition() < kLiftMaxSafeHeight;
 }
 
 double LiftAndShuttleSubsystem::CurrentLiftPosition()
