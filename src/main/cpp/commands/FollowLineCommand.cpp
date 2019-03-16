@@ -21,8 +21,8 @@ void FollowLineCommand::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void FollowLineCommand::Execute() 
 {
-  double leftVelocityMultiplier = 1;//0.25;
-  double rightVelocityMultiplier = 1;//0.25;
+  double leftVelocityMultiplier = 0.25;
+  double rightVelocityMultiplier = 0.25;
 
   bool seeWhite1 = Robot::m_driveTrainSubsystem.WhiteTape1();
   bool seeWhite2 = Robot::m_driveTrainSubsystem.WhiteTape2();
@@ -33,11 +33,11 @@ void FollowLineCommand::Execute()
   }
   else if(seeWhite1 == false && seeWhite2 == true && seeWhite3 == true)
   {
-      leftVelocityMultiplier = 0.5;//0.2;
+      leftVelocityMultiplier = 0.2;
   }
   else if(seeWhite1 == true && seeWhite2 == true && seeWhite3 == false)
   {
-      rightVelocityMultiplier = 0.5;//.2;
+      rightVelocityMultiplier = 0.2;
   }
 
   else if(seeWhite1 == true && seeWhite2 == false && seeWhite3 == false)
