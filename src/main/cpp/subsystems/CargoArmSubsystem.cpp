@@ -10,6 +10,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/MotorControllerHelpers.h"
 #include <algorithm>
+#include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 
 constexpr double kCloseEnoughToPosition = 500;
 
@@ -100,3 +101,21 @@ void CargoArmSubsystem::StopAndZero()
   m_left.SetSelectedSensorPosition(0,0,0);
   MoveCargoArmToPosition(0);
 }
+
+
+ void CargoArmSubsystem::SetArmCurrentLimitHigh()
+ {
+m_left.SetCurrentLimit(60);
+m_left.EnableCurrentLimit(true);
+
+m_right.SetCurrentLimit(60);
+m_right.EnableCurrentLimit(true);
+ }
+ void CargoArmSubsystem::SetArmCurrentLimitLow()
+ {
+m_left.SetCurrentLimit(10);
+m_left.EnableCurrentLimit(true);
+
+m_right.SetCurrentLimit(10);
+m_right.EnableCurrentLimit(true);
+ }
