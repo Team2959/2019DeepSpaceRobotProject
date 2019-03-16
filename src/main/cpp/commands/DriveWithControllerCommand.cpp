@@ -30,8 +30,8 @@ void DriveWithControllerCommand::Initialize()
 void DriveWithControllerCommand::Execute()
 {
     Robot::m_driveTrainSubsystem.TankDrive(
-        jsc.Condition(1.0 * Robot::m_oi.m_leftDriverJoystick.GetY()),
-        jsc.Condition(1.0 * Robot::m_oi.m_rightDriverJoystick.GetY())
+        jsc.Condition(-1.0 * Robot::m_oi.m_leftDriverJoystick.GetY()),
+        jsc.Condition(-1.0 * Robot::m_oi.m_rightDriverJoystick.GetY())
     );
 }
 

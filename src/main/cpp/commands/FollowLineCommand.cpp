@@ -37,7 +37,7 @@ void FollowLineCommand::Execute()
   }
   else if(seeWhite1 == true && seeWhite2 == true && seeWhite3 == false)
   {
-      rightVelocityMultiplier = .2;
+      rightVelocityMultiplier = 0.2;
   }
 
   else if(seeWhite1 == true && seeWhite2 == false && seeWhite3 == false)
