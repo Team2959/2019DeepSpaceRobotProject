@@ -53,4 +53,9 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<nt::NetworkTable> m_networkTable;
 
   int m_periodic = 0;
+  bool m_debugDrive = false;
+  bool m_debugLiftAndShuttle = false;
+  bool m_debugCargoArm = false;
+  bool m_debugCargoControl = false;
+  bool m_debugHatch = false;
 };

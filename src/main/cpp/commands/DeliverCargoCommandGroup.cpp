@@ -5,16 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "commands/DeliverCargoCommandGroup.h"
+#include "commands/StopCargoControlWheelsCommand.h"
+#include "commands/TiltCargoArmIfAtLiftPositionConditionalCommand.h"
+#include "commands/MoveCargoBallCommand.h"
 
-#include <frc/commands/Command.h>
-
-class MoveCargoTowardFrontCommand : public frc::Command {
- public:
-  MoveCargoTowardFrontCommand();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-};
+DeliverCargoCommandGroup::DeliverCargoCommandGroup() 
+{
+  AddSequential(new TiltCargoArmIfAtLiftPositionConditionalCommand());
+  AddSequential(new MoveCargoBallCommand(true, true));
+  AddSequential(new StopCargoControlWheelsCommand());
+}

@@ -7,14 +7,9 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/CommandGroup.h>
 
-class CargoShuttleStopAtFrontCommand : public frc::Command {
+class AutonomousStartWithHatchCommandGroup : public frc::CommandGroup {
  public:
-  CargoShuttleStopAtFrontCommand();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  AutonomousStartWithHatchCommandGroup();
 };

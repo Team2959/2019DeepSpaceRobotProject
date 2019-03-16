@@ -10,14 +10,13 @@
 #include "subsystems/LiftAndShuttleSubsystem.h"
 
 LiftLimitSwitchBottomCommand::LiftLimitSwitchBottomCommand() {
-  // Use Requires() here to declare subsystem dependencies
   Requires(&Robot::m_liftAndShuttleSubsystem);
 }
 
 // Called just before this Command runs the first time
 void LiftLimitSwitchBottomCommand::Initialize() 
 {
-Robot::m_liftAndShuttleSubsystem.LiftBottomReset();
+  Robot::m_liftAndShuttleSubsystem.LiftBottomReset();
 }
 
 // Called repeatedly when this Command is scheduled to run

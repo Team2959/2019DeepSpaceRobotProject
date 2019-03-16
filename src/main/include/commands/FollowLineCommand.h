@@ -8,11 +8,10 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include "subsystems/LiftAndShuttleSubsystem.h"
 
-class LiftLimitSwitchBottomCommand : public frc::Command {
+class FollowLineCommand : public frc::Command {
  public:
-  LiftLimitSwitchBottomCommand();
+  FollowLineCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

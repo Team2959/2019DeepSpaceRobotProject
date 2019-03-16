@@ -5,30 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/MoveCargoTowardFrontCommand.h"
+#include "commands/AttachHatchToCargoShipCommand.h"
 #include "Robot.h"
 
-MoveCargoTowardFrontCommand::MoveCargoTowardFrontCommand() {
+AttachHatchToCargoShipCommand::AttachHatchToCargoShipCommand() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-  Requires(&Robot::m_cargoControlSubsystem);
+    Requires(&Robot::m_hatchSubsystem);
 }
 
 // Called just before this Command runs the first time
-void MoveCargoTowardFrontCommand::Initialize()
-{
-  Robot::m_cargoControlSubsystem.CargoBallTowardsFront();
+void AttachHatchToCargoShipCommand::Initialize() {
+  Robot::m_hatchSubsystem.AttachHatchToCargoShip();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void MoveCargoTowardFrontCommand::Execute() {}
+void AttachHatchToCargoShipCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool MoveCargoTowardFrontCommand::IsFinished() { return true; }
+bool AttachHatchToCargoShipCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void MoveCargoTowardFrontCommand::End() {}
+void AttachHatchToCargoShipCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MoveCargoTowardFrontCommand::Interrupted() {}
+void AttachHatchToCargoShipCommand::Interrupted() {}

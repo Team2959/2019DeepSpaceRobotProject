@@ -5,12 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "triggers/ShuttleFrontLimitTrigger.h"
+#include "commands/DeliverConditionalCommand.h"
+#include "commands/DeliverCargoCommandGroup.h"
+#include "commands/DeliverHatchConditionalCommand.h"
 #include "Robot.h"
 
-ShuttleFrontLimitTrigger::ShuttleFrontLimitTrigger() {}
-
-bool ShuttleFrontLimitTrigger::Get()
+DeliverConditionalCommand::DeliverConditionalCommand() : ConditionalCommand(
+  new DeliverCargoCommandGroup(),
+  new DeliverHatchConditionalCommand())
 {
-    return Robot::m_liftAndShuttleSubsystem.IsAtShuttleFrontLimit();
+}
+
+bool DeliverConditionalCommand::Condition()
+{
+  return Robot::m_cargoControlSubsystem.CargoIn();
 }

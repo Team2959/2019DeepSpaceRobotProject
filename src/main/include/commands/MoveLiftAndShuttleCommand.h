@@ -11,14 +11,13 @@
 
 class MoveLiftAndShuttleCommand : public frc::Command
 {
-private:
-  double m_targetLiftPosition;
-
 protected:
-  double m_targetShuttlePosition;
+  double m_targetLiftPosition;
+  bool m_tiltCargoArm = false;
+  bool m_moveCargoArmUp = false;
 
 public:
-  MoveLiftAndShuttleCommand(double targetLiftPosition, double targetShuttlePosition);
+  MoveLiftAndShuttleCommand(double targetLiftPosition);
 
   void Initialize() override;
   void Execute() override;

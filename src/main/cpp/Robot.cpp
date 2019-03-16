@@ -11,7 +11,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <cameraserver/CameraServer.h>
 
-#include "../../../../2019RaspPIRoboRioShared/SharedNames.h"
+#include "../../../../2019RaspPIRoboRioShared/Shared.hpp"
 #include <iostream>
 
 // create instance of subsystems
@@ -31,10 +31,23 @@ void Robot::RobotInit() {
   frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
   
-  m_driveTrainSubsystem.Init();
+  m_driveTrainSubsystem.OnRobotInit();
   m_liftAndShuttleSubsystem.OnRobotInit();
-  m_cargoArmSubsystem.DashboardDataInit();
-  frc::SmartDashboard::PutData(&Robot::m_cargoControlSubsystem);
+  m_cargoArmSubsystem.OnRobotInit();
+  m_cargoControlSubsystem.OnRobotInit();
+  m_hatchSubsystem.OnRobotInit();
+
+  m_debugDrive = false;
+  m_debugLiftAndShuttle = false;
+  m_debugCargoArm = false;
+  m_debugCargoControl = false;
+  m_debugHatch = false;
+
+  frc::SmartDashboard::PutBoolean("Debug Drive", m_debugDrive);
+  frc::SmartDashboard::PutBoolean("Debug Lift", m_debugLiftAndShuttle);
+  frc::SmartDashboard::PutBoolean("Debug Cargo Arm", m_debugCargoArm);
+  frc::SmartDashboard::PutBoolean("Debug Cargo Control", m_debugCargoControl);
+  frc::SmartDashboard::PutBoolean("Debug Hatch", m_debugHatch);
 }
 
 /**
@@ -47,9 +60,8 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() 
 {
-
-  double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
-  auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
+  //double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
+  //auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   // Testing of Raspberry Pi info through network tables
   /*std::cout<<"front framenumber = "<<frameNumber<<"\n";
@@ -57,12 +69,22 @@ void Robot::RobotPeriodic()
     std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";*/
   m_periodic++;
   
-  if (m_periodic == 2) {
-    m_driveTrainSubsystem.DashboardDataUpdate();
-  } else if (m_periodic == 4) {
-    m_cargoArmSubsystem.DashboardData();
-  } else if (m_periodic >= 10) { 
-    m_liftAndShuttleSubsystem.DashboardData();
+  if (m_periodic == 2)
+  {
+    m_driveTrainSubsystem.OnRobotPeriodic(m_debugDrive);
+  }
+  else if (m_periodic == 4)
+  {
+    m_cargoArmSubsystem.OnRobotPeriodic(m_debugCargoArm);
+    m_cargoControlSubsystem.OnRobotPeriodic(m_debugCargoControl);
+  }
+  else if (m_periodic == 8)
+  {
+    m_hatchSubsystem.OnRobotPeriodic(m_debugHatch);
+  }
+  else if (m_periodic >= 10)
+  { 
+    m_liftAndShuttleSubsystem.OnRobotPeriodic(m_debugLiftAndShuttle);
     m_periodic = 0;
   }
 }
@@ -77,6 +99,14 @@ void Robot::DisabledInit() {}
 void Robot::DisabledPeriodic()
 {
     m_driveTrainSubsystem.DisabledWatchDog();
+    if (m_periodic == 9)
+    {
+      m_debugDrive = frc::SmartDashboard::GetBoolean("Debug Drive", false);
+      m_debugLiftAndShuttle = frc::SmartDashboard::GetBoolean("Debug Lift", false);
+      m_debugCargoArm = frc::SmartDashboard::GetBoolean("Debug Cargo Arm", false);
+      m_debugCargoControl = frc::SmartDashboard::GetBoolean("Debug Cargo Control", false);
+      m_debugHatch = frc::SmartDashboard::GetBoolean("Debug Hatch", false);
+    }
     frc::Scheduler::GetInstance()->Run();
 }
 
@@ -92,6 +122,11 @@ void Robot::DisabledPeriodic()
  * the if-else structure below with additional strings & commands.
  */
 void Robot::AutonomousInit() {
+  m_cargoArmSubsystem.MoveCargoArmToPosition(0);
+  m_liftAndShuttleSubsystem.MoveLiftToPosition(0);
+  if (m_cargoControlSubsystem.CargoIn())
+    m_cargoControlSubsystem.ChangeWheelsSpeed(kHoldCargoSpeed);
+  
   // std::string autoSelected = frc::SmartDashboard::GetString(
   //     "Auto Selector", "Default");
   // if (autoSelected == "My Auto") {
@@ -118,6 +153,9 @@ void Robot::TeleopInit() {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
   }
+  
+  // m_cargoArmSubsystem.StopAtCurrentPosition();
+  // m_liftAndShuttleSubsystem.StopAtCurrentPosition();
 }
 
 void Robot::TeleopPeriodic() { frc::Scheduler::GetInstance()->Run(); }

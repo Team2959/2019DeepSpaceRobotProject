@@ -9,7 +9,7 @@
 
 #include <frc/commands/CommandGroup.h>
 
-class DeliverCommandGroup : public frc::CommandGroup {
+class DeliverHatchToCargoShipCommandGroup : public frc::CommandGroup {
  public:
-  DeliverCommandGroup();
+  DeliverHatchToCargoShipCommandGroup();
 };

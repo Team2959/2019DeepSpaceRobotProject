@@ -7,15 +7,9 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/CommandGroup.h>
 
-class CargoArmUpCommand : public frc::Command {
+class DeliverBackCommandGroup : public frc::CommandGroup {
  public:
-  CargoArmUpCommand();
-  
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  DeliverBackCommandGroup();
 };

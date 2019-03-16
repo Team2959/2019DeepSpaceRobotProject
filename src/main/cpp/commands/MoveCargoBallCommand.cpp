@@ -5,30 +5,35 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/CargoShuttleStopAtFrontCommand.h"
-#include "subsystems/LiftAndShuttleSubsystem.h"
+#include "commands/MoveCargoBallCommand.h"
 #include "Robot.h"
 
-CargoShuttleStopAtFrontCommand::CargoShuttleStopAtFrontCommand() {
-  // Use Requires() here to declare subsystem dependencies
- Requires(&Robot::m_liftAndShuttleSubsystem);
+MoveCargoBallCommand::MoveCargoBallCommand(bool bFront, bool bDeliver)
+{
+  Requires(&Robot::m_cargoControlSubsystem);
+
+  m_bFront = bFront;
+  m_bDeliver = bDeliver;
 }
 
 // Called just before this Command runs the first time
-void CargoShuttleStopAtFrontCommand::Initialize()
+void MoveCargoBallCommand::Initialize()
 {
-  Robot::m_liftAndShuttleSubsystem.CargoShuttleFrontStop();
+  Robot::m_cargoControlSubsystem.MoveCargoBall(m_bFront, m_bDeliver);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void CargoShuttleStopAtFrontCommand::Execute() {}
+void MoveCargoBallCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool CargoShuttleStopAtFrontCommand::IsFinished() { return true; }
+bool MoveCargoBallCommand::IsFinished()
+{
+  return Robot::m_cargoControlSubsystem.CargoIn() == false;
+}
 
 // Called once after isFinished returns true
-void CargoShuttleStopAtFrontCommand::End() {}
+void MoveCargoBallCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void CargoShuttleStopAtFrontCommand::Interrupted() {}
+void MoveCargoBallCommand::Interrupted() {}

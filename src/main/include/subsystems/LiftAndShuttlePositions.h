@@ -1,13 +1,15 @@
 #pragma once
 
 // Define Lift and Shuttle Positions to be used outside subsystem
-constexpr int kShuttleMiddlePosition = 0;
-constexpr int kShuttleFrontPosition = 5000;
-constexpr int kShuttleRearPosition = -3000;
 
-constexpr int kLiftFloorPosition = 0;
-constexpr int kLiftBottomPosition = 1000;
-constexpr int kLiftCargoShipPosition = 3000;
-constexpr int kLiftMiddlePosition = 5000;
-constexpr int kLiftTopPosition = 10000;
-constexpr int kLiftRemoveHatchFromWallPosition = kLiftBottomPosition + 500;
+constexpr double kLiftFloorPosition = 0;    // cargo pickup from floor
+constexpr double kLiftBottomCargoPosition = 0;   // deliver cargo to bottom level
+constexpr double kLiftBottomHatchPosition = 14;   // pickup hatch or deliver hatch to bottom level
+constexpr double kLiftCargoShipPosition = 28;   // deliver cargo to cargo ship
+constexpr double kLiftMiddleCargoPosition = 35;      // deliver cargo to middle rocket level
+constexpr double kLiftMiddleHatchPosition = 51;      // deliver hatch to middle rocket level
+constexpr double kLiftTopCargoPosition = 70;         // deliver cargo to top rocket level
+constexpr double kLiftTopHatchPosition = 79;         // deliver hatch to top rocket level
+constexpr double kLiftGrabHatchFromWallPosition = 10;    // position for lifting hatch out of brushes from wall
+constexpr double kLiftRemoveHatchFromWallPosition = kLiftGrabHatchFromWallPosition + 10;    // position for lifting hatch out of brushes from wall
+constexpr double kLiftCargoShipHatchPosition = kLiftBottomHatchPosition + 3; // deliver hatch to cargo ship

@@ -12,21 +12,30 @@
 #include <frc/DigitalInput.h>
 #include "RobotMap.h"
 
+constexpr double kHoldCargoSpeed = -0.2;
+constexpr double kHoldCargoWhileMovingSpeed = -0.3;
+
 class CargoControlSubsystem : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
   frc::Spark m_wheels { kCargoArmWheelsPwmSparkMotor };
   frc::DigitalInput m_cargoIn { kCargoInSwitch };
-
-  void ChangeWheelsSpeed(double speed);
+  double m_wheelPickupSpeed;
+  double m_wheelDeliverSpeed;
+  
+  void DashboardDebugInit();
+  void DashboardDebugPeriodic();
 
  public:
   CargoControlSubsystem();
-  
+
+  void OnRobotInit();
+  void OnRobotPeriodic(bool updateDebugInfo);
+ 
   bool CargoIn() const;
   
-  void CargoBallTowardsFront();
-  void CargoBallTowardsRear();
+  void MoveCargoBall(bool bFront, bool bDeliver);
+  void ChangeWheelsSpeed(double speed);
   void StopWheels();
 };

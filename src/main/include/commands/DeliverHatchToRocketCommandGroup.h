@@ -7,17 +7,9 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
-#include "subsystems/LiftAndShuttleSubsystem.h"
+#include <frc/commands/CommandGroup.h>
 
-
-
-class CargoShuttleStopAtBackCommand : public frc::Command {
+class DeliverHatchToRocketCommandGroup : public frc::CommandGroup {
  public:
-  CargoShuttleStopAtBackCommand();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  DeliverHatchToRocketCommandGroup();
 };

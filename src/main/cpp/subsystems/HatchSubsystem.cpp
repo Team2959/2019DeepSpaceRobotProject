@@ -6,13 +6,32 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/HatchSubsystem.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 HatchSubsystem::HatchSubsystem() : Subsystem("HatchSubsystem") {}
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+void HatchSubsystem::OnRobotInit()
+{
+  RetractMechanism();
+
+  // Debug info
+  frc::SmartDashboard::PutBoolean("Hatach: Safety", false);
+  frc::SmartDashboard::PutBoolean("Hatach: Attach", false);
+  frc::SmartDashboard::PutBoolean("Hatach: Release", false);
+}
+
+void HatchSubsystem::OnRobotPeriodic(bool updateDebugInfo)
+{
+  if (updateDebugInfo)
+  {
+    m_safety.Set(frc::SmartDashboard::GetBoolean("Hatach: Safety", false));
+    m_attach.Set(frc::SmartDashboard::GetBoolean("Hatach: Attach", false));
+    m_release.Set(frc::SmartDashboard::GetBoolean("Hatach: Release", false));
+  }
+}
+
 void HatchSubsystem::PrepForHatch(){
-  // m_attach.Set(false);
+  m_attach.Set(false);
   m_release.Set(false);
   m_safety.Set(true);
 }
@@ -20,17 +39,29 @@ void HatchSubsystem::PrepForHatch(){
 void HatchSubsystem::AttachHatch(){
   m_attach.Set(true);
   m_release.Set(false);
-  m_safety.Set(false);
+  m_safety.Set(true);
 }
 
 void HatchSubsystem::ReleaseHatch(){
   m_attach.Set(true);
   m_release.Set(true);
-  m_safety.Set(false);
+  m_safety.Set(true);
 }
 
 void HatchSubsystem::RetractMechanism(){
   m_attach.Set(false);
   m_release.Set(false);
   m_safety.Set(false);
+}
+
+void HatchSubsystem::KeepPinsOut(){
+  m_attach.Set(false);
+  m_release.Set(true);
+  m_safety.Set(false);
+}
+
+void HatchSubsystem::AttachHatchToCargoShip(){
+  m_attach.Set(false);
+  m_release.Set(true);
+  m_safety.Set(true);
 }

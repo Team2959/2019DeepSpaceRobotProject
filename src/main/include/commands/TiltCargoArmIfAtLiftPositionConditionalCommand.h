@@ -7,10 +7,11 @@
 
 #pragma once
 
-#include <frc/buttons/Trigger.h>
+#include <frc/commands/ConditionalCommand.h>
 
-class ShuttleFrontLimitTrigger : public frc::Trigger {
+class TiltCargoArmIfAtLiftPositionConditionalCommand : public frc::ConditionalCommand {
  public:
-  ShuttleFrontLimitTrigger();
-  bool Get() override;
+  TiltCargoArmIfAtLiftPositionConditionalCommand();
+protected:
+  virtual bool Condition() override;
 };

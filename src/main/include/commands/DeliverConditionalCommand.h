@@ -7,15 +7,12 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
-#include "subsystems/LiftAndShuttleSubsystem.h"
+#include <frc/commands/ConditionalCommand.h>
 
-class LiftLimitSwitchBottomCommand : public frc::Command {
+class DeliverConditionalCommand : public frc::ConditionalCommand {
  public:
-  LiftLimitSwitchBottomCommand();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  DeliverConditionalCommand();
+
+  protected:
+    virtual bool Condition() override;
 };

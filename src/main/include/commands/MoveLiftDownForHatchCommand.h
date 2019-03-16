@@ -7,14 +7,12 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include "commands/MoveLiftAndShuttleCommand.h"
 
-class ShuttleTargetCommand : public frc::Command {
+class MoveLiftDownForHatchCommand : public MoveLiftAndShuttleCommand
+{
  public:
-  ShuttleTargetCommand(bool front = true);
+  MoveLiftDownForHatchCommand();
+
   void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
 };
