@@ -5,6 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+#include "commands/ResetCargoArmCommandEndCommand.h"
+
 #include "subsystems/CargoArmSubsystem.h"
 #include "commands/ResetCargoArmCommand.h"
 #include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
@@ -15,35 +17,29 @@
 
 #include <iostream>
 
-ResetCargoArmCommand::ResetCargoArmCommand() {
+ResetCargoArmCommandEndCommand::ResetCargoArmCommandEndCommand() {
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
-    Requires(&Robot::m_cargoArmSubsystem);
-
 }
 
 // Called just before this Command runs the first time
-void ResetCargoArmCommand::Initialize() {
-  Robot::m_cargoArmSubsystem.SetArmCurrentLimitLow();
-
-}
+void ResetCargoArmCommandEndCommand::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void ResetCargoArmCommand::Execute() {
-Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(-5000);
-}
+void ResetCargoArmCommandEndCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool ResetCargoArmCommand::IsFinished() {return false;}
+bool ResetCargoArmCommandEndCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void ResetCargoArmCommand::End() {
-  // Robot::m_cargoArmSubsystem.StopAndZero();
-  // Robot::m_cargoArmSubsystem.SetArmCurrentLimitHigh();
+void ResetCargoArmCommandEndCommand::End() {
 
-  // std::cout << "ResetCargoArmCommandFinished" << std::endl;
+    Robot::m_cargoArmSubsystem.StopAndZero();
+  Robot::m_cargoArmSubsystem.SetArmCurrentLimitHigh();
+
+  std::cout << "ResetCargoArmCommandFinished" << std::endl;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ResetCargoArmCommand::Interrupted() {}
+void ResetCargoArmCommandEndCommand::Interrupted() {}

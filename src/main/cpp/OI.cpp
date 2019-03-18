@@ -28,13 +28,15 @@
 #include "commands/FollowLineCommand.h"
 #include "subsystems/CargoControlSubsystem.h"
 #include "commands/ResetCargoArmCommand.h"
+#include "commands/ResetCargoArmCommandEndCommand.h"
+
 OI::OI()
 { 
   // Driver Buttons
   m_deliver.WhenPressed(new DeliverConditionalCommand());
   // m_followLine.WhileHeld(new FollowLineCommand());
 m_resetCargoArm.WhileHeld(new ResetCargoArmCommand());
-
+m_resetCargoArm.WhenReleased(new ResetCargoArmCommandEndCommand());
   // Co-Pilot Buttons
   // m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
   // m_shuttleRear.WhenPressed(new ShuttleTargetCommand(false));

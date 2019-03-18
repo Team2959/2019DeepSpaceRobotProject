@@ -105,17 +105,17 @@ void CargoArmSubsystem::StopAndZero()
 
  void CargoArmSubsystem::SetArmCurrentLimitHigh()
  {
-m_left.SetCurrentLimit(60);
+//m_left.SetCurrentLimit(60);
 m_left.EnableCurrentLimit(true);
 
-m_right.SetCurrentLimit(60);
+//m_right.SetCurrentLimit(60);
 m_right.EnableCurrentLimit(true);
  }
  void CargoArmSubsystem::SetArmCurrentLimitLow()
  {
-m_left.SetCurrentLimit(10);
+//m_left.SetCurrentLimit(10);
 m_left.EnableCurrentLimit(true);
 
-m_right.SetCurrentLimit(10);
+//m_right.SetCurrentLimit(10);
 m_right.EnableCurrentLimit(true);
  }
