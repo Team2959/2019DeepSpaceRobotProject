@@ -27,7 +27,7 @@ DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
     try {
         /* Communicate w/navX-MXP via the MXP USB.
            See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details.   */
-        ahrs = new AHRS(SerialPort::Port::kMXP);
+        ahrs = new AHRS(SerialPort::Port::kUSB);
     } catch (std::exception ex ) {
         std::string err_string = "Error instantiating navX-MXP:  ";
         err_string += ex.what();
