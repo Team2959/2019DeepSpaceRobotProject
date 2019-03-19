@@ -116,5 +116,5 @@ void CargoArmSubsystem::SetArmCurrentLimitLow()
 
 void CargoArmSubsystem::SetArmPercentOutputLow()
 {
-  m_left.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
+  m_left.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
 }
