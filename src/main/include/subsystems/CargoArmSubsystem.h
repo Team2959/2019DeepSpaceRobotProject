@@ -42,4 +42,5 @@ class CargoArmSubsystem : public frc::Subsystem {
   void SetArmCurrentLimitHigh();
   void SetArmCurrentLimitLow();
 
+  void SetArmPercentOutputLow();
 };

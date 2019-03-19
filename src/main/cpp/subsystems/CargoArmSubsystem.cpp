@@ -102,20 +102,19 @@ void CargoArmSubsystem::StopAndZero()
   MoveCargoArmToPosition(0);
 }
 
+void CargoArmSubsystem::SetArmCurrentLimitHigh()
+{
+  m_left.ConfigContinuousCurrentLimit(60);
+  m_left.EnableCurrentLimit(true);
+}
 
- void CargoArmSubsystem::SetArmCurrentLimitHigh()
- {
-//m_left.SetCurrentLimit(60);
-m_left.EnableCurrentLimit(true);
+void CargoArmSubsystem::SetArmCurrentLimitLow()
+{
+  m_left.ConfigContinuousCurrentLimit(10);
+  m_left.EnableCurrentLimit(true);
+}
 
-//m_right.SetCurrentLimit(60);
-m_right.EnableCurrentLimit(true);
- }
- void CargoArmSubsystem::SetArmCurrentLimitLow()
- {
-//m_left.SetCurrentLimit(10);
-m_left.EnableCurrentLimit(true);
-
-//m_right.SetCurrentLimit(10);
-m_right.EnableCurrentLimit(true);
- }
+void CargoArmSubsystem::SetArmPercentOutputLow()
+{
+  m_left.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
+}
