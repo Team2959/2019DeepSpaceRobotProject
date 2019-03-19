@@ -20,7 +20,9 @@ void ClimbSubsystem::HighClimbPosition()
 
 void ClimbSubsystem::LowClimbPosition()
 {
+
     //m_shifter.Set(frc::DoubleSolenoid::Value::kReverse);
+
 }
 
 // Put methods for controlling this subsystem

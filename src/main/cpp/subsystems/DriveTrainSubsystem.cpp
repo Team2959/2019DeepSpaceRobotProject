@@ -27,7 +27,7 @@ DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
     try {
         /* Communicate w/navX-MXP via the MXP USB.
            See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details.   */
-        ahrs = new AHRS(SerialPort::Port::kUSB);
+        ahrs = new AHRS(SerialPort::Port::kMXP);
     } catch (std::exception ex ) {
         std::string err_string = "Error instantiating navX-MXP:  ";
         err_string += ex.what();
@@ -81,6 +81,10 @@ void DriveTrainSubsystem::DashboardDebugInit()
 void DriveTrainSubsystem::DashboardDebugPeriodic()
 {
     m_tankDrive.DashboardDebugPeriodic();
+    frc::SmartDashboard::PutNumber("Heading", GetHeading());
+    frc::SmartDashboard::PutNumber("Pitch", GetPitch());
+
+
 }
 
 double DriveTrainSubsystem::GetMaxSpeed()
@@ -101,6 +105,7 @@ double DriveTrainSubsystem::GetHeading()
     }
 
     return 0.0;
+
 }
 
 double DriveTrainSubsystem::GetPitch()
