@@ -38,4 +38,9 @@ class CargoArmSubsystem : public frc::Subsystem {
   void StopAtCurrentPosition();
 
   void StopAndZero();
+
+  void SetArmCurrentLimitHigh();
+  void SetArmCurrentLimitLow();
+
+  void SetArmPercentOutputLow();
 };

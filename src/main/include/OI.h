@@ -28,6 +28,7 @@ private:
   //Right
   frc::JoystickButton m_deliver { &m_rightDriverJoystick, 1};
   // frc::JoystickButton m_followLine { &m_rightDriverJoystick, 2};
+  frc::JoystickButton m_resetCargoArm { &m_rightDriverJoystick, 8};
 
   // Co Pilot Buttons
   // frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 1};
