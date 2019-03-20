@@ -160,7 +160,7 @@ void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
     position = kLiftFirstStopPosition;
   }
 
-  m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
+  m_liftPidController.SetReference(-position, rev::ControlType::kSmartMotion, arbFF);
 }
 
 void LiftAndShuttleSubsystem::StopAtCurrentPosition()
