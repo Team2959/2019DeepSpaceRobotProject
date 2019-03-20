@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ResetCargoArmCommand.h"
-
 #include "Robot.h"
 
 ResetCargoArmCommand::ResetCargoArmCommand() {
@@ -19,12 +18,10 @@ void ResetCargoArmCommand::Initialize() {
   Robot::m_cargoArmSubsystem.SetArmPercentOutputLow();
 }
 
-
 // Called repeatedly when this Command is scheduled to run
 void ResetCargoArmCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-
 bool ResetCargoArmCommand::IsFinished() {return false;}
 
 // Called once after isFinished returns true
@@ -40,4 +37,3 @@ void ResetCargoArmCommand::Interrupted()
 {
   End();
 }
-

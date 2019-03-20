@@ -11,7 +11,6 @@
 #include "subsystems/LiftAndShuttlePositions.h"
 #include "subsystems/CargoArmPositions.h"
 
-
 MoveLiftAndShuttleCommand::MoveLiftAndShuttleCommand(double targetLiftPosition)
 {
   Requires(&Robot::m_liftAndShuttleSubsystem);
