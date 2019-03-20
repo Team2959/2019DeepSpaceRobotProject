@@ -81,6 +81,10 @@ void DriveTrainSubsystem::DashboardDebugInit()
 void DriveTrainSubsystem::DashboardDebugPeriodic()
 {
     m_tankDrive.DashboardDebugPeriodic();
+    frc::SmartDashboard::PutNumber("Heading", GetHeading());
+    frc::SmartDashboard::PutNumber("Pitch", GetPitch());
+
+
 }
 
 double DriveTrainSubsystem::GetMaxSpeed()
@@ -101,6 +105,7 @@ double DriveTrainSubsystem::GetHeading()
     }
 
     return 0.0;
+
 }
 
 double DriveTrainSubsystem::GetPitch()

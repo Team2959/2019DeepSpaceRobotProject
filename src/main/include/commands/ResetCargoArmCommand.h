@@ -7,21 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include <frc/DoubleSolenoid.h>
-#include "RobotMap.h"
+#include <frc/commands/Command.h>
 
-class ClimbSubsystem : public frc::Subsystem {
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-
-  //frc::DoubleSolenoid m_shifter {kFirstLiftShifterSolenoid, kSecondLiftShifterSolenoid};
-
-
+class ResetCargoArmCommand : public frc::Command {
  public:
-  ClimbSubsystem();
-  void InitDefaultCommand() override;
-  void HighClimbPosition();
-  void LowClimbPosition();
+  ResetCargoArmCommand();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };

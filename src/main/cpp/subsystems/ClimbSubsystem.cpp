@@ -15,12 +15,14 @@ void ClimbSubsystem::InitDefaultCommand() {
 }
 void ClimbSubsystem::HighClimbPosition()
 {
-    m_shifter.Set(frc::DoubleSolenoid::Value::kForward);
+    //m_shifter.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
 void ClimbSubsystem::LowClimbPosition()
 {
-    m_shifter.Set(frc::DoubleSolenoid::Value::kReverse);
+
+    //m_shifter.Set(frc::DoubleSolenoid::Value::kReverse);
+
 }
 
 // Put methods for controlling this subsystem
