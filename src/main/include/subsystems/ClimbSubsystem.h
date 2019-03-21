@@ -13,6 +13,8 @@
 #include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 #include "RobotMap.h"
 
+constexpr double kClimbWheelsHoldingCurrent = 1;
+
 class ClimbSubsystem : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
@@ -28,5 +30,9 @@ class ClimbSubsystem : public frc::Subsystem {
   ClimbSubsystem();
   void InitDefaultCommand() override;
   void ClimbWheelsSetPosition(double position);
+  void ClimbSolenoidEngage();
+  void ClimbSolenoidDisengage();
+  void PowerToClimbWheels();
+  
 
 };

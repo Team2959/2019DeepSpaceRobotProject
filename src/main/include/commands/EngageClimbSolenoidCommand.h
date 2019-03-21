@@ -18,3 +18,4 @@ class EngageClimbSolenoidCommand : public frc::Command {
   void End() override;
   void Interrupted() override;
 };
+
