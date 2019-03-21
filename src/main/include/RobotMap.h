@@ -32,16 +32,19 @@ constexpr int kLiftFollower2CanSparkMaxMotor = 9;
 constexpr int kLeftCargoArmCanTalonSrxMotor = 13;
 constexpr int kRightCargoArmCanTalonSrxMotor = 14;
 
+constexpr int kLeftClimbCanTalonSrxMotor = 15;
+constexpr int kRightClimbCanTalonSrxMotor = 16;
+
 // PWM motor addresses
 constexpr int kCargoArmWheelsPwmSparkMotor = 0;
-constexpr int kClimbWheelsPwmSparkMotor = 1;
-constexpr int kClimbEngagePwmSparkMotor = 2;
+// constexpr int kClimbWheelsPwmSparkMotor = 1;
+// constexpr int kClimbEngagePwmSparkMotor = 2;
 
 // PCM solenoid addresses
 constexpr int kHatchAttachSolenoid = 0;
 constexpr int kHatchReleaseSolenoid = 1;
 constexpr int kHatchSafetySolenoid = 2;
-constexpr int kCargoArmExtendSolenoid = 3;
+constexpr int kClimbEngageSolenoid = 3;
 
 constexpr int kTallClimbEngageSolenoid = 4;
 

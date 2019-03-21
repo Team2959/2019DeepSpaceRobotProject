@@ -9,6 +9,8 @@
 
 #include <frc/commands/Subsystem.h>
 #include <frc/DoubleSolenoid.h>
+#include <frc/Solenoid.h>
+#include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 #include "RobotMap.h"
 
 class ClimbSubsystem : public frc::Subsystem {
@@ -17,11 +19,14 @@ class ClimbSubsystem : public frc::Subsystem {
   // for methods that implement subsystem capabilities
 
   //frc::DoubleSolenoid m_shifter {kFirstLiftShifterSolenoid, kSecondLiftShifterSolenoid};
-
+  frc::Solenoid m_climbEngage {kClimbEngageSolenoid};
+  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_left { kLeftClimbCanTalonSrxMotor };
+  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightClimbCanTalonSrxMotor };
+  ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfig;
 
  public:
   ClimbSubsystem();
   void InitDefaultCommand() override;
-  void HighClimbPosition();
-  void LowClimbPosition();
+  void ClimbWheelsSetPosition(double position);
+
 };

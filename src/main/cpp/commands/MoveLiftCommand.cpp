@@ -53,5 +53,8 @@ void MoveLiftCommand::Initialize()
     case LiftTargetLevel::GrabHatchFromWall:
       m_targetLiftPosition = kLiftGrabHatchFromWallPosition;
       break;
+    case LiftTargetLevel::Climb:
+      m_targetLiftPosition = kLiftClimbPosition;
+      break;
   }
 }

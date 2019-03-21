@@ -6,6 +6,12 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ClimbCommandGroup.h"
+#include "commands/MoveLiftCommand.h"
+#include "commands/MoveCargoArmCommand.h"
+#include "subsystems/CargoArmPositions.h"
+#include "commands/EngageClimbSolenoidCommand.h"
+
+#include <frc/commands/TimedCommand.h>
 
 ClimbCommandGroup::ClimbCommandGroup() {
   // Add Commands here:
@@ -24,4 +30,9 @@ ClimbCommandGroup::ClimbCommandGroup() {
   // e.g. if Command1 requires chassis, and Command2 requires arm,
   // a CommandGroup containing them would require both the chassis and the
   // arm.
+
+  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Climb));
+  AddSequential(new MoveCargoArmCommand(kArmTiltBackwardPosition));
+  AddSequential(new EngageClimbSolenoidCommand());
+  AddSequential(new frc::TimedCommand(1));
 }
