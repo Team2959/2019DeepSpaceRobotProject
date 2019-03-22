@@ -29,10 +29,12 @@ void ExtendCargoArmCommand::Execute()
 {
   // try to extend arm
   if (Robot::m_driveTrainSubsystem.IsBeyondTypicalPitch()) {
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmExtendPosition + (Robot::m_driveTrainSubsystem.GetPitch() * kArmDegreeToEncoder));
+    m_trueExtendPosition = kArmExtendPosition + (Robot::m_driveTrainSubsystem.GetPitch() * kArmDegreeToEncoder);
   } else {
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmExtendPosition);
+    m_trueExtendPosition = kArmExtendPosition;
   }
+
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(m_trueExtendPosition);
 
   // start wheels
   if (Robot::m_cargoControlSubsystem.CargoIn() == false && m_wheelsStarted == false)
@@ -46,7 +48,7 @@ void ExtendCargoArmCommand::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendCargoArmCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmExtendPosition);
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition(m_trueExtendPosition);
 }
 
 // Called once after isFinished returns true
