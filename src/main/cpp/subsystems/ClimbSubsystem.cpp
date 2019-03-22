@@ -26,11 +26,6 @@ ClimbSubsystem::ClimbSubsystem() : Subsystem("ClimbSubsystem") {
     m_right.SetInverted( ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
 }
 
-void ClimbSubsystem::InitDefaultCommand() {
-  // Set the default command for a subsystem here.
-  // SetDefaultCommand(new MySpecialCommand());
-}
-
 void ClimbSubsystem::ClimbWheelsSetPosition(double position)
 {
     m_left.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
@@ -50,6 +45,3 @@ void ClimbSubsystem::PowerToClimbWheels()
 {
     m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Current, kClimbWheelsHoldingCurrent);
 }
-
-// Put methods for controlling this subsystem
-// here. Call these from Commands.

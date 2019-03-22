@@ -28,12 +28,11 @@ constexpr int kLiftFollower2CanSparkMaxMotor = 9;
 
 // constexpr int kLeftCargoShuttleCanTalonSrxMotor = 11;
 // constexpr int kRightCargoShuttleCanTalonSrxMotor = 12;
+constexpr int kLeftClimbCanTalonSrxMotor = 11;
+constexpr int kRightClimbCanTalonSrxMotor = 12;
 
 constexpr int kLeftCargoArmCanTalonSrxMotor = 13;
 constexpr int kRightCargoArmCanTalonSrxMotor = 14;
-
-constexpr int kLeftClimbCanTalonSrxMotor = 15;
-constexpr int kRightClimbCanTalonSrxMotor = 16;
 
 // PWM motor addresses
 constexpr int kCargoArmWheelsPwmSparkMotor = 0;

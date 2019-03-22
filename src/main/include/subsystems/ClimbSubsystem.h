@@ -19,8 +19,6 @@ class ClimbSubsystem : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-
-  //frc::DoubleSolenoid m_shifter {kFirstLiftShifterSolenoid, kSecondLiftShifterSolenoid};
   frc::Solenoid m_climbEngage {kClimbEngageSolenoid};
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_left { kLeftClimbCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightClimbCanTalonSrxMotor };
@@ -28,11 +26,9 @@ class ClimbSubsystem : public frc::Subsystem {
 
  public:
   ClimbSubsystem();
-  void InitDefaultCommand() override;
+
   void ClimbWheelsSetPosition(double position);
   void ClimbSolenoidEngage();
   void ClimbSolenoidDisengage();
   void PowerToClimbWheels();
-  
-
 };

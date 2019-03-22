@@ -21,7 +21,8 @@ class MoveLiftCommand : public MoveLiftAndShuttleCommand
     TopRocket,
     RaiseHatchFromWall,
     GrabHatchFromWall,
-    Climb
+    ClimbHab3,
+    ClimbHab2
   };
 
  private:

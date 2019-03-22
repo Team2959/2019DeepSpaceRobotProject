@@ -13,26 +13,13 @@
 
 #include <frc/commands/TimedCommand.h>
 
-ClimbCommandGroup::ClimbCommandGroup() {
-  // Add Commands here:
-  // e.g. AddSequential(new Command1());
-  //      AddSequential(new Command2());
-  // these will run in order.
-
-  // To run multiple commands at the same time,
-  // use AddParallel()
-  // e.g. AddParallel(new Command1());
-  //      AddSequential(new Command2());
-  // Command1 and Command2 will run in parallel.
-
-  // A command group will require all of the subsystems that each member
-  // would require.
-  // e.g. if Command1 requires chassis, and Command2 requires arm,
-  // a CommandGroup containing them would require both the chassis and the
-  // arm.
-
-  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Climb));
-  AddSequential(new MoveCargoArmCommand(kArmTiltBackwardPosition));
+ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
+{
+  AddParallel(new MoveCargoArmCommand(kArmTiltBackwardPosition));
+  if (targetLevel == TargetHabLevel::HabLevel2)
+    AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
+  else
+    AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab3));
   AddSequential(new EngageClimbSolenoidCommand());
-  AddSequential(new frc::TimedCommand(1));
+  AddSequential(new frc::TimedCommand(0.25));
 }
