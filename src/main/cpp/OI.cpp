@@ -39,6 +39,8 @@ OI::OI()
   // Co-Pilot Buttons
   // m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
   // m_shuttleRear.WhenPressed(new ShuttleTargetCommand(false));
+  m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
+  m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
 
   m_liftFloor.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
   m_liftBottom.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Bottom));
@@ -53,8 +55,6 @@ OI::OI()
 
   m_hatchFromLoadingStation.WhenPressed(new GrabHatchCommandGroup());
   m_liftHatchPickup.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::GrabHatchFromWall));
-
-  // m_climb.WhenPressed(new ClimbCommandGroup());
 
   // Sensor Triggers
   m_cargoIn.WhenActive(new StopCargoControlWheelsCommand(1.0, -1.0, kHoldCargoSpeed));

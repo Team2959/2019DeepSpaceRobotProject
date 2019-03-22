@@ -6,24 +6,42 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/ClimbSubsystem.h"
+#include "utilities/MotorControllerHelpers.h"
 
-ClimbSubsystem::ClimbSubsystem() : Subsystem("ClimbSubsystem") {}
+ClimbSubsystem::ClimbSubsystem() : Subsystem("ClimbSubsystem") {
+    m_left.GetSlotConfigs(m_pidConfig);
+    m_pidConfig.kP = 0.1;
+    m_pidConfig.kI = 0.0;
+    m_pidConfig.kD = 0;
+    m_pidConfig.kF = 0.057;
+    // m_pidConfig.integralZone = x;
+    // m_pidConfig.closedLoopPeakOutput = 1.0;
+    // m_pidConfig.allowableClosedloopError = 128;
 
-void ClimbSubsystem::InitDefaultCommand() {
-  // Set the default command for a subsystem here.
-  // SetDefaultCommand(new MySpecialCommand());
+    m_left.ConfigMotionCruiseVelocity(5000, 10);
+    m_left.ConfigMotionAcceleration(4500,10);
+
+    MotorControllerHelpers::ConfigureTalonSrxMotorController(m_left, m_pidConfig, false);
+    m_right.Follow(m_left);
+    m_right.SetInverted( ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
 }
-void ClimbSubsystem::HighClimbPosition()
+
+void ClimbSubsystem::ClimbWheelsSetPosition(double position)
 {
-    //m_shifter.Set(frc::DoubleSolenoid::Value::kForward);
+    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
 }
 
-void ClimbSubsystem::LowClimbPosition()
+void ClimbSubsystem::ClimbSolenoidEngage() 
 {
-
-    //m_shifter.Set(frc::DoubleSolenoid::Value::kReverse);
-
+    m_climbEngage.Set(true);
 }
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+void ClimbSubsystem::ClimbSolenoidDisengage()
+{
+    m_climbEngage.Set(false);
+}
+
+void ClimbSubsystem::PowerToClimbWheels()
+{
+    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Current, kClimbWheelsHoldingCurrent);
+}

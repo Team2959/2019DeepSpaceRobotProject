@@ -7,29 +7,15 @@
 
 #pragma once
 
-#include "commands/MoveLiftAndShuttleCommand.h"
+#include <frc/commands/Command.h>
 
-class MoveLiftCommand : public MoveLiftAndShuttleCommand
-{
+class EngageClimbSolenoidCommand : public frc::Command {
  public:
-  enum LiftTargetLevel
-  {
-    Floor,
-    Bottom,
-    CargoShip,
-    MiddleRocket,
-    TopRocket,
-    RaiseHatchFromWall,
-    GrabHatchFromWall,
-    ClimbHab3,
-    ClimbHab2
-  };
-
- private:
-  LiftTargetLevel m_liftTarget;
-
- public:
-  MoveLiftCommand(LiftTargetLevel liftTarget);
-
+  EngageClimbSolenoidCommand();
   void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };
+
