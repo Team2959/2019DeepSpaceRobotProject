@@ -142,3 +142,14 @@ bool DriveTrainSubsystem::WhiteTape3() const
 {
     return !m_whiteTape3.Get();
 }
+
+bool DriveTrainSubsystem::AreWheelsAtDistance(double targetDistance)
+{
+    return fabs(CurrentWheelDistance() - targetDistance) < kDistanceCloseEnough;
+}
+double DriveTrainSubsystem::CurrentWheelDistance()
+{
+    return m_leftDriveEncoder.GetPosition();
+}
+
+

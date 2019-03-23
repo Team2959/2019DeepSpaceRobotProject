@@ -45,3 +45,17 @@ void ClimbSubsystem::PowerToClimbWheels()
 {
     m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Current, kClimbWheelsHoldingCurrent);
 }
+void ClimbSubsystem::StopAtCurrentDistance()
+{
+    ClimbWheelsSetPosition(CurrentClimbWheelPosition());
+}
+bool ClimbSubsystem::AreClimbWheelsAtPosition( double targetPosition)
+{
+    //Check to see if distance driven is close
+    return fabs(CurrentClimbWheelPosition() - targetPosition) < kDriveCloseEnoughToPosition;
+}
+double ClimbSubsystem::CurrentClimbWheelPosition()
+{
+  return  m_left.GetSelectedSensorPosition();
+}
+

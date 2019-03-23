@@ -9,9 +9,12 @@
 #include "commands/MoveLiftCommand.h"
 #include "commands/MoveCargoArmCommand.h"
 #include "subsystems/CargoArmPositions.h"
+#include "subsystems/ClimbSubsystem.h"
+#include "subsystems/DriveTrainSubsystem.h"
 #include "commands/EngageClimbSolenoidCommand.h"
 #include "commands/PowerToClimbWheelsCommand.h"
-
+#include "commands/ClimbWheelsSetPositionCommand.h"
+#include "commands/DriveSetDistanceCommand.h"
 #include <frc/commands/TimedCommand.h>
 
 ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
@@ -27,4 +30,6 @@ ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
   AddSequential(new MoveCargoArmCommand(kArmExtendPosition));
   AddSequential(new PowerToClimbWheelsCommand());
   AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
+  AddSequential(new ClimbWheelsSetPositionCommand(kDriveClimbWheelsDistance));
+  AddSequential(new DriveSetDistanceCommand(kDriveTargetDistance,0.25));
 }

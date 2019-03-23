@@ -14,6 +14,8 @@
 #include "RobotMap.h"
 
 constexpr double kClimbWheelsHoldingCurrent = 1;
+constexpr double kDriveClimbWheelsDistance = 700;
+constexpr double kDriveCloseEnoughToPosition = 0.1;
 
 class ClimbSubsystem : public frc::Subsystem {
  private:
@@ -31,4 +33,9 @@ class ClimbSubsystem : public frc::Subsystem {
   void ClimbSolenoidEngage();
   void ClimbSolenoidDisengage();
   void PowerToClimbWheels();
+  void StopAtCurrentDistance();
+
+  bool AreClimbWheelsAtPosition(double position);
+
+  double CurrentClimbWheelPosition();
 };
