@@ -5,12 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "triggers/ShuttleRearLimitTrigger.h"
-#include "Robot.h"
+#pragma once
 
-ShuttleRearLimitTrigger::ShuttleRearLimitTrigger() {}
+#include <frc/commands/CommandGroup.h>
 
-bool ShuttleRearLimitTrigger::Get()
- { 
-    return Robot::m_liftAndShuttleSubsystem.IsAtShuttleRearLimit();
- }
+class DeliverHatchToRocketCommandGroup : public frc::CommandGroup {
+ public:
+  DeliverHatchToRocketCommandGroup();
+};

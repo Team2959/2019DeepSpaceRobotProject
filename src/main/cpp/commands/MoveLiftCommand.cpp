@@ -9,24 +9,14 @@
 #include "subsystems/LiftAndShuttlePositions.h"
 #include "Robot.h"
 
-MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget) : MoveLiftAndShuttleCommand(0, 0)
+MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget)
+   : MoveLiftAndShuttleCommand(0)
 {
   m_liftTarget = liftTarget;
 }
 
 void MoveLiftCommand::Initialize()
 {
-  // if shuttle target is front -> set shuttle target postion to kShuttleFrontPosition
-  if (Robot::m_oi.m_shuttleTargetFront == true)
-  {
-    m_targetShuttlePosition = kShuttleFrontPosition;
-  }
-  // else shuttle is rear -> set shuttle target postion to kShuttleRearPosition
-  else
-  {
-    m_targetShuttlePosition = kShuttleRearPosition;
-  }
-
   auto cargoIn = Robot::m_cargoControlSubsystem.CargoIn();
   switch (m_liftTarget)
   {
@@ -40,7 +30,10 @@ void MoveLiftCommand::Initialize()
         m_targetLiftPosition = kLiftBottomHatchPosition;
       break;
     case LiftTargetLevel::CargoShip:
-      m_targetLiftPosition = kLiftFloorPosition;
+      if (cargoIn)
+        m_targetLiftPosition = kLiftCargoShipPosition;
+      else
+        m_targetLiftPosition = kLiftCargoShipHatchPosition;
       break;
     case LiftTargetLevel::MiddleRocket:
       if (cargoIn)
@@ -53,6 +46,18 @@ void MoveLiftCommand::Initialize()
         m_targetLiftPosition = kLiftTopCargoPosition;
       else
         m_targetLiftPosition = kLiftTopHatchPosition;
+      break;
+    case LiftTargetLevel::RaiseHatchFromWall:
+      m_targetLiftPosition = kLiftRemoveHatchFromWallPosition;
+      break;
+    case LiftTargetLevel::GrabHatchFromWall:
+      m_targetLiftPosition = kLiftGrabHatchFromWallPosition;
+      break;
+    case LiftTargetLevel::ClimbHab2:
+      m_targetLiftPosition = kLiftClimbHab2Position;
+      break;
+    case LiftTargetLevel::ClimbHab3:
+      m_targetLiftPosition = kLiftClimbHab3Position;
       break;
   }
 }

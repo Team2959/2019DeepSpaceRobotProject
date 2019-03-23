@@ -5,16 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/ConditionalCommand.h>
 
-class CargoShuttleStopAtFrontCommand : public frc::Command {
+class DeliverHatchConditionalCommand : public frc::ConditionalCommand {
  public:
-  CargoShuttleStopAtFrontCommand();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  DeliverHatchConditionalCommand();
+
+  protected:
+    virtual bool Condition() override;
 };
+

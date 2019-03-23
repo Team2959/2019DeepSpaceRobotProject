@@ -5,31 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
+#include "commands/AutonomousStartWithHatchCommandGroup.h"
 #include "commands/MoveLiftAndShuttleCommand.h"
+#include "commands/PrepForHatchCommand.h"
+#include "subsystems/LiftAndShuttlePositions.h"
+#include "commands/RetractMechanismCommand.h"
+#include <frc/commands/TimedCommand.h>
 
-class MoveLiftCommand : public MoveLiftAndShuttleCommand
+AutonomousStartWithHatchCommandGroup::AutonomousStartWithHatchCommandGroup()
 {
- public:
-  enum LiftTargetLevel
-  {
-    Floor,
-    Bottom,
-    CargoShip,
-    MiddleRocket,
-    TopRocket,
-    RaiseHatchFromWall,
-    GrabHatchFromWall,
-    ClimbHab3,
-    ClimbHab2
-  };
-
- private:
-  LiftTargetLevel m_liftTarget;
-
- public:
-  MoveLiftCommand(LiftTargetLevel liftTarget);
-
-  void Initialize() override;
-};
+  AddSequential(new PrepForHatchCommand());
+  AddSequential(new frc::TimedCommand(0.25));
+  AddSequential(new MoveLiftAndShuttleCommand(kLiftCargoShipHatchPosition));
+  AddSequential(new RetractMechanismCommand());
+}

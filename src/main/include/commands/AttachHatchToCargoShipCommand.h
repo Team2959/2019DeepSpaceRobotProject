@@ -9,10 +9,9 @@
 
 #include <frc/commands/Command.h>
 
-class CargoArmUpCommand : public frc::Command {
+class AttachHatchToCargoShipCommand : public frc::Command {
  public:
-  CargoArmUpCommand();
-  
+  AttachHatchToCargoShipCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

@@ -13,8 +13,6 @@
 #include "commands/MoveCargoBallCommand.h"
 
 ExtendCargoArmCommand::ExtendCargoArmCommand() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(&Robot::m_cargoArmSubsystem);
   Requires(&Robot::m_hatchSubsystem);
 }
@@ -22,34 +20,35 @@ ExtendCargoArmCommand::ExtendCargoArmCommand() {
 // Called just before this Command runs the first time
 void ExtendCargoArmCommand::Initialize()
 {
+  m_wheelsStarted = false;
   Robot::m_hatchSubsystem.RetractMechanism();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ExtendCargoArmCommand::Execute() 
 {
-  // keep feeding the target position, in case we could only go part way
-  if (Robot::m_liftAndShuttleSubsystem.CurrentShuttlePosition() >= 0)
+  // try to extend arm
+  if (Robot::m_driveTrainSubsystem.IsBeyondTypicalPitch()) {
+    m_trueExtendPosition = kArmExtendPosition + (Robot::m_driveTrainSubsystem.GetPitch() * kArmDegreeToEncoder);
+  } else {
+    m_trueExtendPosition = kArmExtendPosition;
+  }
+
+  Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(m_trueExtendPosition);
+
+  // start wheels
+  if (Robot::m_cargoControlSubsystem.CargoIn() == false && m_wheelsStarted == false)
   {
-    bool atFront = Robot::m_liftAndShuttleSubsystem.IsShuttleAtPosition(kShuttleFrontPosition);
-
-    // try to extend arm
-    Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(kArmFrontPosition, atFront);
-
-    // start wheels, once at front
-    if (atFront && Robot::m_cargoControlSubsystem.CargoIn() == false && m_wheelsStarted == false)
-    {
-      auto ptr = new MoveCargoBallCommand(false, false);
-      ptr->Start();
-      m_wheelsStarted = true;
-    }
+    auto ptr = new MoveCargoBallCommand(false, false);
+    ptr->Start();
+    m_wheelsStarted = true;
   }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendCargoArmCommand::IsFinished()
 {
-  return Robot::m_cargoArmSubsystem.IsArmAtPosition(kArmFrontPosition);
+  return Robot::m_cargoArmSubsystem.IsArmAtPosition(m_trueExtendPosition);
 }
 
 // Called once after isFinished returns true

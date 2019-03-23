@@ -8,7 +8,7 @@
 #include "subsystems/CargoControlSubsystem.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-constexpr double kWheelPickupSpeed = 0.5;
+constexpr double kWheelPickupSpeed = 0.35;
 constexpr double kWheelDeliverSpeed = 1;
 
 CargoControlSubsystem::CargoControlSubsystem() : Subsystem("CargoControlSubsystem")
@@ -21,14 +21,14 @@ void CargoControlSubsystem::OnRobotInit()
 {
   StopWheels();
   
-  frc::SmartDashboard::PutBoolean("Cargo 1", false);
+  frc::SmartDashboard::PutBoolean("Cargo", false);
 
   DashboardDebugInit();
 }
 
 void CargoControlSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
-  frc::SmartDashboard::PutBoolean("Cargo 1", !m_cargoIn.Get());
+  frc::SmartDashboard::PutBoolean("Cargo", !m_cargoIn.Get());
 
   if (updateDebugInfo)
     DashboardDebugPeriodic();
@@ -39,8 +39,8 @@ void CargoControlSubsystem::DashboardDebugInit()
   frc::SmartDashboard::PutData(this);
 
   frc::SmartDashboard::PutBoolean("Cargo Move", false);
-  frc::SmartDashboard::PutNumber("Cargo Pickup Speed", 0.5);
-  frc::SmartDashboard::PutNumber("Cargo Deliver Speed", 1);
+  frc::SmartDashboard::PutNumber("Cargo Pickup Speed", kWheelPickupSpeed);
+  frc::SmartDashboard::PutNumber("Cargo Deliver Speed", kWheelDeliverSpeed);
 }
 
 void CargoControlSubsystem::DashboardDebugPeriodic()
@@ -48,8 +48,8 @@ void CargoControlSubsystem::DashboardDebugPeriodic()
   auto start = frc::SmartDashboard::GetBoolean("Cargo Move", false);
   if (start && !CargoIn())
   {
-    m_wheelPickupSpeed = frc::SmartDashboard::GetNumber("Cargo Pickup Speed", 0.5);
-    m_wheelDeliverSpeed = frc::SmartDashboard::GetNumber("Cargo Deliver Speed", 1);
+    m_wheelPickupSpeed = frc::SmartDashboard::GetNumber("Cargo Pickup Speed", kWheelPickupSpeed);
+    m_wheelDeliverSpeed = frc::SmartDashboard::GetNumber("Cargo Deliver Speed", kWheelDeliverSpeed);
     ChangeWheelsSpeed(m_wheelPickupSpeed);
   }
   else

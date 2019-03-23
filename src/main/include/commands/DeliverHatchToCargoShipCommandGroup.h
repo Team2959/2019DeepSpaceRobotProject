@@ -7,12 +7,9 @@
 
 #pragma once
 
-#include <frc/commands/ConditionalCommand.h>
+#include <frc/commands/CommandGroup.h>
 
-class MoveCargoConditionalCommand : public frc::ConditionalCommand {
+class DeliverHatchToCargoShipCommandGroup : public frc::CommandGroup {
  public:
-  MoveCargoConditionalCommand();
-
-  protected:
-    virtual bool Condition() override;
+  DeliverHatchToCargoShipCommandGroup();
 };

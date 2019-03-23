@@ -26,33 +26,36 @@ constexpr int kLiftPrimaryCanSparkMaxMotor = 7;
 constexpr int kLiftFollower1CanSparkMaxMotor = 8;
 constexpr int kLiftFollower2CanSparkMaxMotor = 9;
 
-constexpr int kLeftCargoShuttleCanTalonSrxMotor = 11;
-constexpr int kRightCargoShuttleCanTalonSrxMotor = 12;
+// constexpr int kLeftCargoShuttleCanTalonSrxMotor = 11;
+// constexpr int kRightCargoShuttleCanTalonSrxMotor = 12;
+constexpr int kLeftClimbCanTalonSrxMotor = 11;
+constexpr int kRightClimbCanTalonSrxMotor = 12;
 
 constexpr int kLeftCargoArmCanTalonSrxMotor = 13;
 constexpr int kRightCargoArmCanTalonSrxMotor = 14;
 
 // PWM motor addresses
 constexpr int kCargoArmWheelsPwmSparkMotor = 0;
-constexpr int kClimbWheelsPwmSparkMotor = 1;
-constexpr int kClimbEngagePwmSparkMotor = 2;
+// constexpr int kClimbWheelsPwmSparkMotor = 1;
+// constexpr int kClimbEngagePwmSparkMotor = 2;
 
 // PCM solenoid addresses
 constexpr int kHatchAttachSolenoid = 0;
 constexpr int kHatchReleaseSolenoid = 1;
 constexpr int kHatchSafetySolenoid = 2;
-constexpr int kCargoArmExtendSolenoid = 3;
+constexpr int kClimbEngageSolenoid = 3;
+
 constexpr int kTallClimbEngageSolenoid = 4;
+
 
 // Digital IO addresses
 constexpr int kLiftBottomSwitch = 0;
 constexpr int kCargoInSwitch = 1;
-constexpr int kCargoShuttleFrontSwitchTrigger = 2;
-constexpr int kCargoShuttleBackSwitchTrigger = 3;
+// constexpr int kCargoShuttleFrontSwitchTrigger = 2;
+// constexpr int kCargoShuttleBackSwitchTrigger = 3;
 constexpr int kWhiteTapeSwitch1 = 4;
 constexpr int kWhiteTapeSwitch2 = 7;
 constexpr int kWhiteTapeSwitch3 = 8;
-
 
 // Operator input USB ports
 constexpr int kLeftDriverUSBController = 0;

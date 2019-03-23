@@ -8,39 +8,27 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include <frc/DoubleSolenoid.h>
+#include <frc/Solenoid.h>
 #include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 #include "RobotMap.h"
 
-class CargoArmSubsystem : public frc::Subsystem {
+constexpr double kClimbWheelsHoldingCurrent = 1;
+
+class ClimbSubsystem : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_left { kLeftCargoArmCanTalonSrxMotor };
-  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightCargoArmCanTalonSrxMotor };
+  frc::Solenoid m_climbEngage {kClimbEngageSolenoid};
+  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_left { kLeftClimbCanTalonSrxMotor };
+  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightClimbCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfig;
 
-  double CurrentArmPosition();
-
-  void DashboardDebugInit();
-  void DashboardDebugPeriodic();
-  bool m_updateDebugInfo = false;
-
  public:
-  CargoArmSubsystem();
+  ClimbSubsystem();
 
-  void OnRobotInit();
-  void OnRobotPeriodic(bool updateDebugInfo);
-
-  bool IsArmAtPosition(double targetPosition);
-
-  void MoveCargoArmToPosition(double targetPosition);
-
-  void StopAtCurrentPosition();
-
-  void StopAndZero();
-
-  void SetArmCurrentLimitHigh();
-  void SetArmCurrentLimitLow();
-
-  void SetArmPercentOutputLow();
+  void ClimbWheelsSetPosition(double position);
+  void ClimbSolenoidEngage();
+  void ClimbSolenoidDisengage();
+  void PowerToClimbWheels();
 };

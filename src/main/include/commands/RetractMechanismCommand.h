@@ -7,14 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/TimedCommand.h>
 
-class RetractMechanismCommand : public frc::Command {
+class RetractMechanismCommand : public frc::TimedCommand {
  public:
-  RetractMechanismCommand();
+  RetractMechanismCommand(double timeout = 0.1);
+
   void Initialize() override;
   void Execute() override;
-  bool IsFinished() override;
   void End() override;
   void Interrupted() override;
 };

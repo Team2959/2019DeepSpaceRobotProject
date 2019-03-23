@@ -11,5 +11,11 @@
 
 class ClimbCommandGroup : public frc::CommandGroup {
  public:
-  ClimbCommandGroup();
+  enum TargetHabLevel
+  {
+    HabLevel3,
+    HabLevel2
+  };
+
+  ClimbCommandGroup(TargetHabLevel targetLevel);
 };

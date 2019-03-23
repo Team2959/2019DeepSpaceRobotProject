@@ -5,32 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DeliverHatchCommandGroup.h"
+#include "commands/DeliverHatchToRocketCommandGroup.h"
 #include "commands/AttachHatchCommand.h"
 #include "commands/ReleaseHatchCommand.h"
 #include "commands/RetractMechanismCommand.h"
 #include <frc/commands/TimedCommand.h>
+#include "commands/MoveLiftDownForHatchCommand.h"
+#include "commands/KeepPinsOutCommand.h"
 
-DeliverHatchCommandGroup::DeliverHatchCommandGroup() {
-  // Add Commands here:
-  // e.g. AddSequential(new Command1());
-  //      AddSequential(new Command2());
-  // these will run in order.
-
-  // To run multiple commands at the same time,
-  // use AddParallel()
-  // e.g. AddParallel(new Command1());
-  //      AddSequential(new Command2());
-  // Command1 and Command2 will run in parallel.
-
-  // A command group will require all of the subsystems that each member
-  // would require.
-  // e.g. if Command1 requires chassis, and Command2 requires arm,
-  // a CommandGroup containing them would require both the chassis and the
-  // arm.
+DeliverHatchToRocketCommandGroup::DeliverHatchToRocketCommandGroup()
+{
+  // extend safety and attach mechanisms
   AddSequential(new AttachHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
+  // extend pins
   AddSequential(new ReleaseHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
+  // retract pins
+  AddSequential(new AttachHatchCommand());
+  AddSequential(new frc::TimedCommand(0.25));
+  // drop relative to current height
+  AddSequential(new MoveLiftDownForHatchCommand());
+  // extend pins
+  AddSequential(new ReleaseHatchCommand());
+  AddSequential(new frc::TimedCommand(0.25));
+  // Retract safety and attatch mechanisms
+  AddSequential(new KeepPinsOutCommand());
+  AddSequential(new frc::TimedCommand(0.25));
+  // Retract pins
   AddSequential(new RetractMechanismCommand());
 }

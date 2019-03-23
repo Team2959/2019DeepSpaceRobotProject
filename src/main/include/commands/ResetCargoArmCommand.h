@@ -7,9 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
+#include <frc/commands/Command.h>
 
-class DeliverHatchCommandGroup : public frc::CommandGroup {
+class ResetCargoArmCommand : public frc::Command {
  public:
-  DeliverHatchCommandGroup();
+  ResetCargoArmCommand();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };

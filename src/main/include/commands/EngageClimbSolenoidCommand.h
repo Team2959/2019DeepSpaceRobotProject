@@ -7,10 +7,15 @@
 
 #pragma once
 
-#include <frc/buttons/Trigger.h>
+#include <frc/commands/Command.h>
 
-class ShuttleRearLimitTrigger : public frc::Trigger {
+class EngageClimbSolenoidCommand : public frc::Command {
  public:
-  ShuttleRearLimitTrigger();
-  bool Get() override;
+  EngageClimbSolenoidCommand();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };
+

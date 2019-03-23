@@ -5,30 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/CargoShuttleStopAtBackCommand.h"
-#include "subsystems/LiftAndShuttleSubsystem.h"
+#include "commands/AttachHatchToCargoShipCommand.h"
 #include "Robot.h"
 
-CargoShuttleStopAtBackCommand::CargoShuttleStopAtBackCommand() {
+AttachHatchToCargoShipCommand::AttachHatchToCargoShipCommand() {
   // Use Requires() here to declare subsystem dependencies
-  Requires(&Robot::m_liftAndShuttleSubsystem);
+  // eg. Requires(Robot::chassis.get());
+    Requires(&Robot::m_hatchSubsystem);
 }
 
 // Called just before this Command runs the first time
-void CargoShuttleStopAtBackCommand::Initialize() 
-{
-  Robot::m_liftAndShuttleSubsystem.CargoShuttleBackStop();
+void AttachHatchToCargoShipCommand::Initialize() {
+  Robot::m_hatchSubsystem.AttachHatchToCargoShip();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void CargoShuttleStopAtBackCommand::Execute() {}
+void AttachHatchToCargoShipCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool CargoShuttleStopAtBackCommand::IsFinished() { return true; }
+bool AttachHatchToCargoShipCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void CargoShuttleStopAtBackCommand::End() {}
+void AttachHatchToCargoShipCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void CargoShuttleStopAtBackCommand::Interrupted() {}
+void AttachHatchToCargoShipCommand::Interrupted() {}

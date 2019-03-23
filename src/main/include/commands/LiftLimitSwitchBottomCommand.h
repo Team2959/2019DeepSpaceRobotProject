@@ -12,8 +12,6 @@
 
 class LiftLimitSwitchBottomCommand : public frc::Command {
  public:
-
-
   LiftLimitSwitchBottomCommand();
   void Initialize() override;
   void Execute() override;

@@ -9,6 +9,8 @@
 #include "commands/DriveWithControllerCommand.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include <cmath>
+
 DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
 {
     // Set up the motor controllers
@@ -22,10 +24,9 @@ DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
     // m_rightFollower.Follow(m_rightPrimary);
     // m_leftFollower.Follow(m_leftPrimary);
 
-     try {
-        /* Communicate w/navX-MXP via the MXP SPI Bus.                                       */
-        /* Alternatively:  I2C::Port::kMXP, SerialPort::Port::kMXP or SerialPort::Port::kUSB */
-        /* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details.   */
+    try {
+        /* Communicate w/navX-MXP via the MXP USB.
+           See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details.   */
         ahrs = new AHRS(SerialPort::Port::kUSB);
     } catch (std::exception ex ) {
         std::string err_string = "Error instantiating navX-MXP:  ";
@@ -80,6 +81,10 @@ void DriveTrainSubsystem::DashboardDebugInit()
 void DriveTrainSubsystem::DashboardDebugPeriodic()
 {
     m_tankDrive.DashboardDebugPeriodic();
+    frc::SmartDashboard::PutNumber("Heading", GetHeading());
+    frc::SmartDashboard::PutNumber("Pitch", GetPitch());
+
+
 }
 
 double DriveTrainSubsystem::GetMaxSpeed()
@@ -90,6 +95,32 @@ double DriveTrainSubsystem::GetMaxSpeed()
 double DriveTrainSubsystem::GetMaxAccel()
 {
     return kDriveSafetyFactor * kRobotMaxAccel;
+}
+
+
+double DriveTrainSubsystem::GetHeading()
+{
+    if (ahrs) {
+        return ahrs->GetFusedHeading();
+    }
+
+    return 0.0;
+
+}
+
+double DriveTrainSubsystem::GetPitch()
+{
+    if (ahrs) {
+        return ahrs->GetPitch();
+    }
+
+    return 0.0;
+}
+
+bool DriveTrainSubsystem::IsBeyondTypicalPitch()
+{
+    double magnitude = std::abs(GetPitch());
+    return magnitude > kDriveTiltThreshold;
 }
 
 void DriveTrainSubsystem::DisabledWatchDog()

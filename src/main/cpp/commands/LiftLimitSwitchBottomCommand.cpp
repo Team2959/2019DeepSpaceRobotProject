@@ -10,7 +10,6 @@
 #include "subsystems/LiftAndShuttleSubsystem.h"
 
 LiftLimitSwitchBottomCommand::LiftLimitSwitchBottomCommand() {
-  // Use Requires() here to declare subsystem dependencies
   Requires(&Robot::m_liftAndShuttleSubsystem);
 }
 

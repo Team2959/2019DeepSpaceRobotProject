@@ -12,49 +12,21 @@
 #include <frc/DigitalInput.h>
 #include <algorithm>
 
-// Shuttle constants
-constexpr double kShuttleCloseEnoughToPosition = 500;
-constexpr double kShuttleSafeFrontPosition = 5000;
-constexpr double kShuttleSafeRearPosition = -3700;
-constexpr double kShuttleKP = 0.37;
-constexpr double kShuttleKFf = 0.2046;
-constexpr double kShuttleCruiseVelocity = 3000;
-constexpr double kShuttleAcceleration = 4500;
-
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.1;
-constexpr double kLiftMaxSafeHeight = 2;
 constexpr double kLiftKP = 0.00012;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
 constexpr double kLiftMaxAcceleration = 9000;
+constexpr double kLiftFirstStopPosition = 40;
+constexpr double kLiftCloseToStop = 2;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
-  // Shuttle motor controller configuration
-  m_rightShuttle.GetSlotConfigs(m_pidConfigShuttle);
-  m_pidConfigShuttle.kP = kShuttleKP;
-  m_pidConfigShuttle.kI = 0;
-  m_pidConfigShuttle.kD = 0;
-  m_pidConfigShuttle.kF = kShuttleKFf;
-  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_leftShuttle, m_pidConfigShuttle, true);
-  MotorControllerHelpers::ConfigureTalonSrxMotorController(m_rightShuttle, m_pidConfigShuttle, false);
-
-  m_leftShuttle.ConfigMotionCruiseVelocity(kShuttleCruiseVelocity, 10);
-  m_leftShuttle.ConfigMotionAcceleration(kShuttleAcceleration,10);
-
-  m_rightShuttle.ConfigMotionCruiseVelocity(kShuttleCruiseVelocity, 10);
-  m_rightShuttle.ConfigMotionAcceleration(kShuttleAcceleration,10);
 }
 
 void LiftAndShuttleSubsystem::OnRobotInit()
 {
-  // Zero shuttle positions
-	m_leftShuttle.SetSelectedSensorPosition(0,0,0);
-	m_rightShuttle.SetSelectedSensorPosition(0,0,0);
-
-  MoveShuttleToPosition(0);
-
   // Lift motor contorller configuration
   MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80, false);
 
@@ -68,8 +40,6 @@ void LiftAndShuttleSubsystem::OnRobotInit()
   MoveLiftToPosition(0);
 
   frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", IsLiftAtBottom());
-  frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
-  frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", IsAtShuttleRearLimit());
 
   DashboardDebugInit();
 }
@@ -83,6 +53,7 @@ void LiftAndShuttleSubsystem::ConfigureLiftPid(rev::CANPIDController & pidConfig
   pidConfig.SetIZone(0);
   pidConfig.SetFF(0);
   pidConfig.SetOutputRange(-1, 1);
+  pidConfig.SetP(kLiftKP);
 
   pidConfig.SetSmartMotionMaxVelocity(kLiftMaxVelocity);
   pidConfig.SetSmartMotionMinOutputVelocity(0);
@@ -93,8 +64,6 @@ void LiftAndShuttleSubsystem::ConfigureLiftPid(rev::CANPIDController & pidConfig
 void LiftAndShuttleSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
   frc::SmartDashboard::PutBoolean("Lift: Bottom Limit", IsLiftAtBottom());
-  frc::SmartDashboard::PutBoolean("Shtl: Front Limit", IsAtShuttleFrontLimit());
-  frc::SmartDashboard::PutBoolean("Shtl: Rear Limit", IsAtShuttleRearLimit());
 
   m_updateDebugInfo = updateDebugInfo;
   if (updateDebugInfo)
@@ -104,8 +73,6 @@ void LiftAndShuttleSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 void LiftAndShuttleSubsystem::DashboardDebugInit()
 {
   frc::SmartDashboard::PutData(this);
-  MotorControllerHelpers::DashboardInitTalonSrx("Shtl", m_pidConfigShuttle);
-  frc::SmartDashboard::PutBoolean("Shtl: Start", false);
 
   MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftEncoder);
   frc::SmartDashboard::PutBoolean("Lift: Start", false);
@@ -119,19 +86,6 @@ void LiftAndShuttleSubsystem::DashboardDebugInit()
 
 void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
 {
-  MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_leftShuttle, m_pidConfigShuttle);
-  MotorControllerHelpers::DashboardDataTalonSrx("Shtl", m_rightShuttle, m_pidConfigShuttle);
-  frc::SmartDashboard::PutNumber("Shtl: Position", CurrentShuttlePosition());
-  frc::SmartDashboard::PutNumber("Shtl: Velocity", m_rightShuttle.GetSelectedSensorVelocity());
-
-  auto startShuttle = frc::SmartDashboard::GetBoolean("Shtl: Start", false);
-  if (startShuttle)
-  {
-    auto targetPosition = frc::SmartDashboard::GetNumber("Shtl: Go To Position", 0);
-    targetPosition = std::min(targetPosition, kShuttleFrontPosition + kShuttleCloseEnoughToPosition);
-    targetPosition = std::max(targetPosition, kShuttleRearPosition - kShuttleCloseEnoughToPosition);
-    MoveShuttleToPosition(targetPosition);
-  }
 
   MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController, m_liftEncoder);
 
@@ -172,75 +126,12 @@ void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
   }
 }
 
-bool LiftAndShuttleSubsystem::IsAtShuttleFrontLimit() const
-{
-  return !m_shuttleFrontSwitch.Get();
-}
-
-bool LiftAndShuttleSubsystem::IsAtShuttleRearLimit() const
-{
-  return !m_shuttleBackSwitch.Get();
-}
-
 bool LiftAndShuttleSubsystem::IsLiftAtBottom() const
 {
   return !m_liftBottomLimitSwitch.Get();
 }
 
-bool LiftAndShuttleSubsystem::IsShuttleAtPosition(double targetPosition)
-{
-  // actually check position is near target position
-  return fabs(CurrentShuttlePosition() - targetPosition) < kShuttleCloseEnoughToPosition;
-}
-
-double LiftAndShuttleSubsystem::CurrentShuttlePosition()
-{
-  return m_rightShuttle.GetSelectedSensorPosition(0);
-}
-
-void LiftAndShuttleSubsystem::MoveShuttleToPosition(double position)
-{
-  m_leftShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
-  m_rightShuttle.Set(ctre::phoenix::motorcontrol::ControlMode::MotionMagic, position);
-
-  if (m_updateDebugInfo)
-    frc::SmartDashboard::PutNumber("Shtl: Target", position);
-}
-
-void LiftAndShuttleSubsystem::ShuttleStopAtCurrentPosition()
-{
-  MoveShuttleToPosition(CurrentShuttlePosition());
-}
-
-void LiftAndShuttleSubsystem::StopShuttleAndSetPosition(double position)
-{
-  m_rightShuttle.StopMotor();
-  m_leftShuttle.StopMotor();
-  m_leftShuttle.SetSelectedSensorPosition(position);
-  m_rightShuttle.SetSelectedSensorPosition(position);
-  MoveShuttleToPosition(position);
-}
-
-void LiftAndShuttleSubsystem::CargoShuttleFrontStop()
-{
-  StopShuttleAndSetPosition(kShuttleFrontPosition);
-}
-
-void LiftAndShuttleSubsystem::CargoShuttleBackStop()
-{
-  StopShuttleAndSetPosition(kShuttleRearPosition);
-}
-
 // Lift Code
-
-void LiftAndShuttleSubsystem::LiftBottomReset()
-{
-  m_liftPrimary.StopMotor();
-  m_liftFollower1.StopMotor();
-  m_liftFollower2.StopMotor();
-  m_liftEncoder.SetPosition(0);
-  MoveLiftToPosition(0);
-}
 
 bool LiftAndShuttleSubsystem::IsLiftAtPosition(double targetPosition)
 {
@@ -248,15 +139,12 @@ bool LiftAndShuttleSubsystem::IsLiftAtPosition(double targetPosition)
   return fabs(CurrentLiftPosition() - targetPosition) < kLiftCloseEnoughToPosition;
 }
 
-bool LiftAndShuttleSubsystem::IsLiftSafeForShuttleMoveThroughMiddle()
-{
-  return CurrentLiftPosition() < kLiftMaxSafeHeight;
-}
-
 double LiftAndShuttleSubsystem::CurrentLiftPosition()
 {
   return m_liftEncoder.GetPosition();
 }
+
+// Movement Control Interface
 
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
 {
@@ -267,118 +155,25 @@ void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
     frc::SmartDashboard::PutNumber("Lift: Target", position);
   }
 
-  m_liftPidController.SetReference(position, rev::ControlType::kSmartMotion, arbFF);
-}
-
-void LiftAndShuttleSubsystem::LiftStopAtCurrentPosition()
-{
-  MoveLiftToPosition(CurrentLiftPosition());
-}
-
-// Movement Control Interface
-bool LiftAndShuttleSubsystem::IsAtTargetPosition(double targetShuttlePosition, double targetLiftPosition)
-{
-  // compare the target positions against the current positions
-  return IsShuttleAtPosition(targetShuttlePosition) && IsLiftAtPosition(targetLiftPosition);
-}
-
-void LiftAndShuttleSubsystem::MoveToTargetPosition(
-    double targetShuttlePosition,
-    double targetLiftPosition,
-    bool isShuttleArmSafe)
-{
-  // evaluate current position and decide where to send lift and shuttle safely to get closer to target posistions
-  auto currentShuttlePosition = CurrentShuttlePosition();
-  auto currentLiftPosition = CurrentLiftPosition();
-
-  // Moving shuttle to next position
-  // Only move the shuttle if the cargo arm is safe and not at current position
-  if (isShuttleArmSafe  && ! IsShuttleAtPosition(targetShuttlePosition))
+  if (position > kLiftFirstStopPosition && CurrentLiftPosition() < kLiftFirstStopPosition - kLiftCloseToStop)
   {
-    // determine direction of shuttle movement
-    if (targetShuttlePosition > currentShuttlePosition)
-    {
-      // needs to move towards front
-
-      // if vertical system is safe or current position is greater than the safe rear shuttle psoition
-      if (IsLiftSafeForShuttleMoveThroughMiddle() || currentShuttlePosition > kShuttleSafeRearPosition)
-      {
-        // move to target shuttle position
-        MoveShuttleToPosition(targetShuttlePosition);
-      }
-      else
-      {
-        // move to safe shuttle rear position
-        MoveShuttleToPosition(kShuttleSafeRearPosition);
-      }
-    }
-    else
-    {
-      // needs to move towards rear
-
-      // if vertical system safe or current position is less than the safe front shuttle position
-      if (IsLiftSafeForShuttleMoveThroughMiddle() || currentShuttlePosition < kShuttleSafeFrontPosition)
-      {
-        // move to target shuttle position
-        MoveShuttleToPosition(targetShuttlePosition);
-      }
-      else
-      {
-        // move to safe shuttle front position
-        MoveShuttleToPosition(kShuttleSafeFrontPosition);
-      }
-    }
+    position = kLiftFirstStopPosition;
   }
 
-  // move the lift
-
-  // determine if the shuttle needs to cross through the middle
-  // if not, then go to target
-  if((targetShuttlePosition >= kShuttleSafeFrontPosition && currentShuttlePosition >= kShuttleSafeFrontPosition)||
-     (targetShuttlePosition <= kShuttleSafeRearPosition && currentShuttlePosition <= kShuttleSafeRearPosition))
-  {
-      // keep move to target position
-  }
-  // if yes, follow each plan
-  else
-  {
-    // up => up
-    if(currentLiftPosition >= kLiftMaxSafeHeight && targetLiftPosition >= kLiftMaxSafeHeight)
-    {
-      targetLiftPosition = kLiftMaxSafeHeight;
-    }
-    // down => up
-    else if(currentLiftPosition < kLiftMaxSafeHeight && targetLiftPosition >= kLiftMaxSafeHeight)
-    {
-      targetLiftPosition = kLiftMaxSafeHeight;
-    }
-    // up => down or down => down
-    else
-    {
-      // up => down
-      //   if(currentLiftPosition >= kLiftMaxSafeHeight && targetLiftPosition < kLiftMaxSafeHeight)
-      // down => down
-      //   if(currentLiftPosition < kLiftMaxSafeHeight && targetLiftPosition < kLiftMaxSafeHeight){
-          // move to target position
-    }
-  }
-
-  if (!IsLiftAtPosition(targetLiftPosition))
-  {
-    MoveLiftToPosition(targetLiftPosition);
-  }
+  m_liftPidController.SetReference(-position, rev::ControlType::kSmartMotion, arbFF);
 }
 
 void LiftAndShuttleSubsystem::StopAtCurrentPosition()
 {
   // stop lift and shuttle at current positions
-  LiftStopAtCurrentPosition();
-  ShuttleStopAtCurrentPosition();
+  MoveLiftToPosition(CurrentLiftPosition());
 }
 
-void LiftAndShuttleSubsystem::StopAndZero()
+void LiftAndShuttleSubsystem::LiftBottomReset()
 {
-  // stop all motors and zero all encoders
-  LiftBottomReset();
-  StopShuttleAndSetPosition(0);
+  m_liftPrimary.StopMotor();
+  m_liftFollower1.StopMotor();
+  m_liftFollower2.StopMotor();
+  m_liftEncoder.SetPosition(0);
+  MoveLiftToPosition(0);
 }

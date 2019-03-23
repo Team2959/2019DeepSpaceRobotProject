@@ -5,12 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "triggers/ShuttleFrontLimitTrigger.h"
+#include "commands/MoveLiftDownForHatchCommand.h"
+#include "subsystems/LiftAndShuttlePositions.h"
 #include "Robot.h"
 
-ShuttleFrontLimitTrigger::ShuttleFrontLimitTrigger() {}
-
-bool ShuttleFrontLimitTrigger::Get()
+MoveLiftDownForHatchCommand::MoveLiftDownForHatchCommand()
+   : MoveLiftAndShuttleCommand(0)
 {
-    return Robot::m_liftAndShuttleSubsystem.IsAtShuttleFrontLimit();
+}
+
+void MoveLiftDownForHatchCommand::Initialize()
+{
+  // drop set number of rotations from current position when delivering hatch
+  m_targetLiftPosition = Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition();
+  m_targetLiftPosition -= 3;
 }
