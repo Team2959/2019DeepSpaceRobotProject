@@ -48,6 +48,12 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutBoolean("Debug Cargo Arm", m_debugCargoArm);
   frc::SmartDashboard::PutBoolean("Debug Cargo Control", m_debugCargoControl);
   frc::SmartDashboard::PutBoolean("Debug Hatch", m_debugHatch);
+
+  // Tell the Raspberry PI that we are interested in it looking for the port tape targets
+  m_networkTable->PutNumber(Rpi2959Shared::Keys::FrontTargets, static_cast<double>(Rpi2959Shared::ProcessingTargets::PortTape);
+
+  // Tell the Raspberry PI that we don't need it to look for anything on the back camera
+  m_networkTable->PutNumber(Rpi2959Shared::Keys::BackTargets, 0.0);
 }
 
 /**
