@@ -120,7 +120,7 @@ void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
   if (startLift)
   {
     auto targetPosition = frc::SmartDashboard::GetNumber("Lift: Go To Position", 0);
-    targetPosition = std::min(targetPosition, kLiftTopHatchPosition + 5);
+    targetPosition = std::min(targetPosition, 120.0);
     targetPosition = std::max(targetPosition, kLiftFloorPosition);
     MoveLiftToPosition(targetPosition);
   }
