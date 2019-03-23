@@ -10,16 +10,21 @@
 #include "commands/MoveCargoArmCommand.h"
 #include "subsystems/CargoArmPositions.h"
 #include "commands/EngageClimbSolenoidCommand.h"
+#include "commands/PowerToClimbWheelsCommand.h"
 
 #include <frc/commands/TimedCommand.h>
 
 ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
 {
   AddParallel(new MoveCargoArmCommand(kArmTiltBackwardPosition));
-  if (targetLevel == TargetHabLevel::HabLevel2)
-    AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
-  else
-    AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab3));
+  if (targetLevel == TargetHabLevel::HabLevel2){
+        AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
+  }else{
+        AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab3));
+  }
   AddSequential(new EngageClimbSolenoidCommand());
   AddSequential(new frc::TimedCommand(0.25));
+  AddSequential(new MoveCargoArmCommand(kArmExtendPosition));
+  AddSequential(new PowerToClimbWheelsCommand());
+  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
 }
