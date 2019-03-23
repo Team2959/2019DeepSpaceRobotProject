@@ -31,6 +31,7 @@ class Robot : public frc::TimedRobot {
   static CargoArmSubsystem m_cargoArmSubsystem;
   static LiftAndShuttleSubsystem m_liftAndShuttleSubsystem;
   static ClimbSubsystem m_climbSubsystem;
+  static std::shared_ptr<nt::NetworkTable> m_networkTable;
 
   static OI m_oi;
 
@@ -50,7 +51,6 @@ class Robot : public frc::TimedRobot {
   frc::Command* m_autonomousCommand = nullptr;
   MyAutoCommand m_myAuto;
   frc::SendableChooser<frc::Command*> m_chooser;
-  std::shared_ptr<nt::NetworkTable> m_networkTable;
 
   int m_periodic = 0;
   bool m_debugDrive = false;
