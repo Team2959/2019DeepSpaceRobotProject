@@ -141,7 +141,7 @@ bool LiftAndShuttleSubsystem::IsLiftAtPosition(double targetPosition)
 
 double LiftAndShuttleSubsystem::CurrentLiftPosition()
 {
-  return m_liftEncoder.GetPosition();
+  return -m_liftEncoder.GetPosition();
 }
 
 // Movement Control Interface
