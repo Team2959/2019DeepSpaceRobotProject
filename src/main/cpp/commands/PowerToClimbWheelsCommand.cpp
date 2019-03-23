@@ -9,10 +9,7 @@
 #include "Robot.h"
 
 PowerToClimbWheelsCommand::PowerToClimbWheelsCommand() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
     Requires(&Robot::m_climbSubsystem);
-
 }
 
 // Called just before this Command runs the first time
@@ -24,7 +21,7 @@ void PowerToClimbWheelsCommand::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool PowerToClimbWheelsCommand::IsFinished() { return false; }
+bool PowerToClimbWheelsCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void PowerToClimbWheelsCommand::End() {}
