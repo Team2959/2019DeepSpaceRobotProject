@@ -9,23 +9,71 @@
 #include "../../include/Robot.h"
 #include "../../../../../2019RaspPIRoboRioShared/Shared.hpp"
 
-// Called when another command which requires one or more of the same subsystems is scheduled to run
-void DriveToPortTapeCommand::Interrupted() { End(); }
-
-// Make this return true when this Command no longer needs to run execute()
-bool DriveToPortTapeCommand::IsFinished() { return m_isFinished; }
-
-// Stop all drive motion
-void DriveToPortTapeCommand::StopDriveMotion() { m_driveTrainSubsystem.TankDrive(0.0, 0.0); }
-
 // Constructor
 DriveToPortTapeCommand::DriveToPortTapeCommand() : m_networkTable{ Robot::m_networkTable },
   m_driveTrainSubsystem{ Robot::m_driveTrainSubsystem }
 {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(&m_driveTrainSubsystem);
 }
+
+// Called just before this Command runs the first time
+void DriveToPortTapeCommand::Initialize() 
+{
+  // Tell the Raspberry PI that we want it to look for port tape
+  LookForTape(true);
+
+  // Not done yet
+  m_isFinished = false;
+}
+
+// Called repeatedly when this Command is scheduled to run
+void DriveToPortTapeCommand::Execute()
+{
+  // If we have already marked as finished, do nothing
+  if( m_isFinished )
+    return;
+
+  // Get results from the Raspberry PI
+  auto  results{ m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{}) };
+
+  // If we don't have enough result values, then we have nothing to drive to.
+  if(results.size() < 4)
+  {
+    StopDriveMotion();  // Make sure that we aren't moving
+    return;             // Exit the function.  We are still looking for tape targets, so Execute may be called again
+  }
+
+  double  leftRPMs;     // Will hold the speeds for the two sides
+  double  rightRPMs;
+
+  // Compute the RPMs to use, passing in the left tape X and right tape X centers
+  std::tie(leftRPMs, rightRPMs) = ComputeRpms(results[0], results[2]);
+
+  // If RPMs for both left and right are zero, then we have reached target and have nothing more to do
+  m_isFinished = (leftRPMs == 0.0)&&(rightRPMs == 0.0);
+
+  // Send the RPMs to the hardware
+  m_driveTrainSubsystem.TankDrive(leftRPMs, rightRPMs);
+}
+
+// Make this return true when this Command no longer needs to run execute()
+bool DriveToPortTapeCommand::IsFinished() { return m_isFinished; }
+
+// Called once after isFinished returns true
+void DriveToPortTapeCommand::End()
+{
+  StopDriveMotion();  // Ensure that the drive is stopped
+  LookForTape(false); // Tell the Raspberry PI that we don't want it to look for port tape
+}
+
+// Called when another command which requires one or more of the same subsystems is scheduled to run
+void DriveToPortTapeCommand::Interrupted()
+{
+  End();
+}
+
+// Stop all drive motion
+void DriveToPortTapeCommand::StopDriveMotion() { m_driveTrainSubsystem.TankDrive(0.0, 0.0); }
 
 // Given left/right tape X positions, compute the RPMs to use
 std::tuple<double, double> DriveToPortTapeCommand::ComputeRpms(double leftTapeX, double rightTapeX)
@@ -61,53 +109,6 @@ std::tuple<double, double> DriveToPortTapeCommand::ComputeRpms(double leftTapeX,
 
   // Otherwise, the tape center is in the middle of frame, and the tape Xs are far enough apart...we are done
   return std::make_tuple(0.0, 0.0);
-}
-
-// Called once after isFinished returns true
-void DriveToPortTapeCommand::End()
-{
-  StopDriveMotion();  // Ensure that the drive is stopped
-  LookForTape(false); // Tell the Raspberry PI that we don't want it to look for port tape
-}
-
-// Called repeatedly when this Command is scheduled to run
-void DriveToPortTapeCommand::Execute()
-{
-  // If we have already marked as finished, do nothing
-  if( m_isFinished )
-    return;
-
-  // Get results from the Raspberry PI
-  auto  results{ m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{}) };
-
-  // If we don't have enough result values, then we have nothing to drive to.
-  if(results.size() < 4)
-  {
-    StopDriveMotion();  // Make sure that we aren't moving
-    return;             // Exit the function.  We are still looking for tape targets, so Execute may be called again
-  }
-
-  double  leftRPMs;     // Will hold the speeds for the two sides
-  double  rightRPMs;
-
-  // Compute the RPMs to use, passing in the left tape X and right tape X centers
-  std::tie(leftRPMs, rightRPMs) = ComputeRpms(results[0], results[2]);
-
-  // If RPMs for both left and right are zero, then we have reached target and have nothing more to do
-  m_isFinished = (leftRPMs == 0.0)&&(rightRPMs == 0.0);
-
-  // Send the RPMs to the hardware
-  m_driveTrainSubsystem.TankDrive(leftRPMs, rightRPMs);
-}
-
-// Called just before this Command runs the first time
-void DriveToPortTapeCommand::Initialize() 
-{
-  // Tell the Raspberry PI that we want it to look for port tape
-  LookForTape(true);
-
-  // Not done yet
-  m_isFinished = false;
 }
 
 void DriveToPortTapeCommand::LookForTape(bool flag)
