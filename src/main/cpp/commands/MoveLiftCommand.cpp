@@ -17,6 +17,8 @@ MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget)
 
 void MoveLiftCommand::Initialize()
 {
+  MoveLiftAndShuttleCommand::Initialize();
+
   auto cargoIn = Robot::m_cargoControlSubsystem.CargoIn();
   switch (m_liftTarget)
   {
