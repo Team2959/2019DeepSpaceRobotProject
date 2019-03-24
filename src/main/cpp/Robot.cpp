@@ -21,6 +21,7 @@ CargoControlSubsystem Robot::m_cargoControlSubsystem;
 CargoArmSubsystem Robot::m_cargoArmSubsystem;
 LiftAndShuttleSubsystem Robot::m_liftAndShuttleSubsystem;
 ClimbSubsystem Robot::m_climbSubsystem;
+std::shared_ptr<nt::NetworkTable> Robot::m_networkTable;
 // create instance of OI
 OI Robot::m_oi;
 
@@ -48,6 +49,12 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutBoolean("Debug Cargo Arm", m_debugCargoArm);
   frc::SmartDashboard::PutBoolean("Debug Cargo Control", m_debugCargoControl);
   frc::SmartDashboard::PutBoolean("Debug Hatch", m_debugHatch);
+
+  // Tell the Raspberry PI that we don't need it looking for anything on the front camera yet
+  m_networkTable->PutNumber(Rpi2959Shared::Keys::FrontTargets, 0.0);
+
+  // Tell the Raspberry PI that we don't need it to look for anything on the back camera
+  m_networkTable->PutNumber(Rpi2959Shared::Keys::BackTargets, 0.0);
 }
 
 /**

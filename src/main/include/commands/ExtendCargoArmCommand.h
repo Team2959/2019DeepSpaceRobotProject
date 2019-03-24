@@ -8,10 +8,13 @@
 #pragma once
 
 #include <frc/commands/Command.h>
+#include "subsystems/CargoArmPositions.h"
+
 
 class ExtendCargoArmCommand : public frc::Command {
  private:
   bool m_wheelsStarted = false;
+  double m_trueExtendPosition = kArmExtendPosition;
   
  public:
   ExtendCargoArmCommand();
