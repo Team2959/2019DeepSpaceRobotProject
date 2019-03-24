@@ -83,8 +83,6 @@ void DriveTrainSubsystem::DashboardDebugPeriodic()
     m_tankDrive.DashboardDebugPeriodic();
     frc::SmartDashboard::PutNumber("Heading", GetHeading());
     frc::SmartDashboard::PutNumber("Pitch", GetPitch());
-
-
 }
 
 double DriveTrainSubsystem::GetMaxSpeed()
@@ -97,7 +95,6 @@ double DriveTrainSubsystem::GetMaxAccel()
     return kDriveSafetyFactor * kRobotMaxAccel;
 }
 
-
 double DriveTrainSubsystem::GetHeading()
 {
     if (ahrs) {
@@ -105,7 +102,6 @@ double DriveTrainSubsystem::GetHeading()
     }
 
     return 0.0;
-
 }
 
 double DriveTrainSubsystem::GetPitch()
@@ -143,13 +139,7 @@ bool DriveTrainSubsystem::WhiteTape3() const
     return !m_whiteTape3.Get();
 }
 
-bool DriveTrainSubsystem::AreWheelsAtDistance(double targetDistance)
-{
-    return fabs(CurrentWheelDistance() - targetDistance) < kDistanceCloseEnough;
-}
-double DriveTrainSubsystem::CurrentWheelDistance()
+double DriveTrainSubsystem::CurrentPosition()
 {
     return m_leftDriveEncoder.GetPosition();
 }
-
-

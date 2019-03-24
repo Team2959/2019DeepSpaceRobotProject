@@ -31,5 +31,6 @@ ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
   AddSequential(new PowerToClimbWheelsCommand());
   AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
   AddSequential(new ClimbWheelsSetPositionCommand(kDriveClimbWheelsDistance));
-  AddSequential(new DriveSetDistanceCommand(kDriveTargetDistance,0.25));
+  AddSequential(new DriveSetDistanceCommand());
+  AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::RaiseClimbWheels));
 }

@@ -10,11 +10,11 @@
 #include <frc/commands/Command.h>
 
 class DriveSetDistanceCommand : public frc::Command {
- protected:
-  double m_speed;
+ private:
+  double m_startingPosition;
 
  public:
-  DriveSetDistanceCommand(double distance, double speed);
+  DriveSetDistanceCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

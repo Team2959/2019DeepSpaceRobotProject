@@ -59,5 +59,8 @@ void MoveLiftCommand::Initialize()
     case LiftTargetLevel::ClimbHab3:
       m_targetLiftPosition = kLiftClimbHab3Position;
       break;
+    case LiftTargetLevel::RaiseClimbWheels:
+      m_targetLiftPosition = kLiftRaiseClimbWheelsPosition;
+      break;
   }
 }

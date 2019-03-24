@@ -15,13 +15,10 @@
 #include "ahrs.h"
 #include "frc/WPILib.h"
 
-
 const double kDriveTrainWheelBase   = 1.5;   // ft
 const double kDriveTrainGearRatio   = 6.11;  // unitless
 const double kDriveTrainWheelSize   = 1/3;   // ft (wheel diameter)
 const double kDriveTrainTypicalTilt = 1.0609; // degrees
-constexpr double kDistanceCloseEnough = 0.1; 
-constexpr double kDriveTargetDistance = 5000; 
 
 class DriveTrainSubsystem : public frc::Subsystem
 {
@@ -75,8 +72,5 @@ public:
     bool WhiteTape2() const;
     bool WhiteTape3() const;
 
-    bool AreWheelsAtDistance(double distance);
-    double CurrentWheelDistance();
-
-
+    double CurrentPosition();
 };

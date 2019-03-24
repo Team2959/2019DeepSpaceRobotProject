@@ -9,39 +9,42 @@
 #include "subsystems/DriveTrainSubsystem.h"
 #include "commands/DriveSetDistanceCommand.h"
 
-DriveSetDistanceCommand::DriveSetDistanceCommand(double distance, double speed) {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
-      Requires(&Robot::m_driveTrainSubsystem);
-      m_speed = speed;
-      
+constexpr double kDriveTargetRevolutions = 5000; 
+constexpr double kDriveSpeed = 1000; 
+
+DriveSetDistanceCommand::DriveSetDistanceCommand()
+{
+  Requires(&Robot::m_driveTrainSubsystem);
+  m_startingPosition = 0;
 }
 
 // Called just before this Command runs the first time
-void DriveSetDistanceCommand::Initialize() {}
+void DriveSetDistanceCommand::Initialize()
+{
+  m_startingPosition = Robot::m_driveTrainSubsystem.CurrentPosition();
+  Robot::m_driveTrainSubsystem.TankDrive(kDriveSpeed, kDriveSpeed);
+}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveSetDistanceCommand::Execute() 
 {
-  //  Robot::m_climbSubsystem.ClimbWheelsSetPosition(m_targetPosition);
-
-  while(Robot::m_driveTrainSubsystem.AreWheelsAtDistance(kDriveTargetDistance) != true)
-  {
-    Robot::m_driveTrainSubsystem.TankDrive(m_speed,m_speed);
-  }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveSetDistanceCommand::IsFinished()
- { 
-   return Robot::m_driveTrainSubsystem.AreWheelsAtDistance(kDriveTargetDistance);
- }
+{
+  return fabs(m_startingPosition - Robot::m_driveTrainSubsystem.CurrentPosition()) >= kDriveTargetRevolutions;
+}
 
 // Called once after isFinished returns true
-void DriveSetDistanceCommand::End() {}
+void DriveSetDistanceCommand::End()
+{
+  Robot::m_driveTrainSubsystem.TankDrive(0, 0);
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveSetDistanceCommand::Interrupted() {
-      Robot::m_driveTrainSubsystem.AreWheelsAtDistance(Robot::m_driveTrainSubsystem.CurrentWheelDistance());
+void DriveSetDistanceCommand::Interrupted()
+{
+  End();
 }

@@ -15,3 +15,4 @@ constexpr double kLiftRemoveHatchFromWallPosition = kLiftGrabHatchFromWallPositi
 constexpr double kLiftCargoShipHatchPosition = kLiftBottomHatchPosition + 3; // deliver hatch to cargo ship
 constexpr double kLiftClimbHab3Position = 28;
 constexpr double kLiftClimbHab2Position = 8;
+constexpr double kLiftRaiseClimbWheelsPosition = 4;
