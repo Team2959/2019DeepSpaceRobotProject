@@ -49,7 +49,8 @@ OI::OI()
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
   m_cargoArmBack.WhenPressed(new MoveCargoArmCommand(kArmTiltBackwardPosition));
 
-  m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
+//   m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
+  m_ejectCargo.WhenPressed(new StopCargoControlWheelsCommand(0, 0, 0));
 
   m_hatchFromLoadingStation.WhenPressed(new GrabHatchCommandGroup());
   m_liftHatchPickup.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::GrabHatchFromWall));

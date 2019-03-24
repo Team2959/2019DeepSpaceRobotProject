@@ -12,7 +12,7 @@
 #include <algorithm>
 #include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 
-constexpr double kCloseEnoughToPosition = 500;
+constexpr double kCloseEnoughToPosition = 750;
 
 CargoArmSubsystem::CargoArmSubsystem() : Subsystem("CargoArmSubsystem")
 {
