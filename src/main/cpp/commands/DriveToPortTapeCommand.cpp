@@ -9,65 +9,21 @@
 #include "../../include/Robot.h"
 #include "../../../../../2019RaspPIRoboRioShared/Shared.hpp"
 
-// Called when another command which requires one or more of the same subsystems is scheduled to run
-void DriveToPortTapeCommand::Interrupted() { End(); }
-
-// Make this return true when this Command no longer needs to run execute()
-bool DriveToPortTapeCommand::IsFinished() { return m_isFinished; }
-
-// Stop all drive motion
-void DriveToPortTapeCommand::StopDriveMotion() { m_driveTrainSubsystem.TankDrive(0.0, 0.0); }
-
 // Constructor
 DriveToPortTapeCommand::DriveToPortTapeCommand() : m_networkTable{ Robot::m_networkTable },
   m_driveTrainSubsystem{ Robot::m_driveTrainSubsystem }
 {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(&m_driveTrainSubsystem);
 }
 
-// Given left/right tape X positions, compute the RPMs to use
-std::tuple<double, double> DriveToPortTapeCommand::ComputeRpms(double leftTapeX, double rightTapeX)
+// Called just before this Command runs the first time
+void DriveToPortTapeCommand::Initialize() 
 {
-  const double  StandardRotationSpeed{ 4.0 }; // This is a common speed factor.  ADJUST THIS WITH TESTING.
-  const double  FullForwardSpeed{ 4.0 };      // The speed to drive when we are far from the tape.  ADJUST THIS WITH TESTING
-  const double  CenterRadius{ 0.05 };         // If the tape center is within this radius, we drive forward
-  const double  SeparationLimit{ 0.35 };      // If the two tape X centers are separated by more than this value, then we are close enough
+  // Tell the Raspberry PI that we want it to look for port tape
+  LookForTape(true);
 
-  auto  middleX{ (rightTapeX + leftTapeX) / 2 };  // Compute the mid point between left X and right X
-  auto  separationX{ rightTapeX - leftTapeX };    // Compute the separation between left X and right X
-
-  // If the tape middle is on the right side of the frame, then we need to turn to the right
-  if(middleX > (0.5 + CenterRadius))
-  {
-    auto  rotationSpeed{ StandardRotationSpeed * (middleX - 0.5) }; // Compute our rotation speed
-    return std::make_tuple(rotationSpeed, -rotationSpeed);          // Return the result
-  }
-
-  // If the tape middle is on the left side of the frame, then we need to turn to the left
-  if(middleX < (0.5 - CenterRadius))
-  {
-    auto  rotationSpeed{ StandardRotationSpeed * (0.5 - middleX) }; // Compute our rotation speed
-    return std::make_tuple(-rotationSpeed, rotationSpeed);          // Return the result
-  }
-
-  // If the tapes are separated by less than this, we must drive forward
-  if(separationX < SeparationLimit)
-  {
-    auto  driveSpeed{ FullForwardSpeed * (SeparationLimit - separationX) / SeparationLimit }; // Compute our drive speed
-    return std::make_tuple(driveSpeed, driveSpeed);   // Return the result
-  }
-
-  // Otherwise, the tape center is in the middle of frame, and the tape Xs are far enough apart...we are done
-  return std::make_tuple(0.0, 0.0);
-}
-
-// Called once after isFinished returns true
-void DriveToPortTapeCommand::End()
-{
-  StopDriveMotion();  // Ensure that the drive is stopped
-  LookForTape(false); // Tell the Raspberry PI that we don't want it to look for port tape
+  // Not done yet
+  m_isFinished = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -100,14 +56,59 @@ void DriveToPortTapeCommand::Execute()
   m_driveTrainSubsystem.TankDrive(leftRPMs, rightRPMs);
 }
 
-// Called just before this Command runs the first time
-void DriveToPortTapeCommand::Initialize() 
-{
-  // Tell the Raspberry PI that we want it to look for port tape
-  LookForTape(true);
+// Make this return true when this Command no longer needs to run execute()
+bool DriveToPortTapeCommand::IsFinished() { return m_isFinished; }
 
-  // Not done yet
-  m_isFinished = false;
+// Called once after isFinished returns true
+void DriveToPortTapeCommand::End()
+{
+  StopDriveMotion();  // Ensure that the drive is stopped
+  LookForTape(false); // Tell the Raspberry PI that we don't want it to look for port tape
+}
+
+// Called when another command which requires one or more of the same subsystems is scheduled to run
+void DriveToPortTapeCommand::Interrupted()
+{
+  End();
+}
+
+// Stop all drive motion
+void DriveToPortTapeCommand::StopDriveMotion() { m_driveTrainSubsystem.TankDrive(0.0, 0.0); }
+
+// Given left/right tape X positions, compute the RPMs to use
+std::tuple<double, double> DriveToPortTapeCommand::ComputeRpms(double leftTapeX, double rightTapeX)
+{
+  const double  StandardRotationSpeed{ 500.0 }; // This is a common speed factor.  ADJUST THIS WITH TESTING.
+  const double  FullForwardSpeed{ 2000.0 };      // The speed to drive when we are far from the tape.  ADJUST THIS WITH TESTING
+  const double  CenterRadius{ 0.05 };         // If the tape center is within this radius, we drive forward
+  const double  SeparationLimit{ 0.35 };      // If the two tape X centers are separated by more than this value, then we are close enough
+
+  auto  middleX{ (rightTapeX + leftTapeX) / 2 };  // Compute the mid point between left X and right X
+  auto  separationX{ rightTapeX - leftTapeX };    // Compute the separation between left X and right X
+
+  // If the tape middle is on the right side of the frame, then we need to turn to the right
+  if(middleX > (0.5 + CenterRadius))
+  {
+    auto  rotationSpeed{ StandardRotationSpeed * (middleX - 0.5) }; // Compute our rotation speed
+    return std::make_tuple(rotationSpeed, -rotationSpeed);          // Return the result
+  }
+
+  // If the tape middle is on the left side of the frame, then we need to turn to the left
+  if(middleX < (0.5 - CenterRadius))
+  {
+    auto  rotationSpeed{ StandardRotationSpeed * (0.5 - middleX) }; // Compute our rotation speed
+    return std::make_tuple(-rotationSpeed, rotationSpeed);          // Return the result
+  }
+
+  // If the tapes are separated by less than this, we must drive forward
+  if(separationX < SeparationLimit)
+  {
+    auto  driveSpeed{ FullForwardSpeed * (SeparationLimit - separationX) / SeparationLimit }; // Compute our drive speed
+    return std::make_tuple(driveSpeed, driveSpeed);   // Return the result
+  }
+
+  // Otherwise, the tape center is in the middle of frame, and the tape Xs are far enough apart...we are done
+  return std::make_tuple(0.0, 0.0);
 }
 
 void DriveToPortTapeCommand::LookForTape(bool flag)

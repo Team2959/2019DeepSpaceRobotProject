@@ -37,8 +37,6 @@ OI::OI()
   m_resetCargoArm.WhileHeld(new ResetCargoArmCommand());
 
   // Co-Pilot Buttons
-  // m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
-  // m_shuttleRear.WhenPressed(new ShuttleTargetCommand(false));
   m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
   m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
 
@@ -51,7 +49,8 @@ OI::OI()
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
   m_cargoArmBack.WhenPressed(new MoveCargoArmCommand(kArmTiltBackwardPosition));
 
-  m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
+//   m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
+  m_ejectCargo.WhenPressed(new StopCargoControlWheelsCommand(0, 0, 0));
 
   m_hatchFromLoadingStation.WhenPressed(new GrabHatchCommandGroup());
   m_liftHatchPickup.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::GrabHatchFromWall));

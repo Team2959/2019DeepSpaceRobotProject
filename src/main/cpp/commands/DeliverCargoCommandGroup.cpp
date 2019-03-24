@@ -12,7 +12,7 @@
 
 DeliverCargoCommandGroup::DeliverCargoCommandGroup() 
 {
-  AddSequential(new TiltCargoArmIfAtLiftPositionConditionalCommand());
+  // AddSequential(new TiltCargoArmIfAtLiftPositionConditionalCommand());
   AddSequential(new MoveCargoBallCommand(true, true));
   AddSequential(new StopCargoControlWheelsCommand());
 }
