@@ -78,8 +78,8 @@ void DriveToPortTapeCommand::StopDriveMotion() { m_driveTrainSubsystem.TankDrive
 // Given left/right tape X positions, compute the RPMs to use
 std::tuple<double, double> DriveToPortTapeCommand::ComputeRpms(double leftTapeX, double rightTapeX)
 {
-  const double  StandardRotationSpeed{ 4.0 }; // This is a common speed factor.  ADJUST THIS WITH TESTING.
-  const double  FullForwardSpeed{ 4.0 };      // The speed to drive when we are far from the tape.  ADJUST THIS WITH TESTING
+  const double  StandardRotationSpeed{ 500.0 }; // This is a common speed factor.  ADJUST THIS WITH TESTING.
+  const double  FullForwardSpeed{ 2000.0 };      // The speed to drive when we are far from the tape.  ADJUST THIS WITH TESTING
   const double  CenterRadius{ 0.05 };         // If the tape center is within this radius, we drive forward
   const double  SeparationLimit{ 0.35 };      // If the two tape X centers are separated by more than this value, then we are close enough
 
