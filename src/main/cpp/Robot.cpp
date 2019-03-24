@@ -160,9 +160,6 @@ void Robot::TeleopInit() {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
   }
-  
-  // m_cargoArmSubsystem.StopAtCurrentPosition();
-  // m_liftAndShuttleSubsystem.StopAtCurrentPosition();
 }
 
 void Robot::TeleopPeriodic() { frc::Scheduler::GetInstance()->Run(); }

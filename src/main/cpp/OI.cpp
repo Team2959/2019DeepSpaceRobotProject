@@ -37,8 +37,6 @@ OI::OI()
   m_resetCargoArm.WhileHeld(new ResetCargoArmCommand());
 
   // Co-Pilot Buttons
-  // m_shuttleFront.WhenPressed(new ShuttleTargetCommand(true));
-  // m_shuttleRear.WhenPressed(new ShuttleTargetCommand(false));
   m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
   m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
 

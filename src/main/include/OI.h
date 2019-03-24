@@ -31,8 +31,6 @@ private:
   frc::JoystickButton m_resetCargoArm { &m_rightDriverJoystick, 8};
 
   // Co Pilot Buttons
-  // frc::JoystickButton m_shuttleFront { &m_coPilotJoystick, 1};
-  // frc::JoystickButton m_shuttleRear { &m_coPilotJoystick, 2};
   frc::JoystickButton m_climbHabLevel2 {&m_coPilotJoystick, 1};
   frc::JoystickButton m_climbHabLevel3 {&m_coPilotJoystick, 2};
 
