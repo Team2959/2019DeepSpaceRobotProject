@@ -14,8 +14,9 @@
 #include "RobotMap.h"
 
 constexpr double kClimbWheelsHoldingCurrent = 1;
-constexpr double kDriveClimbWheelsDistance = 700;
-constexpr double kDriveCloseEnoughToPosition = 0.1;
+//constexpr double kDriveClimbWheelsDistance = 11800; // 11800 = 26" travel -> 4096 ticks per revolution; 2 7/8" wheel diameter
+constexpr double kDriveClimbWheelsDistance = 2300; //  = 5" travel -> 4096 ticks per revolution; 2 7/8" wheel diameter
+constexpr double kDriveCloseEnoughToPosition = 250;
 
 class ClimbSubsystem : public frc::Subsystem {
  private:

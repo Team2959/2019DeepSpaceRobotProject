@@ -9,8 +9,8 @@
 #include "subsystems/DriveTrainSubsystem.h"
 #include "commands/DriveSetDistanceCommand.h"
 
-constexpr double kDriveTargetRevolutions = 5000; 
-constexpr double kDriveSpeed = 1000; 
+constexpr double kDriveTargetRevolutions = 10.2; // to move wheels 21", one wheels revolution is 12.566" and there are 6.11 motor revolutions per wheel rotation 
+constexpr double kDriveSpeed = 500; //RPM
 
 DriveSetDistanceCommand::DriveSetDistanceCommand()
 {
