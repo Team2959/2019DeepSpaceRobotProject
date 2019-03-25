@@ -58,4 +58,5 @@ class Robot : public frc::TimedRobot {
   bool m_debugCargoArm = false;
   bool m_debugCargoControl = false;
   bool m_debugHatch = false;
+  bool m_debugClimb = false;
 };

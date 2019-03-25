@@ -20,10 +20,13 @@
 ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
 {
   AddParallel(new MoveCargoArmCommand(kArmTiltBackwardPosition));
-  if (targetLevel == TargetHabLevel::HabLevel2){
-        AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
-  }else{
-        AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab3));
+  if (targetLevel == TargetHabLevel::HabLevel2)
+  {
+    AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
+  }
+  else
+  {
+    AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab3));
   }
   AddSequential(new EngageClimbSolenoidCommand());
   AddSequential(new frc::TimedCommand(0.25));

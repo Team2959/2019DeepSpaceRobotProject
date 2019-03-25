@@ -26,8 +26,15 @@ class ClimbSubsystem : public frc::Subsystem {
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_right { kRightClimbCanTalonSrxMotor };
   ctre::phoenix::motorcontrol::can::SlotConfiguration m_pidConfig;
 
+  // Smart Dashboard debug/info
+  bool m_updateDebugInfo = false;
+  void DashboardDebugPeriodic();
+
  public:
   ClimbSubsystem();
+
+  void OnRobotInit();
+  void OnRobotPeriodic(bool updateDebugInfo);
 
   void ClimbWheelsSetPosition(double position);
   void ClimbSolenoidEngage();
@@ -37,5 +44,5 @@ class ClimbSubsystem : public frc::Subsystem {
 
   bool AreClimbWheelsAtPosition(double position);
 
-  double CurrentClimbWheelPosition();
+  double CurrentClimbWheelsPosition();
 };

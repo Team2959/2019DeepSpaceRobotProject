@@ -37,18 +37,21 @@ void Robot::RobotInit() {
   m_cargoArmSubsystem.OnRobotInit();
   m_cargoControlSubsystem.OnRobotInit();
   m_hatchSubsystem.OnRobotInit();
+  m_climbSubsystem.OnRobotInit();
 
   m_debugDrive = false;
   m_debugLiftAndShuttle = false;
   m_debugCargoArm = false;
   m_debugCargoControl = false;
   m_debugHatch = false;
+  m_debugClimb = false;
 
   frc::SmartDashboard::PutBoolean("Debug Drive", m_debugDrive);
   frc::SmartDashboard::PutBoolean("Debug Lift", m_debugLiftAndShuttle);
   frc::SmartDashboard::PutBoolean("Debug Cargo Arm", m_debugCargoArm);
   frc::SmartDashboard::PutBoolean("Debug Cargo Control", m_debugCargoControl);
   frc::SmartDashboard::PutBoolean("Debug Hatch", m_debugHatch);
+  frc::SmartDashboard::PutBoolean("Debug Climb", m_debugClimb);
 
   // Tell the Raspberry PI that we don't need it looking for anything on the front camera yet
   m_networkTable->PutNumber(Rpi2959Shared::Keys::FrontTargets, 0.0);
@@ -88,6 +91,7 @@ void Robot::RobotPeriodic()
   else if (m_periodic == 8)
   {
     m_hatchSubsystem.OnRobotPeriodic(m_debugHatch);
+    m_climbSubsystem.OnRobotPeriodic(m_debugClimb);
   }
   else if (m_periodic >= 10)
   { 
@@ -113,6 +117,7 @@ void Robot::DisabledPeriodic()
       m_debugCargoArm = frc::SmartDashboard::GetBoolean("Debug Cargo Arm", false);
       m_debugCargoControl = frc::SmartDashboard::GetBoolean("Debug Cargo Control", false);
       m_debugHatch = frc::SmartDashboard::GetBoolean("Debug Hatch", false);
+      m_debugClimb = frc::SmartDashboard::GetBoolean("Debug Climb", false);
     }
     frc::Scheduler::GetInstance()->Run();
 }
