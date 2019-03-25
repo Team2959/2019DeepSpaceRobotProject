@@ -16,7 +16,7 @@ constexpr double kAcceleration = 4500;
 ClimbSubsystem::ClimbSubsystem() : Subsystem("ClimbSubsystem")
 {
     m_right.GetSlotConfigs(m_pidConfig);
-    m_pidConfig.kP = 0.001;
+    m_pidConfig.kP = 0.1;
     m_pidConfig.kI = 0.0;
     m_pidConfig.kD = 0;
     m_pidConfig.kF = 0;
