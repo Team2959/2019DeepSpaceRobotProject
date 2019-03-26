@@ -10,8 +10,8 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 // Climb constants
-constexpr double kCruiseVelocity = 3000;
-constexpr double kAcceleration = 4500;
+constexpr double kCruiseVelocity = 300;
+constexpr double kAcceleration = 450;
 
 ClimbSubsystem::ClimbSubsystem() : Subsystem("ClimbSubsystem")
 {
@@ -19,7 +19,7 @@ ClimbSubsystem::ClimbSubsystem() : Subsystem("ClimbSubsystem")
     m_pidConfig.kP = 0.1;
     m_pidConfig.kI = 0.0;
     m_pidConfig.kD = 0;
-    m_pidConfig.kF = 0;
+    m_pidConfig.kF = 0.1;
     // m_pidConfig.integralZone = x;
     // m_pidConfig.closedLoopPeakOutput = 1.0;
     // m_pidConfig.allowableClosedloopError = 128;
