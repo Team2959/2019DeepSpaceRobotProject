@@ -16,6 +16,7 @@
 constexpr double kClimbWheelsHoldingCurrent = 2;
 //constexpr double kDriveClimbWheelsDistance = 11800; // 11800 = 26" travel -> 4096 ticks per revolution; 2 7/8" wheel diameter
 constexpr double kDriveClimbWheelsDistance = 2300; //  = 5" travel -> 4096 ticks per revolution; 2 7/8" wheel diameter
+constexpr double kClimbArmsDownDistance = 12300; //  3 full wheels rotations for climb arms down
 constexpr double kDriveCloseEnoughToPosition = 250;
 
 class ClimbSubsystem : public frc::Subsystem {

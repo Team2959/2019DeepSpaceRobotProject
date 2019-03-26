@@ -31,9 +31,11 @@ ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
   }
   AddSequential(new EngageClimbSolenoidCommand());
   AddSequential(new frc::TimedCommand(0.25));
-  AddSequential(new MoveCargoArmCommand(kArmTiltForwardPosition));
-  AddParallel(new PowerToClimbWheelsCommand());
+  AddParallel(new MoveCargoArmCommand(kArmTiltForwardPosition));
   AddParallel(new ReconfigureLiftForClimbCommand());
+  AddSequential(new ClimbWheelsSetPositionCommand(kClimbArmsDownDistance));
+  AddParallel(new PowerToClimbWheelsCommand());
+  
   AddSequential(new frc::TimedCommand(5.0));
   AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
   AddSequential(new ClimbWheelsSetPositionCommand(kDriveClimbWheelsDistance));
