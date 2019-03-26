@@ -16,7 +16,7 @@ constexpr double kAcceleration = 450;
 ClimbSubsystem::ClimbSubsystem() : Subsystem("ClimbSubsystem")
 {
     m_right.GetSlotConfigs(m_pidConfig);
-    m_pidConfig.kP = 0.1;
+    m_pidConfig.kP = 0.2;
     m_pidConfig.kI = 0.0;
     m_pidConfig.kD = 0;
     m_pidConfig.kF = 0;
@@ -105,7 +105,7 @@ void ClimbSubsystem::StopAtCurrentDistance()
 bool ClimbSubsystem::AreClimbWheelsAtPosition( double targetPosition)
 {
     //Check to see if distance driven is close
-    return CurrentClimbWheelsPosition() > targetPosition;
+    return CurrentClimbWheelsPosition() > (targetPosition - kDriveCloseEnoughToPosition);
 }
 
 double ClimbSubsystem::CurrentClimbWheelsPosition()

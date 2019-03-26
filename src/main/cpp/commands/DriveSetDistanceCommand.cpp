@@ -22,12 +22,12 @@ DriveSetDistanceCommand::DriveSetDistanceCommand()
 void DriveSetDistanceCommand::Initialize()
 {
   m_startingPosition = Robot::m_driveTrainSubsystem.CurrentPosition();
-  Robot::m_driveTrainSubsystem.TankDrive(kDriveSpeed, kDriveSpeed);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveSetDistanceCommand::Execute() 
 {
+  Robot::m_driveTrainSubsystem.TankDrive(kDriveSpeed, kDriveSpeed);
 }
 
 // Make this return true when this Command no longer needs to run execute()

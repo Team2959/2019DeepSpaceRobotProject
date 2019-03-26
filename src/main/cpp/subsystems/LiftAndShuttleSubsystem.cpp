@@ -15,6 +15,7 @@
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.1;
 constexpr double kLiftKP = 0.00012;
+constexpr double kLiftKPClimbAdjust = 0.0001;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
 constexpr double kLiftMaxAcceleration = 9000;
@@ -180,6 +181,7 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
 
 void LiftAndShuttleSubsystem::ReconfigureLiftForClimb()
 {
+  m_liftPidController.SetP(kLiftKP + kLiftKPClimbAdjust);
   m_liftPidController.SetSmartMotionMaxVelocity(kLiftMaxVelocity/2.0);
   m_liftPidController.SetSmartMotionMaxAccel(kLiftMaxAcceleration/2.0);
 }

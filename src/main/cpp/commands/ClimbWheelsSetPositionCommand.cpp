@@ -33,10 +33,14 @@ bool ClimbWheelsSetPositionCommand::IsFinished()
  }
 
 // Called once after isFinished returns true
-void ClimbWheelsSetPositionCommand::End() {}
+void ClimbWheelsSetPositionCommand::End()
+{
+  Robot::m_climbSubsystem.PowerToClimbWheels();
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ClimbWheelsSetPositionCommand::Interrupted() {
-  return Robot::m_climbSubsystem.StopAtCurrentDistance();
+void ClimbWheelsSetPositionCommand::Interrupted()
+{
+  End();
 }
