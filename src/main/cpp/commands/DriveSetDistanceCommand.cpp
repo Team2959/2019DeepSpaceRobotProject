@@ -33,7 +33,7 @@ void DriveSetDistanceCommand::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool DriveSetDistanceCommand::IsFinished()
 {
-  return fabs(m_startingPosition - Robot::m_driveTrainSubsystem.CurrentPosition()) >= kDriveTargetRevolutions;
+  return Robot::m_driveTrainSubsystem.CurrentPosition() > m_startingPosition + kDriveTargetRevolutions;
 }
 
 // Called once after isFinished returns true

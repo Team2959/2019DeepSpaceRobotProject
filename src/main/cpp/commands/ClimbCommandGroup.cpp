@@ -16,6 +16,7 @@
 #include "commands/ClimbWheelsSetPositionCommand.h"
 #include "commands/DriveSetDistanceCommand.h"
 #include <frc/commands/TimedCommand.h>
+#include "commands/ReconfigureLiftForClimbCommand.h"
 
 ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
 {
@@ -32,6 +33,7 @@ ClimbCommandGroup::ClimbCommandGroup(TargetHabLevel targetLevel)
   AddSequential(new frc::TimedCommand(0.25));
   AddSequential(new MoveCargoArmCommand(kArmExtendPosition));
   AddSequential(new PowerToClimbWheelsCommand());
+  AddSequential(new ReconfigureLiftForClimbCommand());
   AddSequential(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
   AddSequential(new ClimbWheelsSetPositionCommand(kDriveClimbWheelsDistance));
   AddSequential(new DriveSetDistanceCommand());

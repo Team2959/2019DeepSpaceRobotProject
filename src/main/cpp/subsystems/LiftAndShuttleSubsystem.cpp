@@ -177,3 +177,9 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
   m_liftEncoder.SetPosition(0);
   MoveLiftToPosition(0);
 }
+
+void LiftAndShuttleSubsystem::ReconfigureLiftForClimb()
+{
+  m_liftPidController.SetSmartMotionMaxVelocity(kLiftMaxVelocity/2.0);
+  m_liftPidController.SetSmartMotionMaxAccel(kLiftMaxAcceleration/2.0);
+}

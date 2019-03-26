@@ -48,4 +48,6 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void MoveLiftToPosition(double position);
   void StopAtCurrentPosition();
   void LiftBottomReset();
+
+  void ReconfigureLiftForClimb();
 };

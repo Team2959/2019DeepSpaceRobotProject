@@ -19,7 +19,7 @@ ClimbSubsystem::ClimbSubsystem() : Subsystem("ClimbSubsystem")
     m_pidConfig.kP = 0.1;
     m_pidConfig.kI = 0.0;
     m_pidConfig.kD = 0;
-    m_pidConfig.kF = 0.1;
+    m_pidConfig.kF = 0;
     // m_pidConfig.integralZone = x;
     // m_pidConfig.closedLoopPeakOutput = 1.0;
     // m_pidConfig.allowableClosedloopError = 128;
@@ -38,6 +38,7 @@ void ClimbSubsystem::OnRobotInit()
     // Zero shuttle positions
     m_left.SetSelectedSensorPosition(0, 0, 0);
     m_right.SetSelectedSensorPosition(0, 0, 0);
+    ClimbSolenoidDisengage();
 
     // Debug info
     frc::SmartDashboard::PutData(this);
@@ -104,7 +105,7 @@ void ClimbSubsystem::StopAtCurrentDistance()
 bool ClimbSubsystem::AreClimbWheelsAtPosition( double targetPosition)
 {
     //Check to see if distance driven is close
-    return fabs(CurrentClimbWheelsPosition() - targetPosition) < kDriveCloseEnoughToPosition;
+    return CurrentClimbWheelsPosition() > targetPosition;
 }
 
 double ClimbSubsystem::CurrentClimbWheelsPosition()

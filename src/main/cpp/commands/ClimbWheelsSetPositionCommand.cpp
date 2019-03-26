@@ -18,6 +18,7 @@ ClimbWheelsSetPositionCommand::ClimbWheelsSetPositionCommand(double position) {
 
 // Called just before this Command runs the first time
 void ClimbWheelsSetPositionCommand::Initialize() {
+  m_targetPosition += Robot::m_climbSubsystem.CurrentClimbWheelsPosition();
 }
 
 // Called repeatedly when this Command is scheduled to run
