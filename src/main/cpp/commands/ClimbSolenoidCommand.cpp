@@ -5,29 +5,35 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/EngageClimbSolenoidCommand.h"
+#include "commands/ClimbSolenoidCommand.h"
 #include "Robot.h"
 
-EngageClimbSolenoidCommand::EngageClimbSolenoidCommand() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
+ClimbSolenoidCommand::ClimbSolenoidCommand(bool engage) {
   Requires(&Robot::m_climbSubsystem);
+  m_bEngage = engage;
 }
 
 // Called just before this Command runs the first time
-void EngageClimbSolenoidCommand::Initialize() {
-  Robot::m_climbSubsystem.ClimbSolenoidEngage();
+void ClimbSolenoidCommand::Initialize() {
+  if (m_bEngage)
+  {
+    Robot::m_climbSubsystem.ClimbSolenoidEngage();
+  }
+  else
+  {
+    Robot::m_climbSubsystem.ClimbSolenoidDisengage();
+  }
 }
 
 // Called repeatedly when this Command is scheduled to run
-void EngageClimbSolenoidCommand::Execute() {}
+void ClimbSolenoidCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool EngageClimbSolenoidCommand::IsFinished() { return true; }
+bool ClimbSolenoidCommand::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void EngageClimbSolenoidCommand::End() {}
+void ClimbSolenoidCommand::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void EngageClimbSolenoidCommand::Interrupted() {}
+void ClimbSolenoidCommand::Interrupted() {}

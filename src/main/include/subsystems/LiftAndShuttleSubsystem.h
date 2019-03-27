@@ -26,6 +26,8 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   rev::CANPIDController m_liftPidController = m_liftPrimary.GetPIDController();
   rev::CANEncoder m_liftEncoder = m_liftPrimary.GetEncoder();
 
+  bool m_bLiftBottomTriggerEnable = true;
+
   // Lift methods
   void ConfigureLiftPid(rev::CANPIDController & pidConfig);
   
@@ -50,4 +52,9 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void LiftBottomReset();
 
   void ReconfigureLiftForClimb();
+  void EnableLiftBottomTrigger(bool enable);
+  bool IsLiftBottomTriggerEnabled() const;
+  double LiftAppliedOutput();
+  void DriveLiftWithDutyCycle(double dutyCycle);
+  void DriveLiftWithVelocityControl();
 };

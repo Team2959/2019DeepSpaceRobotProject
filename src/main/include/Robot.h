@@ -20,6 +20,7 @@
 #include "subsystems/CargoArmSubsystem.h"
 #include "subsystems/LiftAndShuttleSubsystem.h"
 #include "subsystems/ClimbSubsystem.h"
+#include "commands/AutonomousStartWithHatchCommandGroup.h"
 
 
 class Robot : public frc::TimedRobot {
@@ -50,6 +51,7 @@ class Robot : public frc::TimedRobot {
   // doesn't have undefined behavior and potentially crash.
   frc::Command* m_autonomousCommand = nullptr;
   MyAutoCommand m_myAuto;
+  AutonomousStartWithHatchCommandGroup m_hatchAuto;
   frc::SendableChooser<frc::Command*> m_chooser;
 
   int m_periodic = 0;

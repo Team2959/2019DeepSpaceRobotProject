@@ -9,13 +9,12 @@
 
 #include <frc/commands/Command.h>
 
-class EngageClimbSolenoidCommand : public frc::Command {
+class RaiseBotBaseToClimbCommand : public frc::Command {
  public:
-  EngageClimbSolenoidCommand();
+  RaiseBotBaseToClimbCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
 };
-

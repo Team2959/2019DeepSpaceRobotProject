@@ -185,3 +185,25 @@ void LiftAndShuttleSubsystem::ReconfigureLiftForClimb()
   m_liftPidController.SetSmartMotionMaxVelocity(kLiftMaxVelocity/3.0);
   m_liftPidController.SetSmartMotionMaxAccel(kLiftMaxAcceleration/3.0);
 }
+
+void LiftAndShuttleSubsystem::EnableLiftBottomTrigger(bool enable)
+{
+    m_bLiftBottomTriggerEnable = enable;
+}
+
+bool LiftAndShuttleSubsystem::IsLiftBottomTriggerEnabled() const
+{
+    return m_bLiftBottomTriggerEnable;
+}
+ double LiftAndShuttleSubsystem::LiftAppliedOutput()
+ {
+    return m_liftPrimary.GetAppliedOutput();
+ }
+void LiftAndShuttleSubsystem::DriveLiftWithDutyCycle(double dutyCycle)
+ {
+  m_liftPrimary.Set(dutyCycle);
+ }
+ void LiftAndShuttleSubsystem::DriveLiftWithVelocityControl()
+ {
+  m_liftPidController.();
+ }
