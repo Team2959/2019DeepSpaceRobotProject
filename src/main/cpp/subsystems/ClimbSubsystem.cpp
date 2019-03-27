@@ -56,7 +56,10 @@ void ClimbSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 
 void ClimbSubsystem::DashboardDebugPeriodic()
 {
-    m_climbEngage.Set(frc::SmartDashboard::GetBoolean("Climb: Engage", false));
+    if (frc::SmartDashboard::GetBoolean("Climb: Engage", false))
+        ClimbSolenoidEngage();
+    else
+        ClimbSolenoidDisengage();
 
     MotorControllerHelpers::DashboardDataTalonSrx("Climb", m_left, m_pidConfig);
     MotorControllerHelpers::DashboardDataTalonSrx("Climb", m_right, m_pidConfig);
@@ -84,11 +87,13 @@ void ClimbSubsystem::ClimbWheelsSetPosition(double position)
 void ClimbSubsystem::ClimbSolenoidEngage() 
 {
     m_climbEngage.Set(true);
+    m_newClimbEngage.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
 void ClimbSubsystem::ClimbSolenoidDisengage()
 {
     m_climbEngage.Set(false);
+    m_newClimbEngage.Set(frc::DoubleSolenoid::Value::kReverse);
 }
 
 void ClimbSubsystem::PowerToClimbWheels()

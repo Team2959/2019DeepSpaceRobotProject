@@ -182,6 +182,6 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
 void LiftAndShuttleSubsystem::ReconfigureLiftForClimb()
 {
   m_liftPidController.SetP(kLiftKP + kLiftKPClimbAdjust);
-  m_liftPidController.SetSmartMotionMaxVelocity(kLiftMaxVelocity/2.0);
-  m_liftPidController.SetSmartMotionMaxAccel(kLiftMaxAcceleration/2.0);
+  m_liftPidController.SetSmartMotionMaxVelocity(kLiftMaxVelocity/3.0);
+  m_liftPidController.SetSmartMotionMaxAccel(kLiftMaxAcceleration/3.0);
 }

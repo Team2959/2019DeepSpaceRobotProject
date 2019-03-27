@@ -46,7 +46,8 @@ constexpr int kHatchSafetySolenoid = 2;
 constexpr int kClimbEngageSolenoid = 3;
 
 constexpr int kTallClimbEngageSolenoid = 4;
-
+constexpr int kNewClimbEngage1 = 6;
+constexpr int kNewClimbEngage2 = 7;
 
 // Digital IO addresses
 constexpr int kLiftBottomSwitch = 0;
