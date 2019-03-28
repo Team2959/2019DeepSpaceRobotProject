@@ -9,6 +9,8 @@
 
 #include <frc/commands/Command.h>
 
+const double kLiftToSwitchVelocity = -60;
+
 class RaiseBotBaseToClimbCommand : public frc::Command {
  public:
   RaiseBotBaseToClimbCommand();

@@ -56,5 +56,5 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   bool IsLiftBottomTriggerEnabled() const;
   double LiftAppliedOutput();
   void DriveLiftWithDutyCycle(double dutyCycle);
-  void DriveLiftWithVelocityControl();
+  void DriveLiftWithVelocityControl(double velocity);
 };

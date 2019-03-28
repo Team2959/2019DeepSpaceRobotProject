@@ -203,7 +203,7 @@ void LiftAndShuttleSubsystem::DriveLiftWithDutyCycle(double dutyCycle)
  {
   m_liftPrimary.Set(dutyCycle);
  }
- void LiftAndShuttleSubsystem::DriveLiftWithVelocityControl()
+ void LiftAndShuttleSubsystem::DriveLiftWithVelocityControl(double velocity)
  {
-  m_liftPidController.();
+  m_liftPidController.SetReference(velocity, rev::ControlType::kVelocity);
  }

@@ -9,6 +9,7 @@
 #include "Robot.h"
 #include "subsystems/LiftAndShuttlePositions.h"
 
+
 RaiseBotBaseToClimbCommand::RaiseBotBaseToClimbCommand() {
   Requires(&Robot::m_liftAndShuttleSubsystem);
 }
@@ -32,7 +33,7 @@ void RaiseBotBaseToClimbCommand::Execute()
   }
   else
   {
-    Robot::m_liftAndShuttleSubsystem.LiftAppliedOutput();
+    Robot::m_liftAndShuttleSubsystem.DriveLiftWithVelocityControl(kLiftToSwitchVelocity);
     
   }
 }
@@ -43,6 +44,7 @@ bool RaiseBotBaseToClimbCommand::IsFinished() { return Robot::m_liftAndShuttleSu
 // Called once after isFinished returns true
 void RaiseBotBaseToClimbCommand::End()
 {
+  Robot::m_liftAndShuttleSubsystem.LiftBottomReset();
   Interrupted();
 }
 

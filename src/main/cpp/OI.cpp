@@ -28,6 +28,7 @@
 #include "commands/FollowLineCommand.h"
 #include "subsystems/CargoControlSubsystem.h"
 #include "commands/ResetCargoArmCommand.h"
+#include "commands/RaiseBotBaseToClimbCommand.h"
 
 OI::OI()
 { 
@@ -48,6 +49,8 @@ OI::OI()
 
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
   m_cargoArmBack.WhenPressed(new MoveCargoArmCommand(kArmTiltBackwardPosition));
+
+  m_driveToJoystick.WhenPressed(new RaiseBotBaseToClimbCommand());
 
 //   m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
   m_ejectCargo.WhenPressed(new StopCargoControlWheelsCommand(0, 0, 0));
