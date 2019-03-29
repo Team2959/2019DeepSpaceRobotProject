@@ -148,8 +148,7 @@ void Robot::AutonomousInit() {
   {
     m_autonomousCommand = &m_hatchAuto;
   }
-    
-
+  
   // std::string autoSelected = frc::SmartDashboard::GetString(
   //     "Auto Selector", "Default");
   // if (autoSelected == "My Auto") {
@@ -158,7 +157,7 @@ void Robot::AutonomousInit() {
   //   m_autonomousCommand = &m_defaultAuto;
   // }
 
-  //m_autonomousCommand = m_chooser.GetSelected();
+  // m_autonomousCommand = m_chooser.GetSelected();
 
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Start();

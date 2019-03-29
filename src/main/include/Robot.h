@@ -22,7 +22,6 @@
 #include "subsystems/ClimbSubsystem.h"
 #include "commands/AutonomousStartWithHatchCommandGroup.h"
 
-
 class Robot : public frc::TimedRobot {
  public:
   // Define all the subsystems to create here!
@@ -51,8 +50,8 @@ class Robot : public frc::TimedRobot {
   // doesn't have undefined behavior and potentially crash.
   frc::Command* m_autonomousCommand = nullptr;
   MyAutoCommand m_myAuto;
-  AutonomousStartWithHatchCommandGroup m_hatchAuto;
   frc::SendableChooser<frc::Command*> m_chooser;
+  AutonomousStartWithHatchCommandGroup m_hatchAuto;
 
   int m_periodic = 0;
   bool m_debugDrive = false;
