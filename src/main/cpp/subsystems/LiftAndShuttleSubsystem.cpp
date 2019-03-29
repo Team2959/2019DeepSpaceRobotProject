@@ -13,12 +13,12 @@
 #include <algorithm>
 
 // Lift constants
-constexpr double kLiftCloseEnoughToPosition = 0.1;
-constexpr double kLiftKP = 0.00012;
+constexpr double kLiftCloseEnoughToPosition = 0.25;
+constexpr double kLiftKP = 0.00015;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
 constexpr double kLiftMaxAcceleration = 9000;
-constexpr double kLiftFirstStopPosition = 40;
+constexpr double kLiftFirstStopPosition = 30;
 constexpr double kLiftCloseToStop = 2;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
