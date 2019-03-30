@@ -16,6 +16,7 @@ PowerClimbWheelsWhileHeldCommand::PowerClimbWheelsWhileHeldCommand(double amps) 
 // Called just before this Command runs the first time
 void PowerClimbWheelsWhileHeldCommand::Initialize() {
   Robot::m_climbSubsystem.PowerToClimbWheels(m_amps);
+  Robot::m_liftAndShuttleSubsystem.ReconfigureLiftForClimb();
 }
 
 // Called repeatedly when this Command is scheduled to run
