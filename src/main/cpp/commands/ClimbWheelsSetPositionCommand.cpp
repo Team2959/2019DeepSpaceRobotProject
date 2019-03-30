@@ -35,7 +35,7 @@ bool ClimbWheelsSetPositionCommand::IsFinished()
 // Called once after isFinished returns true
 void ClimbWheelsSetPositionCommand::End()
 {
-  Robot::m_climbSubsystem.PowerToClimbWheels();
+  Robot::m_climbSubsystem.PowerToClimbWheels(kClimbWheelsHoldingCurrent);
 }
 
 // Called when another command which requires one or more of the same

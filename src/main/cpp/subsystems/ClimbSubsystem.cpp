@@ -96,10 +96,10 @@ void ClimbSubsystem::ClimbSolenoidDisengage()
     m_newClimbEngage.Set(frc::DoubleSolenoid::Value::kReverse);
 }
 
-void ClimbSubsystem::PowerToClimbWheels()
+void ClimbSubsystem::PowerToClimbWheels(double amps)
 {
-    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Current, kClimbWheelsHoldingCurrent);
-    m_right.Set(ctre::phoenix::motorcontrol::ControlMode::Current, kClimbWheelsHoldingCurrent);
+    m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Current, amps);
+    m_right.Set(ctre::phoenix::motorcontrol::ControlMode::Current, amps);
 }
 
 void ClimbSubsystem::StopAtCurrentDistance()

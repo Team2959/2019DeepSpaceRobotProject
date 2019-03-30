@@ -9,11 +9,11 @@
 
 #include <frc/commands/Command.h>
 
-class PowerToClimbWheelsCommand : public frc::Command {
+class PowerClimbWheelsWhileHeldCommand : public frc::Command {
  private:
   double m_amps;
  public:
-  PowerToClimbWheelsCommand(double amps);
+  PowerClimbWheelsWhileHeldCommand(double amps);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

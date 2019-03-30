@@ -5,29 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/PowerToClimbWheelsCommand.h"
+#include "commands/PowerClimbWheelsWhileHeldCommand.h"
 #include "Robot.h"
 
-PowerToClimbWheelsCommand::PowerToClimbWheelsCommand(double amps) {
-    Requires(&Robot::m_climbSubsystem);
-    m_amps = amps;
+PowerClimbWheelsWhileHeldCommand::PowerClimbWheelsWhileHeldCommand(double amps) {
+  Requires(&Robot::m_climbSubsystem);
+  m_amps = amps;
 }
 
 // Called just before this Command runs the first time
-void PowerToClimbWheelsCommand::Initialize() {
-    Robot::m_climbSubsystem.PowerToClimbWheels(m_amps);
+void PowerClimbWheelsWhileHeldCommand::Initialize() {
+  Robot::m_climbSubsystem.PowerToClimbWheels(m_amps);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void PowerToClimbWheelsCommand::Execute() {
-}
+void PowerClimbWheelsWhileHeldCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool PowerToClimbWheelsCommand::IsFinished() { return true; }
+bool PowerClimbWheelsWhileHeldCommand::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void PowerToClimbWheelsCommand::End() {}
+void PowerClimbWheelsWhileHeldCommand::End() {
+  Robot::m_climbSubsystem.PowerToClimbWheels(m_amps);
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void PowerToClimbWheelsCommand::Interrupted() {}
+void PowerClimbWheelsWhileHeldCommand::Interrupted() {
+  End();
+}

@@ -29,6 +29,8 @@
 #include "subsystems/CargoControlSubsystem.h"
 #include "commands/ResetCargoArmCommand.h"
 #include "commands/RaiseBotBaseToClimbCommand.h"
+#include "subsystems/ClimbSubsystem.h"
+#include "commands/PowerClimbWheelsWhileHeldCommand.h"
 
 OI::OI()
 { 
@@ -36,10 +38,12 @@ OI::OI()
   m_deliver.WhenPressed(new DeliverConditionalCommand());
   // m_followLine.WhileHeld(new FollowLineCommand());
   m_resetCargoArm.WhileHeld(new ResetCargoArmCommand());
+  m_moveClimbArms.WhileHeld(new PowerClimbWheelsWhileHeldCommand(kClimbWheelsDriveCurrent));
 
   // Co-Pilot Buttons
-  m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
-  m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
+  m_climbHabLevel2.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
+  //m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
+  //m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
 
   m_liftFloor.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
   m_liftBottom.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Bottom));

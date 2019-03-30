@@ -15,6 +15,7 @@
 #include "frc/DoubleSolenoid.h"
 
 constexpr double kClimbWheelsHoldingCurrent = 2;
+constexpr double kClimbWheelsDriveCurrent = 5;
 //constexpr double kDriveClimbWheelsDistance = 11800; // 11800 = 26" travel -> 4096 ticks per revolution; 2 7/8" wheel diameter
 constexpr double kDriveClimbWheelsDistance = 2300; //  = 5" travel -> 4096 ticks per revolution; 2 7/8" wheel diameter
 constexpr double kClimbArmsDownDistance = 12300; //  3 full wheels rotations for climb arms down
@@ -43,7 +44,7 @@ class ClimbSubsystem : public frc::Subsystem {
   void ClimbWheelsSetPosition(double position);
   void ClimbSolenoidEngage();
   void ClimbSolenoidDisengage();
-  void PowerToClimbWheels();
+  void PowerToClimbWheels(double amps);
   void StopAtCurrentDistance();
 
   bool AreClimbWheelsAtPosition(double position);
