@@ -35,7 +35,7 @@ constexpr int kLeftCargoArmCanTalonSrxMotor = 13;
 constexpr int kRightCargoArmCanTalonSrxMotor = 14;
 
 // PWM motor addresses
-constexpr int kCargoArmWheelsPwmSparkMotor = 3;
+constexpr int kCargoArmWheelsPwmSparkMotor = 0;
 // constexpr int kClimbWheelsPwmSparkMotor = 1;
 // constexpr int kClimbEngagePwmSparkMotor = 2;
 
@@ -50,7 +50,7 @@ constexpr int kNewClimbEngage1 = 6;
 constexpr int kNewClimbEngage2 = 7;
 
 // Digital IO addresses
-constexpr int kLiftBottomSwitch = 9;
+constexpr int kLiftBottomSwitch = 0;
 constexpr int kCargoInSwitch = 1;
 // constexpr int kCargoShuttleFrontSwitchTrigger = 2;
 // constexpr int kCargoShuttleBackSwitchTrigger = 3;
