@@ -27,7 +27,7 @@ bool PowerClimbWheelsWhileHeldCommand::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void PowerClimbWheelsWhileHeldCommand::End() {
-  Robot::m_climbSubsystem.PowerToClimbWheels(m_amps);
+  Robot::m_climbSubsystem.PowerToClimbWheels(0);
 }
 
 // Called when another command which requires one or more of the same
