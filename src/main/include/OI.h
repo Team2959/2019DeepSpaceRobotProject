@@ -36,7 +36,7 @@ private:
 
   // Co Pilot Buttons
   //frc::JoystickButton m_climbHabLevel3 {&m_coPilotJoystick, 1};
-  frc::JoystickButton m_climbHabLevel2 {&m_coPilotJoystick, 2};
+  frc::JoystickButton m_climbHabLevel2 {&m_coPilotJoystick, 1};
 
   frc::JoystickButton m_liftFloor { &m_coPilotJoystick, 3};
   frc::JoystickButton m_liftBottom { &m_coPilotJoystick, 4};
