@@ -14,7 +14,7 @@
 
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.25;
-constexpr double kLiftKP = 0.00015;
+constexpr double kLiftKP = 0.00022;
 constexpr double kLiftKPClimbAdjust = 0.0001;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
