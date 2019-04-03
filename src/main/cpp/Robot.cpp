@@ -53,6 +53,11 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutBoolean("Debug Hatch", m_debugHatch);
   frc::SmartDashboard::PutBoolean("Debug Climb", m_debugClimb);
 
+  frc::SmartDashboard::PutNumber("Auto Rotation", 250.0);
+  frc::SmartDashboard::PutNumber("Auto Forward", 1500.0);
+  frc::SmartDashboard::PutNumber("Accel", 100.0);
+  frc::SmartDashboard::PutNumber("Separation Limit", 0.3);
+
   // Tell the Raspberry PI that we don't need it looking for anything on the front camera yet
   m_networkTable->PutNumber(Rpi2959Shared::Keys::FrontTargets, 0.0);
 
@@ -70,13 +75,16 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() 
 {
-  //double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
-  //auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
+/*  double frameNumber = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontFrameNumber, 0.0);
+  double targets = m_networkTable->GetNumber(Rpi2959Shared::Keys::FrontTargets, 0.0);
+  auto targetRect = m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{});
 
   // Testing of Raspberry Pi info through network tables
-  /*std::cout<<"front framenumber = "<<frameNumber<<"\n";
+  std::cout<<"front framenumber = "<<frameNumber<<"\n";
+  std::cout <<"front targets = " << targets << "\n";
   for(auto i = 0; i < targetRect.size(); ++i)
-    std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n";*/
+    std::cout << "front tape targetRect[" << i << "] = " << targetRect[i] << "\n"; */
+
   m_periodic++;
   
   if (m_periodic == 2)

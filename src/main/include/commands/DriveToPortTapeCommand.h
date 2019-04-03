@@ -22,12 +22,18 @@ class DriveToPortTapeCommand : public frc::Command
     virtual void Interrupted() override;
 
   private:
-    static std::tuple<double, double> ComputeRpms(double leftTapeX, double rightTapeX);
+    std::tuple<double, double> ComputeRpms(double leftTapeX, double rightTapeX);
 
     void LookForTape(bool flag);
     void StopDriveMotion();
 
     std::shared_ptr<nt::NetworkTable> m_networkTable;
-    DriveTrainSubsystem&              m_driveTrainSubsystem;
     bool                              m_isFinished{ false };
+
+    double m_accelDecel;
+    double m_separationLimit;
+    double m_maxForwardSpeed;
+    double m_maxRotationSpeed;
+    double m_currentLeftSpeed;
+    double m_currentRightSpeed;
 };

@@ -34,6 +34,8 @@ private:
   //Debug
   frc::JoystickButton m_driveToJoystick { &m_rightDriverJoystick, 11};
 
+  frc::JoystickButton m_driveToVision { &m_leftDriverJoystick, 1};
+
   // Co Pilot Buttons
   //frc::JoystickButton m_climbHabLevel3 {&m_coPilotJoystick, 1};
   frc::JoystickButton m_climbHabLevel2 {&m_coPilotJoystick, 1};
