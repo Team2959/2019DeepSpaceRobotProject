@@ -24,7 +24,7 @@ class DriveTrainSubsystem : public frc::Subsystem
 {
 private:
     const double kMotorMaxSpeed      = 3400; // 5676.0;  // RPM
-    const double kDriveSafetyFactor  = 0.90;    // Multiplier for establishing reliable limits
+    const double kDriveSafetyFactor  = 1.0;    // Multiplier for establishing reliable limits
     const double kRobotMaxAccel      = 2207.07; // RPM / s
     const double kDriveMaxCurrent    = 80.0;    // Amps
     const double kDriveTiltThreshold = kDriveTrainTypicalTilt * 2; // degrees
