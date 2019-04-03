@@ -162,27 +162,26 @@ void MotorControllerHelpers::DashboardDataSparkMax(
   auto kF = frc::SmartDashboard::GetNumber(name + ": Feed Forward", myFF);
   auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", myOmin);
   auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", myOmax);
-  auto slotValue = frc::SmartDashboard::GetNumber(name + "Lift: Up/Down", 0);
 
   if (fabs(kP - myP) > kCloseToSameValue)
   {
-    pidConfig.SetP(kP, slotValue);
+    pidConfig.SetP(kP);
   }
   if (fabs(kI - myI) > kCloseToSameValue)
   {
-    pidConfig.SetI(kI, slotValue);
+    pidConfig.SetI(kI);
   }
   if (fabs(kD - myD) > kCloseToSameValue)
   {
-    pidConfig.SetD(kD, slotValue);
+    pidConfig.SetD(kD);
   }
   if (fabs(kF - myFF) > kCloseToSameValue)
   {
-    pidConfig.SetFF(kF, slotValue);
+    pidConfig.SetFF(kF);
   }
   if (fabs(kIz - myIzone) > kCloseToSameValue)
   {
-    pidConfig.SetIZone(kIz, slotValue);
+    pidConfig.SetIZone(kIz);
   }
   if (fabs(outputMin - myOmin) > kCloseToSameValue ||
         fabs(outputMax - myOmax) > kCloseToSameValue)
@@ -216,28 +215,31 @@ void MotorControllerHelpers::DashboardDataSparkMax2(
   auto kF = frc::SmartDashboard::GetNumber(name + ": Feed Forward", myFF);
   auto outputMin = frc::SmartDashboard::GetNumber(name + ": Ouput Min", myOmin);
   auto outputMax = frc::SmartDashboard::GetNumber(name + ": Ouput Max", myOmax);
-  auto slotValue = frc::SmartDashboard::GetNumber(name + "Lift: Up/Down", 0);
-
 
   if (fabs(kP - myP) > kCloseToSameValue)
   {
-    pidConfig.SetP(kP, frc::SmartDashboard::GetNumber(name + "Lift: Up/Down", 0));
+    pidConfig.SetP(kP);
+    pidConfig2.SetP(kP);
   }
   if (fabs(kI - myI) > kCloseToSameValue)
   {
-    pidConfig.SetI(kI,  frc::SmartDashboard::GetNumber(name + "Lift: Up/Down", 0));
+    pidConfig.SetI(kI);
+    pidConfig2.SetI(kI);
   }
   if (fabs(kD - myD) > kCloseToSameValue)
   {
-    pidConfig.SetD(kD,  frc::SmartDashboard::GetNumber(name + "Lift: Up/Down", 0));
+    pidConfig.SetD(kD);
+    pidConfig2.SetD(kD);
   }
   if (fabs(kF - myFF) > kCloseToSameValue)
   {
-    pidConfig.SetFF(kF,  frc::SmartDashboard::GetNumber(name + "Lift: Up/Down", 0));
+    pidConfig.SetFF(kF);
+    pidConfig2.SetFF(kF);
   }
   if (fabs(kIz - myIzone) > kCloseToSameValue)
   {
-    pidConfig.SetIZone(kIz,  frc::SmartDashboard::GetNumber(name + "Lift: Up/Down", 0));
+    pidConfig.SetIZone(kIz);
+    pidConfig2.SetIZone(kIz);
   }
   if (fabs(outputMin - myOmin) > kCloseToSameValue ||
         fabs(outputMax - myOmax) > kCloseToSameValue)

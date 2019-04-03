@@ -14,11 +14,9 @@
 
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.25;
-constexpr double kUpLiftKP = 0.00022;
-constexpr double kDownLiftKP = 0.00022;
+constexpr double kLiftKP = 0.00022;
 constexpr double kLiftKPClimbAdjust = 0.0001;
-constexpr double kUpLiftKI = 1e-6;
-constexpr double kDownLiftKI = 1e-6;
+constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
 constexpr double kLiftMaxAcceleration = 9000;
 constexpr double kLiftFirstStopPosition = 30;
@@ -50,34 +48,18 @@ void LiftAndShuttleSubsystem::OnRobotInit()
 void LiftAndShuttleSubsystem::ConfigureLiftPid(rev::CANPIDController & pidConfig)
 {
   // common spot for lift motor controller PID config, so same values
-  pidConfig.SetP(kUpLiftKP, kUpSlot); 
-  pidConfig.SetP(kDownLiftKP, kDownSlot); 
-  pidConfig.SetI(kUpLiftKI, kUpSlot);
-  pidConfig.SetI(kDownLiftKI, kDownSlot); 
-  pidConfig.SetD(0, kUpSlot);
-  pidConfig.SetD(0, kDownSlot);
-  pidConfig.SetIZone(0, kUpSlot);
-  pidConfig.SetIZone(0, kDownSlot);
-  pidConfig.SetFF(0, kUpSlot);
-  pidConfig.SetFF(0, kDownSlot);
-  pidConfig.SetOutputRange(-1, 1, kUpSlot);
-  pidConfig.SetOutputRange(-1, 1, kDownSlot);
-  pidConfig.SetP(kUpLiftKP, kUpSlot);
-  pidConfig.SetP(kDownLiftKP, kDownSlot);
+  pidConfig.SetP(kLiftKP);
+  pidConfig.SetI(kLiftKI);  
+  pidConfig.SetD(0);
+  pidConfig.SetIZone(0);
+  pidConfig.SetFF(0);
+  pidConfig.SetOutputRange(-1, 1);
+  pidConfig.SetP(kLiftKP);
 
-
-  pidConfig.SetSmartMotionMaxVelocity(kLiftMaxVelocity, kDownSlot);
-  pidConfig.SetSmartMotionMaxVelocity(kLiftMaxVelocity, kUpSlot);
-  pidConfig.SetSmartMotionMinOutputVelocity(0, kDownSlot);
-  pidConfig.SetSmartMotionMinOutputVelocity(0, kUpSlot);
-  pidConfig.SetSmartMotionMaxAccel(kLiftMaxAcceleration, kDownSlot);
-  pidConfig.SetSmartMotionMaxAccel(kLiftMaxAcceleration, kUpSlot);
-  pidConfig.SetSmartMotionAllowedClosedLoopError(0, kDownSlot);
-  pidConfig.SetSmartMotionAllowedClosedLoopError(0, kUpSlot);
-
-  pidConfig.SetSmartMotionAccelStrategy(rev::CANPIDController::AccelStrategy::kSCurve, kUpSlot);
-  pidConfig.SetSmartMotionAccelStrategy(rev::CANPIDController::AccelStrategy::kSCurve, kDownSlot);
-
+  pidConfig.SetSmartMotionMaxVelocity(kLiftMaxVelocity);
+  pidConfig.SetSmartMotionMinOutputVelocity(0);
+  pidConfig.SetSmartMotionMaxAccel(kLiftMaxAcceleration);
+  pidConfig.SetSmartMotionAllowedClosedLoopError(0);
 }
 
 void LiftAndShuttleSubsystem::OnRobotPeriodic(bool updateDebugInfo)
@@ -101,7 +83,6 @@ void LiftAndShuttleSubsystem::DashboardDebugInit()
   frc::SmartDashboard::PutNumber("Lift: Max Acceleration", kLiftMaxAcceleration);
   frc::SmartDashboard::PutNumber("Lift: Allowed Closed Loop Error", 0);
   frc::SmartDashboard::PutNumber("Lift: Arb FF", 0);
-  frc::SmartDashboard::PutNumber("Lift: Up/Down", 0);
 }
 
 void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
@@ -112,7 +93,7 @@ void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
   auto maxV = frc::SmartDashboard::GetNumber("Lift: Max Velocity", kLiftMaxVelocity);
   if (fabs(maxV - m_liftPidController.GetSmartMotionMaxVelocity()) > kCloseToSameValue)
   {
-    m_liftPidController.SetSmartMotionMaxVelocity(maxV /*, frc::SmartDashboard::GetNumber("Lift: Up/Down", 0)*/);
+    m_liftPidController.SetSmartMotionMaxVelocity(maxV);
   }
   auto minV = frc::SmartDashboard::GetNumber("Lift: Min Velocity", 0);
   if (fabs(minV - m_liftPidController.GetSmartMotionMinOutputVelocity()) > kCloseToSameValue)
@@ -200,8 +181,7 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
 
 void LiftAndShuttleSubsystem::ReconfigureLiftForClimb()
 {
-  m_liftPidController.SetP(kUpLiftKP + kLiftKPClimbAdjust);
-  m_liftPidController.SetP(kDownLiftKP + kLiftKPClimbAdjust);
+  m_liftPidController.SetP(kLiftKP + kLiftKPClimbAdjust);
   m_liftPidController.SetSmartMotionMaxVelocity(kLiftMaxVelocity/3.0);
   m_liftPidController.SetSmartMotionMaxAccel(kLiftMaxAcceleration/3.0);
 }

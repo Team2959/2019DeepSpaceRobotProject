@@ -12,8 +12,6 @@
 #include "RobotMap.h"
 #include <frc/DigitalInput.h>
 
-const int kUpSlot = 0;
-const int kDownSlot = 1;
 class LiftAndShuttleSubsystem : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
