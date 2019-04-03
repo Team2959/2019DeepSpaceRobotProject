@@ -31,6 +31,7 @@ class DriveToPortTapeCommand : public frc::Command
     bool                              m_isFinished{ false };
 
     double m_accelDecel;
+    double m_accelDecelRotation;
     double m_separationLimit;
     double m_maxForwardSpeed;
     double m_maxRotationSpeed;
