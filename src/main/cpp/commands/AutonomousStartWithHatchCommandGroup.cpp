@@ -17,5 +17,6 @@ AutonomousStartWithHatchCommandGroup::AutonomousStartWithHatchCommandGroup()
   AddSequential(new PrepForHatchCommand());
   AddSequential(new frc::TimedCommand(0.25));
   AddSequential(new MoveLiftAndShuttleCommand(kLiftCargoShipHatchPosition));
+  AddSequential(new frc::TimedCommand(0.25));
   AddSequential(new RetractMechanismCommand());
 }

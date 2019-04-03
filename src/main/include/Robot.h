@@ -20,7 +20,7 @@
 #include "subsystems/CargoArmSubsystem.h"
 #include "subsystems/LiftAndShuttleSubsystem.h"
 #include "subsystems/ClimbSubsystem.h"
-
+#include "commands/AutonomousStartWithHatchCommandGroup.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -51,6 +51,7 @@ class Robot : public frc::TimedRobot {
   frc::Command* m_autonomousCommand = nullptr;
   MyAutoCommand m_myAuto;
   frc::SendableChooser<frc::Command*> m_chooser;
+  AutonomousStartWithHatchCommandGroup m_hatchAuto;
 
   int m_periodic = 0;
   bool m_debugDrive = false;
