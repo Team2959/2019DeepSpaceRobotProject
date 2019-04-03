@@ -28,6 +28,7 @@
 #include "commands/FollowLineCommand.h"
 #include "subsystems/CargoControlSubsystem.h"
 #include "commands/ResetCargoArmCommand.h"
+#include "commands/DriveToPortTapeCommand.h"
 
 OI::OI()
 { 
@@ -35,6 +36,7 @@ OI::OI()
   m_deliver.WhenPressed(new DeliverConditionalCommand());
   // m_followLine.WhileHeld(new FollowLineCommand());
   m_resetCargoArm.WhileHeld(new ResetCargoArmCommand());
+  m_driveToVision.WhileHeld(new DriveToPortTapeCommand());
 
   // Co-Pilot Buttons
   m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));

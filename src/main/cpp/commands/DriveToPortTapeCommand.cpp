@@ -6,19 +6,38 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/DriveToPortTapeCommand.h"
-#include "../../include/Robot.h"
+#include "Robot.h"
 #include "../../../../../2019RaspPIRoboRioShared/Shared.hpp"
+#include <iostream>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 // Constructor
-DriveToPortTapeCommand::DriveToPortTapeCommand() : m_networkTable{ Robot::m_networkTable },
-  m_driveTrainSubsystem{ Robot::m_driveTrainSubsystem }
+DriveToPortTapeCommand::DriveToPortTapeCommand() :
+ m_currentLeftSpeed{ 0.0 },
+ m_currentRightSpeed{ 0.0 },
+ m_maxForwardSpeed{ 1500.0 },
+ m_maxRotationSpeed{ 250.0 },
+ m_accelDecel{ 100.0 },
+ m_separationLimit{ 0.3 }
 {
-  Requires(&m_driveTrainSubsystem);
+  Requires(&Robot::m_driveTrainSubsystem);
 }
 
 // Called just before this Command runs the first time
 void DriveToPortTapeCommand::Initialize() 
 {
+  m_networkTable = Robot::m_networkTable;
+
+  if (frc::SmartDashboard::GetBoolean("Debug Drive", false))
+  {
+    m_maxForwardSpeed = frc::SmartDashboard::GetNumber("Auto Forward", 1500.0);
+    m_maxRotationSpeed = frc::SmartDashboard::GetNumber("Auto Rotation", 250.0);
+    m_accelDecel = frc::SmartDashboard::GetNumber("Accel", 100.0);
+    m_separationLimit = frc::SmartDashboard::GetNumber("Separation Limit", 0.3);
+  }
+  m_currentLeftSpeed = 0.0;
+  m_currentRightSpeed = 0.0;
+
   // Tell the Raspberry PI that we want it to look for port tape
   LookForTape(true);
 
@@ -36,10 +55,23 @@ void DriveToPortTapeCommand::Execute()
   // Get results from the Raspberry PI
   auto  results{ m_networkTable->GetNumberArray(Rpi2959Shared::Keys::FrontPortTapeResults, std::vector<double>{}) };
 
-  // If we don't have enough result values, then we have nothing to drive to.
+  // If we don't have enough result values, then decelerate
   if(results.size() < 4)
   {
-    StopDriveMotion();  // Make sure that we aren't moving
+    if(m_currentLeftSpeed < 0.0)
+      m_currentLeftSpeed = std::min(m_currentLeftSpeed + m_accelDecel, 0.0);
+    else if(m_currentLeftSpeed > 0.0)
+      m_currentLeftSpeed = std::max(m_currentLeftSpeed - m_accelDecel, 0.0);
+    if(m_currentRightSpeed < 0.0)
+      m_currentRightSpeed = std::min(m_currentRightSpeed + m_accelDecel, 0.0);
+    else if(m_currentRightSpeed > 0.0)
+      m_currentRightSpeed = std::max(m_currentRightSpeed - m_accelDecel, 0.0);
+
+    // std::cout << "**** NO SOLUTION ***\n";
+    // std::cout << "NewLeft = " << m_currentLeftSpeed << '\n';
+    // std::cout << "NewRight = " << m_currentRightSpeed << '\n';
+
+    Robot::m_driveTrainSubsystem.TankDrive(m_currentLeftSpeed, m_currentRightSpeed);
     return;             // Exit the function.  We are still looking for tape targets, so Execute may be called again
   }
 
@@ -52,16 +84,23 @@ void DriveToPortTapeCommand::Execute()
   // If RPMs for both left and right are zero, then we have reached target and have nothing more to do
   m_isFinished = (leftRPMs == 0.0)&&(rightRPMs == 0.0);
 
+  // if(m_isFinished)
+  //   std::cout << "!!! Marked Done !!!\n";
   // Send the RPMs to the hardware
-  m_driveTrainSubsystem.TankDrive(leftRPMs, rightRPMs);
+  Robot::m_driveTrainSubsystem.TankDrive(leftRPMs, rightRPMs);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool DriveToPortTapeCommand::IsFinished() { return m_isFinished; }
+bool DriveToPortTapeCommand::IsFinished() 
+{
+  // std::cout << "IsFinished = " << m_isFinished << '\n';
+   return m_isFinished; 
+}
 
 // Called once after isFinished returns true
 void DriveToPortTapeCommand::End()
 {
+  // std::cout << "End\n";
   StopDriveMotion();  // Ensure that the drive is stopped
   LookForTape(false); // Tell the Raspberry PI that we don't want it to look for port tape
 }
@@ -73,40 +112,70 @@ void DriveToPortTapeCommand::Interrupted()
 }
 
 // Stop all drive motion
-void DriveToPortTapeCommand::StopDriveMotion() { m_driveTrainSubsystem.TankDrive(0.0, 0.0); }
+void DriveToPortTapeCommand::StopDriveMotion() { Robot::m_driveTrainSubsystem.TankDrive(0.0, 0.0); }
 
 // Given left/right tape X positions, compute the RPMs to use
 std::tuple<double, double> DriveToPortTapeCommand::ComputeRpms(double leftTapeX, double rightTapeX)
 {
-  const double  StandardRotationSpeed{ 500.0 }; // This is a common speed factor.  ADJUST THIS WITH TESTING.
+ /* const double  StandardRotationSpeed{ 500.0 }; // This is a common speed factor.  ADJUST THIS WITH TESTING.
   const double  FullForwardSpeed{ 2000.0 };      // The speed to drive when we are far from the tape.  ADJUST THIS WITH TESTING
+*/ 
   const double  CenterRadius{ 0.05 };         // If the tape center is within this radius, we drive forward
-  const double  SeparationLimit{ 0.35 };      // If the two tape X centers are separated by more than this value, then we are close enough
+//  const double  SeparationLimit{ 0.35 };      // If the two tape X centers are separated by more than this value, then we are close enough
 
   auto  middleX{ (rightTapeX + leftTapeX) / 2 };  // Compute the mid point between left X and right X
   auto  separationX{ rightTapeX - leftTapeX };    // Compute the separation between left X and right X
 
+  // std::cout << "MiddleX = " << middleX << '\n';
+
+  auto rotation = m_maxRotationSpeed;
+  if (separationX < m_separationLimit + 0.03)
+    rotation /= 2;
+
   // If the tape middle is on the right side of the frame, then we need to turn to the right
   if(middleX > (0.5 + CenterRadius))
   {
-    auto  rotationSpeed{ StandardRotationSpeed * (middleX - 0.5) }; // Compute our rotation speed
-    return std::make_tuple(rotationSpeed, -rotationSpeed);          // Return the result
+    m_currentLeftSpeed = std::min(m_currentLeftSpeed + m_accelDecel, rotation);
+    m_currentRightSpeed = std::max(m_currentRightSpeed - m_accelDecel, -rotation);
+
+    // std::cout << "NewLeft = " << m_currentLeftSpeed << '\n';
+    // std::cout << "NewRight = " << m_currentRightSpeed << '\n';
+
+    return std::make_tuple(m_currentLeftSpeed, m_currentRightSpeed);          // Return the result
   }
 
   // If the tape middle is on the left side of the frame, then we need to turn to the left
   if(middleX < (0.5 - CenterRadius))
   {
-    auto  rotationSpeed{ StandardRotationSpeed * (0.5 - middleX) }; // Compute our rotation speed
-    return std::make_tuple(-rotationSpeed, rotationSpeed);          // Return the result
+    m_currentLeftSpeed = std::max(m_currentLeftSpeed - m_accelDecel, -rotation);
+    m_currentRightSpeed = std::min(m_currentRightSpeed + m_accelDecel, rotation);
+
+    // std::cout << "NewLeft = " << m_currentLeftSpeed << '\n';
+    // std::cout << "NewRight = " << m_currentRightSpeed << '\n';
+
+    return std::make_tuple(m_currentLeftSpeed, m_currentRightSpeed);          // Return the result
   }
+
+  // std::cout << "SeparationX = " << separationX << '\n';
 
   // If the tapes are separated by less than this, we must drive forward
-  if(separationX < SeparationLimit)
+  if(separationX < m_separationLimit)
   {
-    auto  driveSpeed{ FullForwardSpeed * (SeparationLimit - separationX) / SeparationLimit }; // Compute our drive speed
-    return std::make_tuple(driveSpeed, driveSpeed);   // Return the result
+    auto  newSpeed{std::min(std::max((m_currentLeftSpeed + m_currentRightSpeed) / 2.0 + m_accelDecel, 0.0), m_maxForwardSpeed) };
+    m_currentLeftSpeed = newSpeed;
+    m_currentRightSpeed = newSpeed;
+
+    // std::cout << "NewLeft = " << m_currentLeftSpeed << '\n';
+    // std::cout << "NewRight = " << m_currentRightSpeed << '\n';
+
+    return std::make_tuple(m_currentLeftSpeed, m_currentRightSpeed);   // Return the result
   }
 
+  m_currentLeftSpeed = 0.0;
+  m_currentRightSpeed = 0.0;
+
+  // std::cout << "NewLeft = " << m_currentLeftSpeed << '\n';
+  // std::cout << "NewRight = " << m_currentRightSpeed << '\n';
   // Otherwise, the tape center is in the middle of frame, and the tape Xs are far enough apart...we are done
   return std::make_tuple(0.0, 0.0);
 }
