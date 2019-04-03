@@ -149,10 +149,9 @@ double LiftAndShuttleSubsystem::CurrentLiftPosition()
 
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
 {
-  double arbFF = 0.0;
   if (m_updateDebugInfo)
   {
-    arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", arbFF);
+    m_arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", m_arbFF);
     frc::SmartDashboard::PutNumber("Lift: Target", position);
   }
 
@@ -161,7 +160,7 @@ void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
     position = kLiftFirstStopPosition;
   }
 
-  m_liftPidController.SetReference(-position, rev::ControlType::kSmartMotion, arbFF);
+  m_liftPidController.SetReference(-position, rev::ControlType::kSmartMotion, 0, m_arbFF);
 }
 
 void LiftAndShuttleSubsystem::StopAtCurrentPosition()

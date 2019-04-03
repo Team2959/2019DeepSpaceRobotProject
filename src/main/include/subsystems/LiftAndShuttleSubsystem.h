@@ -35,6 +35,7 @@ class LiftAndShuttleSubsystem : public frc::Subsystem {
   void DashboardDebugInit();
   void DashboardDebugPeriodic();
   bool m_updateDebugInfo = false;
+  double m_arbFF = 0;
 
  public:
   LiftAndShuttleSubsystem();
