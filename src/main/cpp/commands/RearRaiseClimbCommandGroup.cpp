@@ -6,38 +6,22 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/RearRaiseClimbCommandGroup.h"
-#include <subsystems/ClimbSubsystem.h>
-#include <subsystems/LiftAndShuttlePositions.h>
-#include <subsystems/LiftAndShuttleSubsystem.h>
+#include "Robot.h"
 #include "commands/ClimbSolenoidEngageCommand.h"
-#include "commands/MoveLiftAndShuttleCommand.h"
+#include "commands/RaiseBotBaseToClimbCommand.h"
 
-
-RearRaiseClimbCommandGroup::RearRaiseClimbCommandGroup() {
-  // Add Commands here:
-  // e.g. AddSequential(new Command1());
-  //      AddSequential(new Command2());
-  // these will run in order.
-
-  // To run multiple commands at the same time,
-  // use AddParallel()
-  // e.g. AddParallel(new Command1());
-  //      AddSequential(new Command2());
-  // Command1 and Command2 will run in parallel.
-
-  // A command group will require all of the subsystems that each member
-  // would require.
-  // e.g. if Command1 requires chassis, and Command2 requires arm,
-  // a CommandGroup containing them would require both the chassis and the
-  // arm.
-  AddSequential(new MoveLiftAndShuttleCommand(kLiftFloorPosition));
+RearRaiseClimbCommandGroup::RearRaiseClimbCommandGroup()
+{
+  AddSequential(new RaiseBotBaseToClimbCommand());
   AddSequential(new ClimbSolenoidEngageCommand());
 }
+
 void RearRaiseClimbCommandGroup::Interrupted()
 {
-  return RearRaiseClimbCommandGroup::End();
+  End();
 }
+
 void RearRaiseClimbCommandGroup::End()
 {
-    return Robot::m_climbSubsystem.ClimbSolenoidDisengage();
+  Robot::m_climbSubsystem.ClimbSolenoidDisengage();
 }

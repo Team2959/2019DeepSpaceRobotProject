@@ -6,25 +6,26 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ClimbSolenoidEngageCommand.h"
-#include "subsystems/ClimbSubsystem.h"
 #include "Robot.h"
 
-ClimbSolenoidEngageCommand::ClimbSolenoidEngageCommand() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
+ClimbSolenoidEngageCommand::ClimbSolenoidEngageCommand()
+{
+	// Intentionally skipping the Requires to not interrupt driving climb wheels
+	// with the driver while held button, which requires the climb subsystem
+  //Requires(&Robot::m_climbSubsystem);
 }
 
 // Called just before this Command runs the first time
-void ClimbSolenoidEngageCommand::Initialize() {}
-
-// Called repeatedly when this Command is scheduled to run
-void ClimbSolenoidEngageCommand::Execute()
+void ClimbSolenoidEngageCommand::Initialize()
 {
     Robot::m_climbSubsystem.ClimbSolenoidEngage();
 }
 
+// Called repeatedly when this Command is scheduled to run
+void ClimbSolenoidEngageCommand::Execute() {}
+
 // Make this return true when this Command no longer needs to run execute()
-bool ClimbSolenoidEngageCommand::IsFinished() { return true; }
+bool ClimbSolenoidEngageCommand::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void ClimbSolenoidEngageCommand::End() {}

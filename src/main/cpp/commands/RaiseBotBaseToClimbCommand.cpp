@@ -9,8 +9,8 @@
 #include "Robot.h"
 #include "subsystems/LiftAndShuttlePositions.h"
 
-
-RaiseBotBaseToClimbCommand::RaiseBotBaseToClimbCommand() {
+RaiseBotBaseToClimbCommand::RaiseBotBaseToClimbCommand()
+{
   Requires(&Robot::m_liftAndShuttleSubsystem);
 }
 
@@ -25,16 +25,15 @@ void RaiseBotBaseToClimbCommand::Execute()
 {
   if (Robot::m_liftAndShuttleSubsystem.IsLiftAtBottom())
   {
-
+	// do nothing, we are at the limit switch
   }
-  else if (Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition() >= 0.05)
+  else if (Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition() >= 0.02)
   {
     Robot::m_liftAndShuttleSubsystem.MoveLiftToPosition(kLiftFloorPosition);
   }
   else
   {
     Robot::m_liftAndShuttleSubsystem.DriveLiftWithVelocityControl(kLiftToSwitchVelocity);
-    
   }
 }
 

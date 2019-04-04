@@ -15,8 +15,9 @@
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.25;
 constexpr double kLiftKP = 0.00002;
-constexpr double kLiftKPClimbAdjust = 0.0001;
+constexpr double kLiftKPClimbAdjust = 0.0;
 constexpr double kLiftKI = 1e-6;
+constexpr double kLiftFF = 0.0002;
 constexpr double kLiftMaxVelocity = 4000;
 constexpr double kLiftMaxAcceleration = 9000;
 constexpr double kLiftFirstStopPosition = 30;
@@ -52,7 +53,7 @@ void LiftAndShuttleSubsystem::ConfigureLiftPid(rev::CANPIDController & pidConfig
   pidConfig.SetI(kLiftKI);  
   pidConfig.SetD(0);
   pidConfig.SetIZone(0);
-  pidConfig.SetFF(0.0002);
+  pidConfig.SetFF(kLiftFF);
   pidConfig.SetOutputRange(-1, 1);
   pidConfig.SetP(kLiftKP);
 
@@ -82,12 +83,11 @@ void LiftAndShuttleSubsystem::DashboardDebugInit()
   frc::SmartDashboard::PutNumber("Lift: Min Velocity", 0);
   frc::SmartDashboard::PutNumber("Lift: Max Acceleration", kLiftMaxAcceleration);
   frc::SmartDashboard::PutNumber("Lift: Allowed Closed Loop Error", 0);
-  frc::SmartDashboard::PutNumber("Lift: Arb FF", 0);
+  frc::SmartDashboard::PutNumber("Lift: Arb FF", m_arbFF);
 }
 
 void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
 {
-
   MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController, m_liftEncoder);
 
   auto maxV = frc::SmartDashboard::GetNumber("Lift: Max Velocity", kLiftMaxVelocity);
@@ -194,15 +194,18 @@ bool LiftAndShuttleSubsystem::IsLiftBottomTriggerEnabled() const
 {
     return m_bLiftBottomTriggerEnable;
 }
- double LiftAndShuttleSubsystem::LiftAppliedOutput()
- {
+
+double LiftAndShuttleSubsystem::LiftAppliedOutput()
+{
     return m_liftPrimary.GetAppliedOutput();
- }
+}
+
 void LiftAndShuttleSubsystem::DriveLiftWithDutyCycle(double dutyCycle)
- {
+{
   m_liftPrimary.Set(dutyCycle);
- }
+}
+
  void LiftAndShuttleSubsystem::DriveLiftWithVelocityControl(double velocity)
- {
+{
   m_liftPidController.SetReference(velocity, rev::ControlType::kVelocity);
- }
+}

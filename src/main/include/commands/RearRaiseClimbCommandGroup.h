@@ -8,15 +8,11 @@
 #pragma once
 
 #include <frc/commands/CommandGroup.h>
-#include "subsystems/ClimbSubsystem.h"
-#include "subsystems/LiftAndShuttleSubsystem.h"
-#include "subsystems/LiftAndShuttlePositions.h"
-#include <Robot.h>
-
 
 class RearRaiseClimbCommandGroup : public frc::CommandGroup {
  public:
   RearRaiseClimbCommandGroup();
+
   void Interrupted() override;
   void End() override;
 };
