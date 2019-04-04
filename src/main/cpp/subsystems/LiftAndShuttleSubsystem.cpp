@@ -14,7 +14,7 @@
 
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.25;
-constexpr double kLiftKP = 0.00022;
+constexpr double kLiftKP = 0.00002;
 constexpr double kLiftKPClimbAdjust = 0.0001;
 constexpr double kLiftKI = 1e-6;
 constexpr double kLiftMaxVelocity = 4000;
@@ -52,7 +52,7 @@ void LiftAndShuttleSubsystem::ConfigureLiftPid(rev::CANPIDController & pidConfig
   pidConfig.SetI(kLiftKI);  
   pidConfig.SetD(0);
   pidConfig.SetIZone(0);
-  pidConfig.SetFF(0);
+  pidConfig.SetFF(0.0002);
   pidConfig.SetOutputRange(-1, 1);
   pidConfig.SetP(kLiftKP);
 
