@@ -18,5 +18,5 @@ void MoveLiftDownForHatchCommand::Initialize()
 {
   // drop set number of rotations from current position when delivering hatch
   m_targetLiftPosition = Robot::m_liftAndShuttleSubsystem.CurrentLiftPosition();
-  m_targetLiftPosition -= 3;
+  m_targetLiftPosition -= 2.75;
 }
