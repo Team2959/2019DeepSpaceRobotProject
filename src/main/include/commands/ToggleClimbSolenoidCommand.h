@@ -5,23 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/RearRaiseClimbCommandGroup.h"
-#include "Robot.h"
-#include "commands/ClimbSolenoidEngageCommand.h"
-#include "commands/RaiseBotBaseToClimbCommand.h"
+#pragma once
 
-RearRaiseClimbCommandGroup::RearRaiseClimbCommandGroup()
-{
-  // AddSequential(new RaiseBotBaseToClimbCommand());
-  AddSequential(new ClimbSolenoidEngageCommand());
-}
+#include <frc/commands/Command.h>
 
-void RearRaiseClimbCommandGroup::Interrupted()
-{
-  End();
-}
-
-void RearRaiseClimbCommandGroup::End()
-{
-  Robot::m_climbSubsystem.ClimbSolenoidDisengage();
-}
+class ToggleClimbSolenoidCommand : public frc::Command {
+ private:
+  bool m_bEngage;
+ public:
+  ToggleClimbSolenoidCommand();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+};

@@ -55,7 +55,6 @@ void LiftAndShuttleSubsystem::ConfigureLiftPid(rev::CANPIDController & pidConfig
   pidConfig.SetIZone(0);
   pidConfig.SetFF(kLiftFF);
   pidConfig.SetOutputRange(-1, 1);
-  pidConfig.SetP(kLiftKP);
 
   pidConfig.SetSmartMotionMaxVelocity(kLiftMaxVelocity);
   pidConfig.SetSmartMotionMinOutputVelocity(0);
