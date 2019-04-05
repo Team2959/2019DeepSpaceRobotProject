@@ -37,8 +37,9 @@ private:
   frc::JoystickButton m_driveToVision { &m_leftDriverJoystick, 1};
 
   // Co Pilot Buttons
-  frc::JoystickButton m_climbHabLevel3 {&m_coPilotJoystick, 2};
+  frc::JoystickButton m_climbHabLevel3 {&m_coPilotJoystick, 10};
   frc::JoystickButton m_climbHabLevel2 {&m_coPilotJoystick, 1};
+  frc::JoystickButton m_climbSolenoidToggle {&m_coPilotJoystick, 2};
 
   frc::JoystickButton m_liftFloor { &m_coPilotJoystick, 3};
   frc::JoystickButton m_liftBottom { &m_coPilotJoystick, 4};
@@ -48,8 +49,6 @@ private:
 
   frc::JoystickButton m_cargoArmExtend { &m_coPilotJoystick, 11};
   frc::JoystickButton m_cargoArmBack {&m_coPilotJoystick, 9};
-
-  frc::JoystickButton m_ejectCargo {&m_coPilotJoystick, 10};
 
   frc::JoystickButton m_hatchFromLoadingStation {&m_coPilotJoystick, 8};
   frc::JoystickButton m_liftHatchPickup {&m_coPilotJoystick, 12};
