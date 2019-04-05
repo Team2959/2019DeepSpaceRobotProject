@@ -32,6 +32,7 @@
 #include "subsystems/ClimbSubsystem.h"
 #include "commands/PowerClimbWheelsWhileHeldCommand.h"
 #include "commands/DriveToPortTapeCommand.h"
+#include "commands/RearRaiseClimbCommandGroup.h"
 
 OI::OI()
 { 
@@ -44,6 +45,7 @@ OI::OI()
 
   // Co-Pilot Buttons
   m_climbHabLevel2.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
+  m_climbHabLevel3.WhileHeld(new RearRaiseClimbCommandGroup());
   //m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
   //m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
 
