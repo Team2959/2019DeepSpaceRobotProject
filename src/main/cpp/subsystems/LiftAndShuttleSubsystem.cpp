@@ -25,13 +25,12 @@ constexpr double kLiftCloseToStop = 2;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
+  MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80, false);
 }
 
 void LiftAndShuttleSubsystem::OnRobotInit()
 {
   // Lift motor contorller configuration
-  MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80, false);
-
   m_liftFollower1.Follow(m_liftPrimary);
   m_liftFollower2.Follow(m_liftPrimary);
 
