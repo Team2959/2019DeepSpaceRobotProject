@@ -17,7 +17,7 @@ DriveWithControllerCommand::DriveWithControllerCommand()
     Requires(&Robot::m_driveTrainSubsystem);
 
     jsc.SetDeadband(0.1);
-    jsc.SetExponent(3.0);
+    jsc.SetExponent(4.0);
     jsc.SetRange(0, Robot::m_driveTrainSubsystem.GetMaxSpeed());
 }
 
