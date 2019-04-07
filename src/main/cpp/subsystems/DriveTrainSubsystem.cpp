@@ -33,7 +33,6 @@ DriveTrainSubsystem::DriveTrainSubsystem() : Subsystem("DriveTrainSubsystem")
         err_string += ex.what();
         DriverStation::ReportError(err_string.c_str());
     }
-
 }
 
 void DriveTrainSubsystem::InitDefaultCommand()
@@ -56,18 +55,18 @@ void DriveTrainSubsystem::OnRobotInit()
     m_tankDrive.SetupRightPIDGains(0.0003, 0.0, 0.0, 0.0002, 600);
     m_tankDrive.SetupLeftPIDGains(0.0003, 0.0, 0.0, 0.0002, 600);
 
-    frc::SmartDashboard::PutBoolean("White1", false);
-    frc::SmartDashboard::PutBoolean("White2", false);
-    frc::SmartDashboard::PutBoolean("White3", false);
+    // frc::SmartDashboard::PutBoolean("White1", false);
+    // frc::SmartDashboard::PutBoolean("White2", false);
+    // frc::SmartDashboard::PutBoolean("White3", false);
 
     DashboardDebugInit();
 }
 
 void DriveTrainSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
-    frc::SmartDashboard::PutBoolean("White1", WhiteTape1());
-    frc::SmartDashboard::PutBoolean("White2", WhiteTape2());
-    frc::SmartDashboard::PutBoolean("White3", WhiteTape3());
+    // frc::SmartDashboard::PutBoolean("White1", WhiteTape1());
+    // frc::SmartDashboard::PutBoolean("White2", WhiteTape2());
+    // frc::SmartDashboard::PutBoolean("White3", WhiteTape3());
 
     if (updateDebugInfo)
         DashboardDebugPeriodic();
