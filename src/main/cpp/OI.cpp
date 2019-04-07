@@ -32,7 +32,6 @@
 #include "subsystems/ClimbSubsystem.h"
 #include "commands/PowerClimbWheelsWhileHeldCommand.h"
 #include "commands/DriveToPortTapeCommand.h"
-#include "commands/RearRaiseClimbCommandGroup.h"
 #include "commands/ToggleClimbSolenoidCommand.h"
 
 OI::OI()
@@ -46,8 +45,8 @@ OI::OI()
 
   // Co-Pilot Buttons
   m_climbHabLevel2.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
-  m_climbHabLevel3.WhenPressed(new RaiseBotBaseToClimbCommand());
   m_climbSolenoidToggle.WhenPressed(new ToggleClimbSolenoidCommand());
+  m_climbRaiseBotBase.WhenPressed(new RaiseBotBaseToClimbCommand());
   //m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
   //m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
 
@@ -59,8 +58,6 @@ OI::OI()
 
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
   m_cargoArmBack.WhenPressed(new MoveCargoArmCommand(kArmTiltBackwardPosition));
-
-  m_driveToJoystick.WhenPressed(new RaiseBotBaseToClimbCommand());
 
 //   m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
   // m_ejectCargo.WhenPressed(new StopCargoControlWheelsCommand(0, 0, 0));
