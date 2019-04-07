@@ -40,6 +40,8 @@ void ClimbSubsystem::OnRobotInit()
     m_right.SetSelectedSensorPosition(0, 0, 0);
     ClimbSolenoidDisengage();
 
+    frc::SmartDashboard::PutBoolean("Climb Solenoid", m_newClimbEngage.Get() == frc::DoubleSolenoid::Value::kForward);
+
     // Debug info
     frc::SmartDashboard::PutData(this);
     MotorControllerHelpers::DashboardInitTalonSrx("Climb", m_pidConfig);
@@ -49,6 +51,8 @@ void ClimbSubsystem::OnRobotInit()
 
 void ClimbSubsystem::OnRobotPeriodic(bool updateDebugInfo)
 {
+    frc::SmartDashboard::PutBoolean("Climb Solenoid", m_newClimbEngage.Get() == frc::DoubleSolenoid::Value::kForward);
+
     m_updateDebugInfo = updateDebugInfo;
     if (updateDebugInfo)
         DashboardDebugPeriodic();
