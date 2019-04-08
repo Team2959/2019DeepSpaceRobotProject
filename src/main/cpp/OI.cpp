@@ -41,7 +41,8 @@ OI::OI()
   // m_followLine.WhileHeld(new FollowLineCommand());
   m_resetCargoArm.WhileHeld(new ResetCargoArmCommand());
   m_moveClimbArms.WhileHeld(new PowerClimbWheelsWhileHeldCommand(kClimbWheelsDriveCurrent));
-  m_driveToVision.WhileHeld(new DriveToPortTapeCommand());
+  //m_driveToVision.WhileHeld(new DriveToPortTapeCommand());
+
 
   // Co-Pilot Buttons
   m_climbHabLevel2.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
