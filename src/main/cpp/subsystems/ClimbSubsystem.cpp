@@ -47,7 +47,6 @@ void ClimbSubsystem::OnRobotInit()
     MotorControllerHelpers::DashboardInitTalonSrx("Climb", m_pidConfig);
     frc::SmartDashboard::PutBoolean("Climb: Start", false);
     frc::SmartDashboard::PutBoolean("Climb: Engage", false);
-    frc::SmartDashboard::PutNumber("Climb: Amps", -1);
 }
 
 void ClimbSubsystem::OnRobotPeriodic(bool updateDebugInfo)
@@ -105,8 +104,6 @@ void ClimbSubsystem::PowerToClimbWheels(double amps)
 {
     m_left.Set(ctre::phoenix::motorcontrol::ControlMode::Current, amps);
     m_right.Set(ctre::phoenix::motorcontrol::ControlMode::Current, amps);
-    if (m_updateDebugInfo)
-        frc::SmartDashboard::PutNumber("Climb: Amps", amps);
 }
 
 void ClimbSubsystem::StopAtCurrentDistance()
