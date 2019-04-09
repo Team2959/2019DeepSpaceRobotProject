@@ -9,7 +9,7 @@
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
-#include <cameraserver/CameraServer.h>
+// #include <cameraserver/CameraServer.h>
 
 #include "../../../../2019RaspPIRoboRioShared/Shared.hpp"
 #include <iostream>
@@ -26,10 +26,10 @@ std::shared_ptr<nt::NetworkTable> Robot::m_networkTable;
 OI Robot::m_oi;
 
 void Robot::RobotInit() {
-  m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
-  m_chooser.AddOption("My Auto", &m_myAuto);
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
-  frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  // m_chooser.SetDefaultOption("Default Auto", &m_myAuto);
+  // m_chooser.AddOption("My Auto", &m_myAuto);
+  // frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  // frc::CameraServer::GetInstance()->StartAutomaticCapture();
   m_networkTable = nt::NetworkTableInstance::GetDefault().GetTable(Rpi2959Shared::Tables::TableName);
   
   m_driveTrainSubsystem.OnRobotInit();
@@ -53,10 +53,11 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutBoolean("Debug Hatch", m_debugHatch);
   frc::SmartDashboard::PutBoolean("Debug Climb", m_debugClimb);
 
-  frc::SmartDashboard::PutNumber("Auto Rotation", 250.0);
-  frc::SmartDashboard::PutNumber("Auto Forward", 1500.0);
-  frc::SmartDashboard::PutNumber("Accel", 100.0);
-  frc::SmartDashboard::PutNumber("Separation Limit", 0.3);
+  // Drive to Port Tape command adjustments
+  // frc::SmartDashboard::PutNumber("Auto Rotation", 250.0);
+  // frc::SmartDashboard::PutNumber("Auto Forward", 1500.0);
+  // frc::SmartDashboard::PutNumber("Accel", 100.0);
+  // frc::SmartDashboard::PutNumber("Separation Limit", 0.3);
 
   // Tell the Raspberry PI that we don't need it looking for anything on the front camera yet
   m_networkTable->PutNumber(Rpi2959Shared::Keys::FrontTargets, 0.0);
@@ -120,17 +121,17 @@ void Robot::DisabledInit()
 
 void Robot::DisabledPeriodic()
 {
-    m_driveTrainSubsystem.DisabledWatchDog();
-    if (m_periodic == 9)
-    {
-      m_debugDrive = frc::SmartDashboard::GetBoolean("Debug Drive", false);
-      m_debugLiftAndShuttle = frc::SmartDashboard::GetBoolean("Debug Lift", false);
-      m_debugCargoArm = frc::SmartDashboard::GetBoolean("Debug Cargo Arm", false);
-      m_debugCargoControl = frc::SmartDashboard::GetBoolean("Debug Cargo Control", false);
-      m_debugHatch = frc::SmartDashboard::GetBoolean("Debug Hatch", false);
-      m_debugClimb = frc::SmartDashboard::GetBoolean("Debug Climb", false);
-    }
-    frc::Scheduler::GetInstance()->Run();
+  m_driveTrainSubsystem.DisabledWatchDog();
+  if (m_periodic == 9)
+  {
+    m_debugDrive = frc::SmartDashboard::GetBoolean("Debug Drive", false);
+    m_debugLiftAndShuttle = frc::SmartDashboard::GetBoolean("Debug Lift", false);
+    m_debugCargoArm = frc::SmartDashboard::GetBoolean("Debug Cargo Arm", false);
+    m_debugCargoControl = frc::SmartDashboard::GetBoolean("Debug Cargo Control", false);
+    m_debugHatch = frc::SmartDashboard::GetBoolean("Debug Hatch", false);
+    m_debugClimb = frc::SmartDashboard::GetBoolean("Debug Climb", false);
+  }
+  frc::Scheduler::GetInstance()->Run();
 }
 
 /**
@@ -144,7 +145,8 @@ void Robot::DisabledPeriodic()
  * chooser code above (like the commented example) or additional comparisons to
  * the if-else structure below with additional strings & commands.
  */
-void Robot::AutonomousInit() {
+void Robot::AutonomousInit()
+{
   m_cargoArmSubsystem.MoveCargoArmToPosition(0);
   m_liftAndShuttleSubsystem.MoveLiftToPosition(0);
   m_climbSubsystem.ClimbWheelsSetPosition(0);
@@ -167,20 +169,24 @@ void Robot::AutonomousInit() {
 
   // m_autonomousCommand = m_chooser.GetSelected();
 
-  if (m_autonomousCommand != nullptr) {
+  if (m_autonomousCommand != nullptr)
+  {
     m_autonomousCommand->Start();
   }
 }
 
 void Robot::AutonomousPeriodic() { frc::Scheduler::GetInstance()->Run(); }
 
-void Robot::TeleopInit() {
-    m_climbSubsystem.ClimbWheelsSetPosition(0);
+void Robot::TeleopInit()
+{
+  m_climbSubsystem.ClimbWheelsSetPosition(0);
+
   // This makes sure that the autonomous stops running when
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove
   // this line or comment it out.
-  if (m_autonomousCommand != nullptr) {
+  if (m_autonomousCommand != nullptr)
+  {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
   }
