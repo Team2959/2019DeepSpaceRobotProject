@@ -47,6 +47,11 @@ class ClimbSubsystem : public frc::Subsystem {
   void PowerToClimbWheels(double amps);
   void StopAtCurrentDistance();
 
+  void SetArmCurrentLimitLow();
+  void SetArmPercentOutputLow();
+  void StopAndZero();
+  void SetArmCurrentLimitHigh();
+
   bool AreClimbWheelsAtPosition(double position);
 
   double CurrentClimbWheelsPosition();

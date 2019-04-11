@@ -32,6 +32,7 @@
 #include "commands/PowerClimbWheelsWhileHeldCommand.h"
 #include "commands/DriveToPortTapeCommand.h"
 #include "commands/ToggleClimbSolenoidCommand.h"
+#include "commands/ResetClimbArmCommand.h"
 
 OI::OI()
 { 
@@ -39,6 +40,7 @@ OI::OI()
   m_deliver.WhenPressed(new DeliverConditionalCommand());
   // m_followLine.WhileHeld(new FollowLineCommand());
   m_resetCargoArm.WhileHeld(new ResetCargoArmCommand());
+  m_resetClimbArm.WhileHeld(new ResetClimbArmCommand());
   m_moveClimbArms.WhileHeld(new PowerClimbWheelsWhileHeldCommand(kClimbWheelsDriveCurrent));
   //m_driveToVision.WhileHeld(new DriveToPortTapeCommand());
 

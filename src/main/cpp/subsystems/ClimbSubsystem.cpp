@@ -121,3 +121,34 @@ double ClimbSubsystem::CurrentClimbWheelsPosition()
 {
     return  m_right.GetSelectedSensorPosition();
 }
+
+void ClimbSubsystem::SetArmCurrentLimitLow()
+{
+  m_left.ConfigContinuousCurrentLimit(10);
+  m_right.ConfigContinuousCurrentLimit(10);
+  m_left.EnableCurrentLimit(true);
+  m_right.EnableCurrentLimit(true);
+}
+
+void ClimbSubsystem::SetArmPercentOutputLow()
+{
+  m_left.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
+  m_right.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
+}
+
+void ClimbSubsystem::StopAndZero()
+{
+  m_left.StopMotor();
+  m_right.StopMotor();
+  m_left.SetSelectedSensorPosition(0,0,0);
+  m_right.SetSelectedSensorPosition(0,0,0);
+  ClimbWheelsSetPosition(0);
+}
+
+void ClimbSubsystem::SetArmCurrentLimitHigh()
+{
+  m_left.ConfigContinuousCurrentLimit(60);
+  m_right.ConfigContinuousCurrentLimit(60);
+  m_left.EnableCurrentLimit(true);
+  m_right.EnableCurrentLimit(true);
+}
