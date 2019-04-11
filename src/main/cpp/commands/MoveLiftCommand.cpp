@@ -7,6 +7,8 @@
 
 #include "commands/MoveLiftCommand.h"
 #include "subsystems/LiftAndShuttlePositions.h"
+#include "commands/MoveCargoArmCommand.h"
+#include "subsystems/CargoArmPositions.h"
 #include "Robot.h"
 
 MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget)
@@ -24,6 +26,10 @@ void MoveLiftCommand::Initialize()
   {
     case LiftTargetLevel::Floor:
       m_targetLiftPosition = kLiftFloorPosition;
+      {
+        auto ptr = new MoveCargoArmCommand(kArmTiltBackwardPosition);
+        ptr->Start();
+      }
       break;
     case LiftTargetLevel::Bottom:
       if (cargoIn)
