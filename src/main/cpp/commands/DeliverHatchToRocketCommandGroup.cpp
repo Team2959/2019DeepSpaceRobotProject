@@ -8,10 +8,10 @@
 #include "commands/DeliverHatchToRocketCommandGroup.h"
 #include "commands/AttachHatchCommand.h"
 #include "commands/ReleaseHatchCommand.h"
-#include "commands/RetractMechanismCommand.h"
 #include <frc/commands/TimedCommand.h>
 #include "commands/MoveLiftDownForHatchCommand.h"
 #include "commands/KeepPinsOutCommand.h"
+#include "commands/RetractHatchAtEndOfDeliveryCommand.h"
 
 DeliverHatchToRocketCommandGroup::DeliverHatchToRocketCommandGroup()
 {
@@ -33,5 +33,5 @@ DeliverHatchToRocketCommandGroup::DeliverHatchToRocketCommandGroup()
   AddSequential(new KeepPinsOutCommand());
   AddSequential(new frc::TimedCommand(0.25));
   // Retract pins
-  AddSequential(new RetractMechanismCommand());
+  AddSequential(new RetractHatchAtEndOfDeliveryCommand());
 }

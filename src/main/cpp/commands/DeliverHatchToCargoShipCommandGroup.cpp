@@ -7,11 +7,11 @@
 
 #include "commands/DeliverHatchToCargoShipCommandGroup.h"
 #include "commands/PrepForHatchCommand.h"
-#include "commands/RetractMechanismCommand.h"
 #include <frc/commands/TimedCommand.h>
 #include "commands/MoveLiftDownForHatchCommand.h"
 #include "commands/KeepPinsOutCommand.h"
 #include "commands/AttachHatchToCargoShipCommand.h"
+#include "commands/RetractHatchAtEndOfDeliveryCommand.h"
 
 DeliverHatchToCargoShipCommandGroup::DeliverHatchToCargoShipCommandGroup()
 {
@@ -33,5 +33,5 @@ DeliverHatchToCargoShipCommandGroup::DeliverHatchToCargoShipCommandGroup()
   AddSequential(new KeepPinsOutCommand());
   AddSequential(new frc::TimedCommand(0.25));
   // Retract Everything
-  AddSequential(new RetractMechanismCommand());
+  AddSequential(new RetractHatchAtEndOfDeliveryCommand());
 }
