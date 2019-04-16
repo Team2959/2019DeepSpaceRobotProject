@@ -41,15 +41,15 @@ private:
 
     VelocityTankDrive m_tankDrive { m_leftPrimary, m_leftFollower, m_rightPrimary, m_rightFollower };
 
-    AHRS *ahrs;
+    // AHRS *ahrs;
     
     // Smart Dashboard debug/info
     void DashboardDebugInit();
     void DashboardDebugPeriodic();
 
-    frc::DigitalInput m_whiteTape1 { kWhiteTapeSwitch1 };
-    frc::DigitalInput m_whiteTape2 { kWhiteTapeSwitch2 };
-    frc::DigitalInput m_whiteTape3 { kWhiteTapeSwitch3 };
+    // frc::DigitalInput m_whiteTape1 { kWhiteTapeSwitch1 };
+    // frc::DigitalInput m_whiteTape2 { kWhiteTapeSwitch2 };
+    // frc::DigitalInput m_whiteTape3 { kWhiteTapeSwitch3 };
 
 public:
     DriveTrainSubsystem();

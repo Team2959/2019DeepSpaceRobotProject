@@ -28,11 +28,11 @@ void ExtendCargoArmCommand::Initialize()
 void ExtendCargoArmCommand::Execute() 
 {
   // try to extend arm
-  if (Robot::m_driveTrainSubsystem.IsBeyondTypicalPitch()) {
-    m_trueExtendPosition = kArmExtendPosition + (Robot::m_driveTrainSubsystem.GetPitch() * kArmDegreeToEncoder);
-  } else {
+  // if (Robot::m_driveTrainSubsystem.IsBeyondTypicalPitch()) {
+  //   m_trueExtendPosition = kArmExtendPosition + (Robot::m_driveTrainSubsystem.GetPitch() * kArmDegreeToEncoder);
+  // } else {
     m_trueExtendPosition = kArmExtendPosition;
-  }
+  // }
 
   Robot::m_cargoArmSubsystem.MoveCargoArmToPosition(m_trueExtendPosition);
 
