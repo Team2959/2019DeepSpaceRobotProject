@@ -26,10 +26,6 @@ void MoveLiftCommand::Initialize()
   {
     case LiftTargetLevel::Floor:
       m_targetLiftPosition = kLiftFloorPosition;
-      {
-        auto ptr = new MoveCargoArmCommand(kArmTiltBackwardPosition);
-        ptr->Start();
-      }
       break;
     case LiftTargetLevel::Bottom:
       if (cargoIn)
