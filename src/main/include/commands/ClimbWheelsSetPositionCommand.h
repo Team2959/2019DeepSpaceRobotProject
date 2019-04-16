@@ -7,9 +7,18 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
+#include <frc/commands/Command.h>
 
-class EjectCargoCommandGroup : public frc::CommandGroup {
+class ClimbWheelsSetPositionCommand : public frc::Command {
+
+protected: 
+  double m_targetPosition;
+
  public:
-  EjectCargoCommandGroup();
+  ClimbWheelsSetPositionCommand(double position);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };

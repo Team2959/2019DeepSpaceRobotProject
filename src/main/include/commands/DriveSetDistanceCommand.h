@@ -9,13 +9,15 @@
 
 #include <frc/commands/Command.h>
 
-class EngageClimbSolenoidCommand : public frc::Command {
+class DriveSetDistanceCommand : public frc::Command {
+ private:
+  double m_startingPosition;
+
  public:
-  EngageClimbSolenoidCommand();
+  DriveSetDistanceCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
 };
-

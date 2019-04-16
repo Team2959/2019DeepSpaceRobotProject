@@ -33,8 +33,8 @@ public:
     static void DashboardInitSparkMax(
         std::string name,
         rev::CANEncoder & encoder,
-        double kP = 5e-5, double kI = 1e-6, double kD = 0,
-        double iZone = 0, double ff = 0,
+        double kP, double kI, double kD,
+        double iZone, double ff,
         double outputMin = -1, double outputMax = 1);
 
     static void DashboardDataSparkMax(

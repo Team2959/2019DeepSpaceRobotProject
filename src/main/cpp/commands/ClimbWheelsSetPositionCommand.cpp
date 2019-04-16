@@ -5,27 +5,42 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/MyAutoCommand.h"
-
+#include "subsystems/ClimbSubsystem.h"
+#include "commands/ClimbWheelsSetPositionCommand.h"
 #include "Robot.h"
 
-MyAutoCommand::MyAutoCommand() {
+ClimbWheelsSetPositionCommand::ClimbWheelsSetPositionCommand(double position) {
   // Use Requires() here to declare subsystem dependencies
-  // Requires(&Robot::m_subsystem);
+  // eg. Requires(Robot::chassis.get());
+    Requires(&Robot::m_climbSubsystem);
+    m_targetPosition = position;
 }
 
 // Called just before this Command runs the first time
-void MyAutoCommand::Initialize() {}
+void ClimbWheelsSetPositionCommand::Initialize() {
+  m_targetPosition += Robot::m_climbSubsystem.CurrentClimbWheelsPosition();
+}
 
 // Called repeatedly when this Command is scheduled to run
-void MyAutoCommand::Execute() {}
+void ClimbWheelsSetPositionCommand::Execute() {
+  Robot::m_climbSubsystem.ClimbWheelsSetPosition(m_targetPosition);
+}
 
 // Make this return true when this Command no longer needs to run execute()
-bool MyAutoCommand::IsFinished() { return false; }
+bool ClimbWheelsSetPositionCommand::IsFinished()
+ {  
+     return Robot::m_climbSubsystem.AreClimbWheelsAtPosition(m_targetPosition);
+ }
 
 // Called once after isFinished returns true
-void MyAutoCommand::End() {}
+void ClimbWheelsSetPositionCommand::End()
+{
+  Robot::m_climbSubsystem.PowerToClimbWheels(kClimbWheelsHoldingCurrent);
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MyAutoCommand::Interrupted() {}
+void ClimbWheelsSetPositionCommand::Interrupted()
+{
+  End();
+}

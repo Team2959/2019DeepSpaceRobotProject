@@ -14,7 +14,6 @@
 #include "commands/MoveLiftCommand.h"
 #include "commands/ExtendCargoArmCommand.h"
 #include "commands/MoveCargoArmCommand.h"
-#include "commands/EjectCargoCommandGroup.h"
 #include "commands/GrabHatchCommandGroup.h"
 #include "commands/LiftLimitSwitchBottomCommand.h"
 #include "commands/ClimbCommandGroup.h"
@@ -28,7 +27,12 @@
 #include "commands/FollowLineCommand.h"
 #include "subsystems/CargoControlSubsystem.h"
 #include "commands/ResetCargoArmCommand.h"
+#include "commands/RaiseBotBaseToClimbCommand.h"
+#include "subsystems/ClimbSubsystem.h"
+#include "commands/PowerClimbWheelsWhileHeldCommand.h"
 #include "commands/DriveToPortTapeCommand.h"
+#include "commands/ToggleClimbSolenoidCommand.h"
+#include "commands/ResetClimbArmCommand.h"
 
 OI::OI()
 { 
@@ -36,11 +40,17 @@ OI::OI()
   m_deliver.WhenPressed(new DeliverConditionalCommand());
   // m_followLine.WhileHeld(new FollowLineCommand());
   m_resetCargoArm.WhileHeld(new ResetCargoArmCommand());
-  m_driveToVision.WhileHeld(new DriveToPortTapeCommand());
+  m_resetClimbArm.WhileHeld(new ResetClimbArmCommand());
+  m_moveClimbArms.WhileHeld(new PowerClimbWheelsWhileHeldCommand(kClimbWheelsDriveCurrent));
+  //m_driveToVision.WhileHeld(new DriveToPortTapeCommand());
+
 
   // Co-Pilot Buttons
-  m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
-  m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
+  m_climbHabLevel2.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::ClimbHab2));
+  m_climbSolenoidToggle.WhenPressed(new ToggleClimbSolenoidCommand());
+  m_climbRaiseBotBase.WhenPressed(new RaiseBotBaseToClimbCommand());
+  //m_climbHabLevel2.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel2));
+  //m_climbHabLevel3.WhenPressed(new ClimbCommandGroup(ClimbCommandGroup::TargetHabLevel::HabLevel3));
 
   m_liftFloor.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Floor));
   m_liftBottom.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::Bottom));
@@ -50,9 +60,6 @@ OI::OI()
 
   m_cargoArmExtend.WhenPressed(new ExtendCargoArmCommand());
   m_cargoArmBack.WhenPressed(new MoveCargoArmCommand(kArmTiltBackwardPosition));
-
-//   m_ejectCargo.WhenPressed(new EjectCargoCommandGroup());
-  m_ejectCargo.WhenPressed(new StopCargoControlWheelsCommand(0, 0, 0));
 
   m_hatchFromLoadingStation.WhenPressed(new GrabHatchCommandGroup());
   m_liftHatchPickup.WhenPressed(new MoveLiftCommand(MoveLiftCommand::LiftTargetLevel::GrabHatchFromWall));

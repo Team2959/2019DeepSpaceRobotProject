@@ -12,5 +12,6 @@ LiftBottomSwitch::LiftBottomSwitch() {}
 
 bool LiftBottomSwitch::Get()
 {
-    return Robot::m_liftAndShuttleSubsystem.IsLiftAtBottom();
+    return Robot::m_liftAndShuttleSubsystem.IsLiftBottomTriggerEnabled() &&
+        Robot::m_liftAndShuttleSubsystem.IsLiftAtBottom();
 }

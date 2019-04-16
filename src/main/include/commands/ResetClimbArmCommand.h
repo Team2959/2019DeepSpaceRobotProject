@@ -7,9 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
+#include <frc/commands/Command.h>
 
-class TwoHatchesOnRocketAutonomousCommandGroup : public frc::CommandGroup {
+class ResetClimbArmCommand : public frc::Command {
  public:
-  TwoHatchesOnRocketAutonomousCommandGroup();
+  ResetClimbArmCommand();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };

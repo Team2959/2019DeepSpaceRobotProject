@@ -5,42 +5,39 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DriveWithControllerCommand.h"
+#include "commands/ResetClimbArmCommand.h"
 #include "Robot.h"
-#include <chrono>
-#include <iostream>
 
-DriveWithControllerCommand::DriveWithControllerCommand()
+ResetClimbArmCommand::ResetClimbArmCommand()
 {
-    // Use Requires() here to declare subsystem dependencies
-    // eg. Requires(Robot::chassis.get());
-    Requires(&Robot::m_driveTrainSubsystem);
-
-    jsc.SetDeadband(0.1);
-    jsc.SetExponent(4.0);
-    jsc.SetRange(0, Robot::m_driveTrainSubsystem.GetMaxSpeed());
+  // Use Requires() here to declare subsystem dependencies
+  // eg. Requires(Robot::chassis.get());
+  Requires(&Robot::m_climbSubsystem);
 }
 
 // Called just before this Command runs the first time
-void DriveWithControllerCommand::Initialize() 
+void ResetClimbArmCommand::Initialize() 
 {
+  Robot::m_climbSubsystem.SetArmCurrentLimitLow();
+  Robot::m_climbSubsystem.SetArmPercentOutputLow();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void DriveWithControllerCommand::Execute()
-{
-    Robot::m_driveTrainSubsystem.TankDrive(
-        jsc.Condition(-1.0 * Robot::m_oi.m_leftDriverJoystick.GetY()),
-        jsc.Condition(-1.0 * Robot::m_oi.m_rightDriverJoystick.GetY())
-    );
-}
+void ResetClimbArmCommand::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool DriveWithControllerCommand::IsFinished() { return false; }
+bool ResetClimbArmCommand::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void DriveWithControllerCommand::End() {}
+void ResetClimbArmCommand::End() 
+{
+  Robot::m_climbSubsystem.StopAndZero();
+  Robot::m_climbSubsystem.SetArmCurrentLimitHigh();
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveWithControllerCommand::Interrupted() {}
+void ResetClimbArmCommand::Interrupted()
+{
+  End();
+}

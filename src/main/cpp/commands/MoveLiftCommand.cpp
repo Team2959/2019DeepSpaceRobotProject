@@ -7,6 +7,8 @@
 
 #include "commands/MoveLiftCommand.h"
 #include "subsystems/LiftAndShuttlePositions.h"
+#include "commands/MoveCargoArmCommand.h"
+#include "subsystems/CargoArmPositions.h"
 #include "Robot.h"
 
 MoveLiftCommand::MoveLiftCommand(LiftTargetLevel liftTarget)
@@ -55,11 +57,20 @@ void MoveLiftCommand::Initialize()
     case LiftTargetLevel::GrabHatchFromWall:
       m_targetLiftPosition = kLiftGrabHatchFromWallPosition;
       break;
+    case LiftTargetLevel::ClimbPrepHab2:
+      m_targetLiftPosition = kLiftClimbPrepHab2Position;
+      break;
+    case LiftTargetLevel::ClimbPrepHab3:
+      m_targetLiftPosition = kLiftClimbPrepHab3Position;
+      break;
     case LiftTargetLevel::ClimbHab2:
       m_targetLiftPosition = kLiftClimbHab2Position;
       break;
     case LiftTargetLevel::ClimbHab3:
       m_targetLiftPosition = kLiftClimbHab3Position;
+      break;
+    case LiftTargetLevel::RaiseClimbWheels:
+      m_targetLiftPosition = kLiftRaiseClimbWheelsPosition;
       break;
   }
 }

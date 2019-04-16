@@ -14,8 +14,10 @@
 
 // Lift constants
 constexpr double kLiftCloseEnoughToPosition = 0.25;
-constexpr double kLiftKP = 0.00015;
+constexpr double kLiftKP = 0.00002;
+constexpr double kLiftFFClimbAdjust = 0.0001;
 constexpr double kLiftKI = 1e-6;
+constexpr double kLiftFF = 0.0002;
 constexpr double kLiftMaxVelocity = 4000;
 constexpr double kLiftMaxAcceleration = 9000;
 constexpr double kLiftFirstStopPosition = 30;
@@ -23,13 +25,12 @@ constexpr double kLiftCloseToStop = 2;
 
 LiftAndShuttleSubsystem::LiftAndShuttleSubsystem() : Subsystem("LiftAndShuttleSubsystem") 
 {
+  MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80, false);
 }
 
 void LiftAndShuttleSubsystem::OnRobotInit()
 {
   // Lift motor contorller configuration
-  MotorControllerHelpers::SetupSparkMax(m_liftPrimary, 80, false);
-
   m_liftFollower1.Follow(m_liftPrimary);
   m_liftFollower2.Follow(m_liftPrimary);
 
@@ -51,9 +52,8 @@ void LiftAndShuttleSubsystem::ConfigureLiftPid(rev::CANPIDController & pidConfig
   pidConfig.SetI(kLiftKI);  
   pidConfig.SetD(0);
   pidConfig.SetIZone(0);
-  pidConfig.SetFF(0);
+  pidConfig.SetFF(kLiftFF);
   pidConfig.SetOutputRange(-1, 1);
-  pidConfig.SetP(kLiftKP);
 
   pidConfig.SetSmartMotionMaxVelocity(kLiftMaxVelocity);
   pidConfig.SetSmartMotionMinOutputVelocity(0);
@@ -74,19 +74,19 @@ void LiftAndShuttleSubsystem::DashboardDebugInit()
 {
   frc::SmartDashboard::PutData(this);
 
-  MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftEncoder);
+  MotorControllerHelpers::DashboardInitSparkMax("Lift", m_liftEncoder,
+    kLiftKP, kLiftKI, 0, 0, kLiftFF);
   frc::SmartDashboard::PutBoolean("Lift: Start", false);
 
   frc::SmartDashboard::PutNumber("Lift: Max Velocity", kLiftMaxVelocity);
   frc::SmartDashboard::PutNumber("Lift: Min Velocity", 0);
   frc::SmartDashboard::PutNumber("Lift: Max Acceleration", kLiftMaxAcceleration);
   frc::SmartDashboard::PutNumber("Lift: Allowed Closed Loop Error", 0);
-  frc::SmartDashboard::PutNumber("Lift: Arb FF", 0);
+  frc::SmartDashboard::PutNumber("Lift: Arb FF", m_arbFF);
 }
 
 void LiftAndShuttleSubsystem::DashboardDebugPeriodic()
 {
-
   MotorControllerHelpers::DashboardDataSparkMax("Lift", m_liftPidController, m_liftEncoder);
 
   auto maxV = frc::SmartDashboard::GetNumber("Lift: Max Velocity", kLiftMaxVelocity);
@@ -148,10 +148,9 @@ double LiftAndShuttleSubsystem::CurrentLiftPosition()
 
 void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
 {
-  double arbFF = 0.0;
   if (m_updateDebugInfo)
   {
-    arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", arbFF);
+    m_arbFF = frc::SmartDashboard::GetNumber("Lift: Arb FF", m_arbFF);
     frc::SmartDashboard::PutNumber("Lift: Target", position);
   }
 
@@ -160,7 +159,7 @@ void LiftAndShuttleSubsystem::MoveLiftToPosition(double position)
     position = kLiftFirstStopPosition;
   }
 
-  m_liftPidController.SetReference(-position, rev::ControlType::kSmartMotion, arbFF);
+  m_liftPidController.SetReference(-position, rev::ControlType::kSmartMotion, 0, m_arbFF);
 }
 
 void LiftAndShuttleSubsystem::StopAtCurrentPosition()
@@ -176,4 +175,36 @@ void LiftAndShuttleSubsystem::LiftBottomReset()
   m_liftFollower2.StopMotor();
   m_liftEncoder.SetPosition(0);
   MoveLiftToPosition(0);
+}
+
+void LiftAndShuttleSubsystem::ReconfigureLiftForClimb()
+{
+  m_liftPidController.SetFF(kLiftFF + kLiftFFClimbAdjust);
+  m_liftPidController.SetSmartMotionMaxVelocity(kLiftMaxVelocity/3.0);
+  m_liftPidController.SetSmartMotionMaxAccel(kLiftMaxAcceleration/3.0);
+}
+
+void LiftAndShuttleSubsystem::EnableLiftBottomTrigger(bool enable)
+{
+    m_bLiftBottomTriggerEnable = enable;
+}
+
+bool LiftAndShuttleSubsystem::IsLiftBottomTriggerEnabled() const
+{
+    return m_bLiftBottomTriggerEnable;
+}
+
+double LiftAndShuttleSubsystem::LiftAppliedOutput()
+{
+    return m_liftPrimary.GetAppliedOutput();
+}
+
+void LiftAndShuttleSubsystem::DriveLiftWithDutyCycle(double dutyCycle)
+{
+  m_liftPrimary.Set(dutyCycle);
+}
+
+ void LiftAndShuttleSubsystem::DriveLiftWithVelocityControl(double velocity)
+{
+  m_liftPidController.SetReference(velocity, rev::ControlType::kVelocity);
 }

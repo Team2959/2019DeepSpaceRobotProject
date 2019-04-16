@@ -29,12 +29,18 @@ private:
   frc::JoystickButton m_deliver { &m_rightDriverJoystick, 1};
   // frc::JoystickButton m_followLine { &m_rightDriverJoystick, 2};
   frc::JoystickButton m_resetCargoArm { &m_rightDriverJoystick, 8};
+  frc::JoystickButton m_moveClimbArms { &m_rightDriverJoystick, 2};
+
+  //Left
+  //frc::JoystickButton m_driveToVision { &m_leftDriverJoystick, 1};
+  frc::JoystickButton m_resetClimbArm { &m_leftDriverJoystick, 8};
 
   frc::JoystickButton m_driveToVision { &m_leftDriverJoystick, 1};
 
   // Co Pilot Buttons
-  frc::JoystickButton m_climbHabLevel3 {&m_coPilotJoystick, 1};
-  frc::JoystickButton m_climbHabLevel2 {&m_coPilotJoystick, 2};
+  frc::JoystickButton m_climbRaiseBotBase {&m_coPilotJoystick, 10};
+  frc::JoystickButton m_climbHabLevel2 {&m_coPilotJoystick, 1};
+  frc::JoystickButton m_climbSolenoidToggle {&m_coPilotJoystick, 2};
 
   frc::JoystickButton m_liftFloor { &m_coPilotJoystick, 3};
   frc::JoystickButton m_liftBottom { &m_coPilotJoystick, 4};
@@ -44,8 +50,6 @@ private:
 
   frc::JoystickButton m_cargoArmExtend { &m_coPilotJoystick, 11};
   frc::JoystickButton m_cargoArmBack {&m_coPilotJoystick, 9};
-
-  frc::JoystickButton m_ejectCargo {&m_coPilotJoystick, 10};
 
   frc::JoystickButton m_hatchFromLoadingStation {&m_coPilotJoystick, 8};
   frc::JoystickButton m_liftHatchPickup {&m_coPilotJoystick, 12};

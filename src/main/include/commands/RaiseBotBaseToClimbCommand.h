@@ -9,9 +9,11 @@
 
 #include <frc/commands/Command.h>
 
-class MyAutoCommand : public frc::Command {
+const double kLiftToSwitchVelocity = -60;
+
+class RaiseBotBaseToClimbCommand : public frc::Command {
  public:
-  MyAutoCommand();
+  RaiseBotBaseToClimbCommand();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
